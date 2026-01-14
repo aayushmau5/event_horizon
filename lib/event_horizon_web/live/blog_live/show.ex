@@ -1,6 +1,8 @@
 defmodule EventHorizonWeb.BlogLive.Show do
   use EventHorizonWeb, :live_view
 
+  alias EventHorizon.Blog.Article
+
   @impl true
   def mount(_params, _session, socket) do
     [post] = EventHorizon.Blog.all_blogs()
@@ -12,7 +14,7 @@ defmodule EventHorizonWeb.BlogLive.Show do
   def render(assigns) do
     ~H"""
     <div class="px-4 py-20 sm:px-6 lg:px-8 prose border m-2">
-      {raw(@post.body)}
+      {Article.render(@post, assigns)}
     </div>
     """
   end

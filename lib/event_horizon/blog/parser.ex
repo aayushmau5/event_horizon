@@ -3,7 +3,8 @@ defmodule EventHorizon.Blog.Parser do
 
   def parse(_path, content) do
     {frontmatter, body} = parse_frontmatter!(content)
-    body = convert_body!(body)
+    dynamic? = Map.get(frontmatter, :dynamic, false)
+    body = convert_body!(body, dynamic?)
     {frontmatter, body}
   end
 
@@ -28,26 +29,41 @@ defmodule EventHorizon.Blog.Parser do
 
   defp atomize_keys(value), do: value
 
-  defp convert_body!(body) do
+  defp convert_body!(body, true = _dynamic?) do
     html_body = markdown_to_html!(body)
-    env = __ENV__
 
     ast =
       EEx.compile_string(html_body,
         engine: Phoenix.LiveView.TagEngine,
-        file: env.file,
-        line: env.line + 1,
-        caller: env,
+        file: __ENV__.file,
+        line: __ENV__.line + 1,
+        caller: __ENV__,
         indentation: 0,
         source: html_body,
         tag_handler: Phoenix.LiveView.HTMLEngine
       )
 
-    assigns = %{}
+    {:dynamic, ast}
+  end
 
-    {rendered, _} = Code.eval_quoted(ast, [assigns: assigns], env)
+  defp convert_body!(body, false = _dynamic?) do
+    html_body = markdown_to_html!(body)
 
-    rendered |> Phoenix.HTML.Safe.to_iodata() |> IO.iodata_to_binary()
+    ast =
+      EEx.compile_string(html_body,
+        engine: Phoenix.LiveView.TagEngine,
+        file: __ENV__.file,
+        line: __ENV__.line + 1,
+        caller: __ENV__,
+        indentation: 0,
+        source: html_body,
+        tag_handler: Phoenix.LiveView.HTMLEngine
+      )
+
+    {rendered, _} = Code.eval_quoted(ast, [assigns: %{}], __ENV__)
+    static_html = rendered |> Phoenix.HTML.Safe.to_iodata() |> IO.iodata_to_binary()
+
+    {:static, static_html}
   end
 
   defp markdown_to_html!(markdown) do
