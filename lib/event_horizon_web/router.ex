@@ -18,8 +18,11 @@ defmodule EventHorizonWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
-    live "/blog", BlogLive.Show, :show
-    # live "/blog", BlogLive.ShowBefore, :show
+
+    live_session :default do
+      live "/blog", BlogLive.Index, :index
+      live "/blog/:slug", BlogLive.Show, :show
+    end
   end
 
   # Other scopes may use custom stacks.

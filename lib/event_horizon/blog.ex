@@ -8,4 +8,15 @@ defmodule EventHorizon.Blog do
     highlighters: []
 
   def all_blogs, do: @blogs
+
+  @spec list_blogs() :: term()
+  def list_blogs do
+    Enum.map(all_blogs(), fn blog -> %{title: blog.title, slug: blog.slug} end)
+  end
+
+  @spec get_blog(slug :: String.t()) :: EventHorizon.Blog.Article.t() | nil
+  def get_blog(slug) do
+    all_blogs()
+    |> Enum.find(fn %{slug: blog_slug} -> blog_slug == slug end)
+  end
 end

@@ -1,5 +1,6 @@
 defmodule EventHorizon.Blog.Parser do
   use Phoenix.Component
+  use EventHorizonWeb.BlogComponents
 
   def parse(_path, content) do
     {frontmatter, body} = parse_frontmatter!(content)
@@ -72,7 +73,7 @@ defmodule EventHorizon.Blog.Parser do
         phoenix_heex: true
       ],
       render: [
-        unsafe: true,
+        unsafe: true
       ]
     )
   end

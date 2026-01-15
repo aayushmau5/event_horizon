@@ -81,6 +81,8 @@ defmodule EventHorizonWeb do
       import Phoenix.HTML
       # Core UI components
       import EventHorizonWeb.CoreComponents
+      # Blog components
+      import EventHorizonWeb.BlogComponents
 
       # Common modules used in templates
       alias Phoenix.LiveView.JS

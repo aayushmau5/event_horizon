@@ -33,8 +33,5 @@ Today is _{Calendar.strftime(DateTime.utc_now(), "%B %d, %Y")}_
 Built with:
 - <.link href="https://crates.io/crates/comrak">comrak</.link>
 - <.link href="https://hex.pm/packages/mdex">MDEx</.link>
-- <.link href="https://hex.pm/packages/mdex">MDEx</.link>
 
-```elixir
-:erlang.link()
-```
+---
