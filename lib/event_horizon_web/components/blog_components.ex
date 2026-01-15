@@ -2,10 +2,26 @@ defmodule EventHorizonWeb.BlogComponents do
   defmacro __using__(_opts) do
     quote do
       import EventHorizonWeb.BlogComponents
+      alias EventHorizonWeb.BlogComponents.Counter
     end
   end
 
   use Phoenix.Component
+
+  alias EventHorizonWeb.BlogComponents.Counter
+
+  # ============================================================================
+  # Interactive Components (LiveComponents for blog posts)
+  # ============================================================================
+
+  attr :id, :string, required: true
+  attr :rest, :global
+
+  def counter(assigns) do
+    ~H"""
+    <.live_component module={Counter} id={@id} {@rest} />
+    """
+  end
 
   # ============================================================================
   # Blockquote

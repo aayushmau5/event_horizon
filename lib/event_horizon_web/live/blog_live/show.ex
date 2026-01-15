@@ -13,13 +13,4 @@ defmodule EventHorizonWeb.BlogLive.Show do
         {:ok, socket |> assign(post: post)}
     end
   end
-
-  @impl true
-  def handle_event("inc", _, socket) do
-    {:noreply, assign(socket, count: socket.assigns.count + 1)}
-  end
-
-  def handle_event("dec", _, socket) do
-    {:noreply, assign(socket, count: socket.assigns.count - 1)}
-  end
 end
