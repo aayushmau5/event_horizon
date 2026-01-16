@@ -160,7 +160,7 @@
 .basic-card {
     border: 1px solid var(--card-border);
     border-radius: 0.55rem;
-    padding: 0.5rem 1rem;
+    padding: 1rem;
     margin-bottom: 1.1rem;
     background-color: var(--card-background);
 }
@@ -178,12 +178,12 @@
 .card-title {
     border-bottom: 2px solid var(--card-border);
     font-weight: 600;
-    padding: 0.5rem 1rem;
+    padding: 1rem;
     font-size: 1rem;
 }
 
 .card-container {
-    padding: 0 1rem 0.5rem 1rem;
+    padding: 1rem;
 }
 
 /* ============================================================================
@@ -193,6 +193,19 @@
     position: relative;
     background-color: var(--blockquote-background);
     border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.code-container pre {
+    margin: 0.5rem;
+    padding: 1rem;
+    overflow-x: auto;
+}
+
+.code-container pre code {
+    display: block;
+    min-width: max-content;
 }
 
 .code-filename-container {
@@ -268,11 +281,16 @@
    Codeblock (inline code)
    ============================================================================ */
 .inline-codeblock {
+    display: inline-block;
+    max-width: 100%;
+    overflow-x: auto;
+    vertical-align: middle;
     font-weight: normal;
     background-color: var(--codeblock-background);
-    padding: 1px 0px;
-    font-size: 1rem;
-    border-radius: 2px;
+    padding: 0.125rem 0.375rem;
+    font-size: 0.875em;
+    border-radius: 0.25rem;
+    word-break: break-word;
 }
 
 /* ============================================================================
@@ -303,10 +321,17 @@
 /* ============================================================================
    Lists
    ============================================================================ */
-.custom-ol li::marker {
-    color: var(--ol-ul-marker);
+.custom-ol {
+    list-style: decimal;
+    padding-left: 1.5rem;
 }
 
+.custom-ul {
+    list-style: disc;
+    padding-left: 1.5rem;
+}
+
+.custom-ol li::marker,
 .custom-ul li::marker {
     color: var(--ol-ul-marker);
 }
@@ -314,11 +339,18 @@
 /* ============================================================================
    Pre
    ============================================================================ */
-.custom-pre {
+.custom-pre,
+pre.athl {
     position: relative;
     background-color: var(--blockquote-background);
     border-radius: 0.55rem;
-    padding: 10px 0;
+    padding: 1rem;
+    overflow-x: auto;
+}
+
+pre.athl code {
+    display: block;
+    min-width: max-content;
 }
 
 /* ============================================================================

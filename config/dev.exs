@@ -52,7 +52,7 @@ config :event_horizon, EventHorizonWeb.Endpoint,
       # Router, Controllers, LiveViews and LiveComponents
       ~r"lib/event_horizon_web/router\.ex$"E,
       ~r"lib/event_horizon_web/(controllers|live|components)/.*\.(ex|heex)$"E,
-      ~r"priv/static/*.mdex$"E
+      ~r"priv/posts/*.md$"E
     ]
   ]
 

@@ -33,8 +33,8 @@ defmodule EventHorizonWeb.BlogComponents do
 
   def blockquote(assigns) do
     ~H"""
-    <div style="background-image: linear-gradient(45deg, var(--theme-one), var(--theme-two), var(--theme-three), var(--theme-four)); padding: 3px; border-radius: 5px;">
-      <div style="background: var(--blockquote-background); color: var(--blockquote-color); padding: 1rem 0; border-radius: inherit;">
+    <div class="p-[3px] rounded-[5px] bg-gradient-to-br from-[var(--theme-one)] via-[var(--theme-two)] to-[var(--theme-four)] mb-2">
+      <div class="bg-[var(--blockquote-background)] text-[var(--blockquote-color)] py-4 px-4 rounded-[inherit]">
         <blockquote {@rest}>
           {render_slot(@inner_block)}
         </blockquote>
@@ -426,34 +426,6 @@ defmodule EventHorizonWeb.BlogComponents do
         {render_slot(@inner_block)}
       </div>
     </details>
-    """
-  end
-
-  # ============================================================================
-  # Lists
-  # ============================================================================
-
-  attr :rest, :global
-
-  slot :inner_block, required: true
-
-  def custom_ol(assigns) do
-    ~H"""
-    <ol class="custom-ol" {@rest}>
-      {render_slot(@inner_block)}
-    </ol>
-    """
-  end
-
-  attr :rest, :global
-
-  slot :inner_block, required: true
-
-  def custom_ul(assigns) do
-    ~H"""
-    <ul class="custom-ul" {@rest}>
-      {render_slot(@inner_block)}
-    </ul>
     """
   end
 

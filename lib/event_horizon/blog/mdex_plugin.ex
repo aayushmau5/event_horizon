@@ -16,8 +16,8 @@ defmodule EventHorizon.Blog.MDExPlugin do
   end
 
   defp transform_node(%MDEx.BlockQuote{nodes: nodes}) do
-    inner = render_nodes(nodes)
-    %MDEx.HtmlBlock{literal: "<.blockquote>\n#{inner}\n</.blockquote>"}
+    {block_type, remaining_nodes} = extract_blockquote_type(nodes)
+    render_blockquote(block_type, remaining_nodes)
   end
 
   defp transform_node(%MDEx.CodeBlock{info: info, literal: code}) do
@@ -47,12 +47,12 @@ defmodule EventHorizon.Blog.MDExPlugin do
   defp transform_node(%MDEx.List{list_type: :ordered, start: start, nodes: nodes}) do
     inner = render_nodes(nodes)
     start_attr = if start != 1, do: ~s( start="#{start}"), else: ""
-    %MDEx.HtmlBlock{literal: "<.custom_ol#{start_attr}>\n#{inner}\n</.custom_ol>"}
+    %MDEx.HtmlBlock{literal: "<ol class=\"custom-ol\"#{start_attr}>\n#{inner}\n</ol>"}
   end
 
   defp transform_node(%MDEx.List{list_type: :bullet, nodes: nodes}) do
     inner = render_nodes(nodes)
-    %MDEx.HtmlBlock{literal: "<.custom_ul>\n#{inner}\n</.custom_ul>"}
+    %MDEx.HtmlBlock{literal: "<ul class=\"custom-ul\">\n#{inner}\n</ul>"}
   end
 
   defp transform_node(%MDEx.Link{url: url, nodes: nodes}) do
@@ -72,6 +72,72 @@ defmodule EventHorizon.Blog.MDExPlugin do
       |> MDEx.traverse_and_update(&transform_node/1)
 
     MDEx.to_html!(doc, render: [unsafe: true, escape: false])
+  end
+
+  # Blockquote type extraction and rendering
+  # Supports: (info), (danger), (card), (card: "title"), or plain blockquote
+
+  defp extract_blockquote_type([
+         %MDEx.Paragraph{nodes: [%MDEx.Text{literal: text} | rest]} | other_nodes
+       ]) do
+    case Regex.run(~r/^\((\w+)(?::\s*"([^"]*)")?\)\s*/, text) do
+      [full_match, type] ->
+        remaining_text = String.trim_leading(text, full_match)
+        updated_nodes = rebuild_paragraph_nodes(remaining_text, rest, other_nodes)
+        {{String.to_atom(type), nil}, updated_nodes}
+
+      [full_match, type, arg] ->
+        remaining_text = String.trim_leading(text, full_match)
+        updated_nodes = rebuild_paragraph_nodes(remaining_text, rest, other_nodes)
+        {{String.to_atom(type), arg}, updated_nodes}
+
+      nil ->
+        {:blockquote, [%MDEx.Paragraph{nodes: [%MDEx.Text{literal: text} | rest]} | other_nodes]}
+    end
+  end
+
+  defp extract_blockquote_type(nodes), do: {:blockquote, nodes}
+
+  defp rebuild_paragraph_nodes("", [], other_nodes), do: other_nodes
+
+  defp rebuild_paragraph_nodes("", rest, other_nodes),
+    do: [%MDEx.Paragraph{nodes: rest} | other_nodes]
+
+  defp rebuild_paragraph_nodes(text, rest, other_nodes) do
+    [%MDEx.Paragraph{nodes: [%MDEx.Text{literal: text} | rest]} | other_nodes]
+  end
+
+  defp render_blockquote(:blockquote, nodes) do
+    inner = render_nodes(nodes)
+    %MDEx.HtmlBlock{literal: "<.blockquote>\n#{inner}\n</.blockquote>"}
+  end
+
+  defp render_blockquote({:info, _}, nodes) do
+    inner = render_nodes(nodes)
+    %MDEx.HtmlBlock{literal: "<.callout type=\"info\">\n#{inner}\n</.callout>"}
+  end
+
+  defp render_blockquote({:danger, _}, nodes) do
+    inner = render_nodes(nodes)
+    %MDEx.HtmlBlock{literal: "<.callout type=\"danger\">\n#{inner}\n</.callout>"}
+  end
+
+  defp render_blockquote({:card, nil}, nodes) do
+    inner = render_nodes(nodes)
+    %MDEx.HtmlBlock{literal: "<.basic_card>\n#{inner}\n</.basic_card>"}
+  end
+
+  defp render_blockquote({:card, title}, nodes) do
+    inner = render_nodes(nodes)
+
+    %MDEx.HtmlBlock{
+      literal: "<.card_with_title title=\"#{escape_attr(title)}\">\n#{inner}\n</.card_with_title>"
+    }
+  end
+
+  defp render_blockquote(_, nodes) do
+    inner = render_nodes(nodes)
+    %MDEx.HtmlBlock{literal: "<.blockquote>\n#{inner}\n</.blockquote>"}
   end
 
   defp parse_code_info(nil), do: {"", []}
@@ -112,7 +178,7 @@ defmodule EventHorizon.Blog.MDExPlugin do
   end
 
   defp highlight_code(code, lang) when lang in ["", nil] do
-    "<pre><code>#{escape_heex(code)}</code></pre>"
+    "<pre class=\"custom-pre\"><code>#{escape_heex(code)}</code></pre>"
   end
 
   defp highlight_code(code, lang) do

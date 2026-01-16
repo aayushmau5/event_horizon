@@ -5,21 +5,31 @@ date: 2022-02-18T11:00:39.972Z
 tags: ["mdx"]
 draft: false
 showToc: true
+dynamic: true
 ---
 
 # Callout
 
-> **Note:** Info Callout
+> (info) **Info** Callout
 
-> **Warning:** Danger Callout
+> (danger) Danger Callout
+
+<.counter id="counter" />
 
 # Cards
 
-> Hello, world
 
-**Some Custom title**
+> (card) Hello, world
 
-> In a card with title
+> (card: "This is a title") In a card with title
+
+> man this is (pretty cool) in a way
+
+- This is an ol
+- This is another ol
+
+1. Hello World
+2. Goodbye world
 
 # Code blocks
 
@@ -76,8 +86,6 @@ body {
 # Hidden expand
 
 <details>
-<summary>Summary</summary>
-
-I'm hidden until expanded
-
+    <summary>Summary</summary>
+    I'm hidden until expanded
 </details>
