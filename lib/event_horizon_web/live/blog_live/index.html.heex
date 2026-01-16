@@ -6,44 +6,44 @@
       technologies, or just about life in general.
     </p>
     <p class="blogIndexInfo">
-      So far, I have written <%= length(@all_blogs) %> blogs.
+      So far, I have written {@total_articles} blogs.
     </p>
-    
+
     <.blog_search_bar query={@search_query} />
-    
+
     <.blog_category_toggle active_category={@selected_category} />
-    
+
     <%= if @selected_category == "tech" do %>
       <.blog_tags_container>
-        <.blog_tag 
-          value="All" 
-          is_selected={@selected_tag == ""} 
+        <.blog_tag
+          value="All"
+          is_selected={@selected_tag == ""}
         />
         <%= for tag <- @all_tags do %>
-          <.blog_tag 
-            value={tag} 
-            is_selected={@selected_tag == tag} 
+          <.blog_tag
+            value={tag}
+            is_selected={@selected_tag == tag}
           />
         <% end %>
       </.blog_tags_container>
     <% end %>
-    
+
     <%= if @search_query != "" do %>
       <h3 class="blogIndexSearchHeader">Search result</h3>
     <% end %>
-    
+
     <%= if Enum.empty?(@filtered_blogs) do %>
       <h3 class="blogIndexNoBlogs">No blogs found</h3>
     <% end %>
-    
+
     <div class="blogIndexBlogsContainer">
       <%= for blog <- @filtered_blogs do %>
         <.link class="blogIndexLink" href={"/blog/#{blog.slug}"}>
           <p class="blogIndexDate">
-            <%= format_date(blog.date) %>
+            {format_date(blog.date)}
           </p>
-          <h3><%= blog.title %></h3>
-          <p class="blogIndexReadTime"><%= blog.read_minutes %> min read</p>
+          <h3>{blog.title}</h3>
+          <p class="blogIndexReadTime">{blog.read_minutes} min read</p>
         </.link>
       <% end %>
     </div>

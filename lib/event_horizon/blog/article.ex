@@ -44,10 +44,12 @@ defmodule EventHorizon.Blog.Article do
   def build(filepath, attrs, body) do
     slug = Path.basename(filepath, ".md")
     read_minutes = compute_read_minutes(body)
+    {:ok, date_time, _} = DateTime.from_iso8601(Map.fetch!(attrs, :date))
+    date = DateTime.to_date(date_time)
 
     struct!(
       __MODULE__,
-      Map.merge(attrs, %{slug: slug, body: body, read_minutes: read_minutes})
+      Map.merge(attrs, %{slug: slug, body: body, read_minutes: read_minutes, date: date})
     )
   end
 
