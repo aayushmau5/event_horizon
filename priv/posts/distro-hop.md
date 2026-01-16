@@ -1,0 +1,39 @@
+---
+title: "Things I do before distro-hopping"
+description: "Backing up, & Softwares to install"
+date: 2022-10-01T19:29:43+05:30
+tags: ["linux"]
+draft: false
+---
+
+## Todo before `/home` cleanup
+
+- Commit projects
+- Backup movies/photos/other stuff
+- Update dotfiles(& commit)
+- Backup fonts
+
+## Softwares to install
+
+- Docker
+- VSCode
+- Firefox
+- Brave
+- Discord
+- Slack
+- qbitTorrent
+- Neovim
+- Kitty terminal
+- Fish shell
+- Exa, starship
+- nvm(NodeJS)
+
+## Todo after fresh installation
+
+- Firefox login(usually installs my configs and extensions)
+- Github login
+- VSCode settings
+- Keymaps: Capslock to Ctrl
+- Restore dotfiles
+- Install fonts
+- Git config setup
