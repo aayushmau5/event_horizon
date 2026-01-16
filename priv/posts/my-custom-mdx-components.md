@@ -31,7 +31,9 @@ dynamic: true
 
 > (card) Hello, world
 
-> (card: "This is a title") In a card with title
+> (card: "This is a title") In a card **with** _title_
+>
+> `yeah, this might work`
 
 > man this is (pretty cool) in a way
 
@@ -103,3 +105,5 @@ body {
 > **With** markdown
 > - let's see
 > - if this works
+
+<.redirect to="/some-page" title="_This is markdown_" />

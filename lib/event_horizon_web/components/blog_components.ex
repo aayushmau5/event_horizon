@@ -28,8 +28,19 @@ defmodule EventHorizonWeb.BlogComponents do
           class="blogSearchInput"
           placeholder="Search blog"
         />
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="blogSearchIcon">
-          <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="blogSearchIcon"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+          />
         </svg>
       </form>
     </div>
@@ -45,14 +56,20 @@ defmodule EventHorizonWeb.BlogComponents do
         <button
           phx-click="select_category"
           phx-value-category="tech"
-          class={["blogCategoryToggleButton", if(@active_category == "tech", do: "blogCategoryToggleButtonActive")]}
+          class={[
+            "blogCategoryToggleButton",
+            if(@active_category == "tech", do: "blogCategoryToggleButtonActive")
+          ]}
         >
           Tech
         </button>
         <button
           phx-click="select_category"
           phx-value-category="life-opinions-misc"
-          class={["blogCategoryToggleButton", if(@active_category == "life-opinions-misc", do: "blogCategoryToggleButtonActive")]}
+          class={[
+            "blogCategoryToggleButton",
+            if(@active_category == "life-opinions-misc", do: "blogCategoryToggleButtonActive")
+          ]}
         >
           Life/Opinions/Misc
         </button>
@@ -66,7 +83,7 @@ defmodule EventHorizonWeb.BlogComponents do
   def blog_tags_container(assigns) do
     ~H"""
     <div class="blogTagsContainer">
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     </div>
     """
   end
@@ -81,7 +98,7 @@ defmodule EventHorizonWeb.BlogComponents do
       phx-value-tag={if @value == "All", do: "", else: @value}
       class={["blogTag", if(@is_selected, do: "blogTagSelected")]}
     >
-      <%= String.upcase(@value) %>
+      {String.upcase(@value)}
     </div>
     """
   end
@@ -229,6 +246,17 @@ defmodule EventHorizonWeb.BlogComponents do
       </div>
       {render_slot(@inner_block)}
     </div>
+    """
+  end
+
+  attr :to, :string, required: true
+  attr :title, :string, required: true
+
+  def redirect(assigns) do
+    ~H"""
+    <.link href={@to}>
+      {Phoenix.HTML.raw(MDEx.to_html!(@title))}
+    </.link>
     """
   end
 
