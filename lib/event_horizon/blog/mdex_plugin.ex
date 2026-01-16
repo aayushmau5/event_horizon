@@ -86,6 +86,9 @@ defmodule EventHorizon.Blog.MDExPlugin do
         {:card, title} ->
           ~s(<.card_with_title title="#{escape_attr(title)}">\n#{inner}\n</.card_with_title>)
 
+        {:details, summary} ->
+          ~s(<.hidden_expand summary="#{escape_attr(summary)}">\n#{inner}\n</.hidden_expand>)
+
         _ ->
           ~s(<.blockquote>\n#{inner}\n</.blockquote>)
       end
@@ -124,7 +127,7 @@ defmodule EventHorizon.Blog.MDExPlugin do
 
   defp highlight_code(code, lang) do
     code
-    |> Autumn.highlight!(language: lang, formatter: {:html_inline, theme: "onedark"})
+    |> Autumn.highlight!(language: lang, formatter: {:html_inline, theme: "kanagawa_wave"})
     |> String.replace(~r/[{}]/, &@escape_map[&1])
   rescue
     _ -> ~s(<pre><code class="language-#{lang}">#{escape_heex(code)}</code></pre>)

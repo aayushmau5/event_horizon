@@ -18,6 +18,16 @@ dynamic: true
 
 # Cards
 
+## Random Cards
+
+### Third
+
+#### Fourth
+
+##### Fifth
+
+###### Sixth
+
 
 > (card) Hello, world
 
@@ -85,7 +95,10 @@ body {
 
 # Hidden expand
 
-<details>
-    <summary>Summary</summary>
-    I'm hidden until expanded
-</details>
+> (details: "Summary")
+> Hidden until expanded
+>
+> More lines
+> **With** markdown
+> - let's see
+> - if this works

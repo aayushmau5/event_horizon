@@ -146,7 +146,7 @@
     font-size: 1.4rem;
     position: absolute;
     display: flex;
-    right: -18px;
+    right: -10px;
     top: -24px;
     border-radius: 50%;
     background-color: var(--icon-background-color);
@@ -344,8 +344,9 @@ pre.athl {
     position: relative;
     background-color: var(--blockquote-background);
     border-radius: 0.55rem;
-    padding: 1rem;
+    padding: 0.8rem;
     overflow-x: auto;
+    margin: 10px 0;
 }
 
 pre.athl code {

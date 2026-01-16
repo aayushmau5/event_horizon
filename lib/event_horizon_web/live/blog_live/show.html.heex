@@ -1,5 +1,9 @@
-<div class="px-4 py-20 sm:px-6 lg:px-8 border min-h-screen text-white">
-  <h1>{@post.title}</h1>
+<Layouts.app>
+  <div class="m-0 px-4 py-20 sm:px-6 lg:px-8 min-h-screen text-white">
+    <h1>{@post.title}</h1>
 
-  {Article.render(@post.body, assigns)}
-</div>
+    <div class="my-10" id="blog_body_container">
+      {Article.render(@post.body, assigns)}
+    </div>
+  </div>
+</Layouts.app>

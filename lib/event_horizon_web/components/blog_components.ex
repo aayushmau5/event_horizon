@@ -7,6 +7,7 @@ defmodule EventHorizonWeb.BlogComponents do
   end
 
   use Phoenix.Component
+  import EventHorizonWeb.CoreComponents
 
   alias EventHorizonWeb.BlogComponents.Counter
 
@@ -20,6 +21,21 @@ defmodule EventHorizonWeb.BlogComponents do
   def counter(assigns) do
     ~H"""
     <.live_component module={Counter} id={@id} {@rest} />
+    """
+  end
+
+  # ============================================================================
+  # Headings
+  # ============================================================================
+
+  attr :level, :string, required: true
+  slot :inner_block, required: true
+
+  def linked_heading(assigns) do
+    ~H"""
+    <div class="meow">
+      {render_slot(@inner_block)}
+    </div>
     """
   end
 
@@ -68,35 +84,13 @@ defmodule EventHorizonWeb.BlogComponents do
 
   defp callout_icon(%{type: "info"} = assigns) do
     ~H"""
-    <svg
-      stroke="currentColor"
-      fill="currentColor"
-      stroke-width="0"
-      viewBox="0 0 1024 1024"
-      height="1em"
-      width="1em"
-    >
-      <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z">
-      </path>
-      <path d="M464 336a48 48 0 1 0 96 0 48 48 0 1 0-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z">
-      </path>
-    </svg>
+    <.icon name="hero-information-circle" class="w-5 h-5" />
     """
   end
 
   defp callout_icon(%{type: "danger"} = assigns) do
     ~H"""
-    <svg
-      stroke="currentColor"
-      fill="currentColor"
-      stroke-width="0"
-      viewBox="0 0 24 24"
-      height="1em"
-      width="1em"
-    >
-      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z">
-      </path>
-    </svg>
+    <.icon name="hero-exclamation-triangle" class="w-5 h-5" />
     """
   end
 
