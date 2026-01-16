@@ -2,14 +2,14 @@ defmodule EventHorizon.Blog.Parser do
   use Phoenix.Component
   use EventHorizonWeb.BlogComponents
 
-  def parse(_path, content) do
-    {frontmatter, body} = parse_frontmatter!(content)
+  def parse(path, content) do
+    {frontmatter, body} = parse_frontmatter!(path, content)
     dynamic? = Map.get(frontmatter, :dynamic, false)
     body = convert_body!(body, dynamic?)
     {frontmatter, body}
   end
 
-  defp parse_frontmatter!(content) do
+  defp parse_frontmatter!(path, content) do
     case String.split(content, ~r/\n---\n/, parts: 2) do
       ["---" <> yaml_content, body] ->
         frontmatter =
@@ -20,7 +20,7 @@ defmodule EventHorizon.Blog.Parser do
         {frontmatter, body}
 
       _ ->
-        raise "Failed to get the frontmatter"
+        raise "Failed to get the frontmatter for #{path}"
     end
   end
 
@@ -68,12 +68,37 @@ defmodule EventHorizon.Blog.Parser do
   end
 
   defp markdown_to_html!(markdown) do
-    MDEx.to_html!(markdown,
+    markdown
+    |> MDEx.parse_document!(
       extension: [
+        strikethrough: true,
+        table: true,
+        autolink: false,
+        tasklist: true,
+        superscript: true,
+        footnotes: true,
+        description_lists: true,
+        multiline_block_quotes: true,
+        alerts: true,
+        math_dollars: true,
+        math_code: true,
+        shortcodes: true,
+        underline: true,
+        spoiler: true,
         phoenix_heex: true
       ],
+      parse: [
+        relaxed_tasklist_matching: true,
+        relaxed_autolinks: true
+      ]
+    )
+    |> EventHorizon.Blog.MDExPlugin.transform()
+    |> MDEx.to_html!(
       render: [
-        unsafe: true
+        unsafe: true,
+        escape: false,
+        github_pre_lang: true,
+        full_info_string: true
       ]
     )
   end

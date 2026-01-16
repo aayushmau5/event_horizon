@@ -27,3 +27,7 @@
 }
 
 /* This file is for your main application CSS */
+
+html {
+    scroll-behavior: smooth;
+}
