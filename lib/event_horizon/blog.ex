@@ -16,6 +16,7 @@ defmodule EventHorizon.Blog do
         title: blog.title,
         slug: blog.slug,
         date: blog.date,
+        description: blog.description,
         read_minutes: blog.read_minutes
       }
     end)
