@@ -49,7 +49,7 @@ defmodule EventHorizonWeb.BlogComponents do
 
   def blockquote(assigns) do
     ~H"""
-    <div class="p-[3px] rounded-[5px] bg-gradient-to-br from-[var(--theme-one)] via-[var(--theme-two)] to-[var(--theme-four)] mb-2">
+    <div class="p-[3px] rounded-[5px] bg-gradient-to-br from-[var(--theme-one)] via-[var(--theme-two)] to-[var(--theme-four)] my-4">
       <div class="bg-[var(--blockquote-background)] text-[var(--blockquote-color)] py-4 px-4 rounded-[inherit]">
         <blockquote {@rest}>
           {render_slot(@inner_block)}

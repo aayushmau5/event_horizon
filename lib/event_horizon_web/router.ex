@@ -19,7 +19,7 @@ defmodule EventHorizonWeb.Router do
 
     get "/", PageController, :home
 
-    live_session :default do
+    live_session :default, on_mount: EventHorizonWeb.InitAssigns do
       live "/blog", BlogLive.Index, :index
       live "/blog/:slug", BlogLive.Show, :show
     end

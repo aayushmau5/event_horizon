@@ -7,6 +7,14 @@
 (function (window, document) {
   "use strict";
 
+  const computedStyles = window.getComputedStyle(document.body);
+  const colors = [
+    computedStyles.getPropertyValue("--theme-one"),
+    computedStyles.getPropertyValue("--theme-two"),
+    computedStyles.getPropertyValue("--theme-three"),
+    computedStyles.getPropertyValue("--theme-four"),
+  ];
+
   var canvas,
     currentProgress,
     showing,
@@ -22,11 +30,11 @@
       autoRun: true,
       barThickness: 3,
       barColors: {
-        0: "rgba(26,  188, 156, .9)",
-        ".25": "rgba(52,  152, 219, .9)",
-        ".50": "rgba(241, 196, 15,  .9)",
-        ".75": "rgba(230, 126, 34,  .9)",
-        "1.0": "rgba(211, 84,  0,   .9)",
+        0: colors[0],
+        ".25": colors[0],
+        ".50": colors[1],
+        ".75": colors[2],
+        "1.0": colors[3],
       },
       shadowBlur: 10,
       shadowColor: "rgba(0,   0,   0,   .6)",
@@ -48,7 +56,7 @@
       ctx.moveTo(0, options.barThickness / 2);
       ctx.lineTo(
         Math.ceil(currentProgress * canvas.width),
-        options.barThickness / 2
+        options.barThickness / 2,
       );
       ctx.strokeStyle = lineGradient;
       ctx.stroke();
@@ -85,7 +93,7 @@
             (function loop() {
               progressTimerId = window.requestAnimationFrame(loop);
               topbar.progress(
-                "+" + 0.05 * Math.pow(1 - Math.sqrt(currentProgress), 2)
+                "+" + 0.05 * Math.pow(1 - Math.sqrt(currentProgress), 2),
               );
             })();
           }
@@ -135,4 +143,4 @@
   } else {
     this.topbar = topbar;
   }
-}.call(this, window, document));
+}).call(this, window, document);

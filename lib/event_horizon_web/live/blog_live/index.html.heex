@@ -1,0 +1,21 @@
+<Layouts.app current_path={@current_path}>
+  <div class="blogIndexContainer">
+    <h1 class="blogIndexTitle">Blog</h1>
+    <p class="blogIndexInfo">
+      I write about something cool I have learned recently, or some cool
+      technologies, or just about life in general.
+    </p>
+    <p class="blogIndexInfo" }>
+      So far, I have written {length(@blogs)} blogs.
+    </p>
+    <div class="blogIndexBlogsContainer">
+      <.link :for={blog <- @blogs} class="blogIndexLink" href={"/blog/#{blog.slug}"}>
+        <p class="blogIndexDate">
+          {blog.date}
+        </p>
+        <h3 class="">{blog.title}</h3>
+        <p class="blogIndexReadTime">{blog.read_minutes} min read</p>
+      </.link>
+    </div>
+  </div>
+</Layouts.app>

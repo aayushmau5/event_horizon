@@ -6,8 +6,11 @@
 @source "../js";
 @source "../../lib/event_horizon_web";
 
+@import "./global.css";
+@import "./nav.css";
+@import "./footer.css";
 @import "./blog_components.css";
-/*@import "./highlight.css";*/
+@import "./blog_index.css";
 
 /* A Tailwind plugin that makes "hero-#{ICON}" classes available.
    The heroicons installation itself is managed by your mix.exs */

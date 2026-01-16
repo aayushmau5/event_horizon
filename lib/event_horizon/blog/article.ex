@@ -43,11 +43,39 @@ defmodule EventHorizon.Blog.Article do
   @spec build(String.t(), map(), body()) :: t()
   def build(filepath, attrs, body) do
     slug = Path.basename(filepath, ".md")
+    read_minutes = compute_read_minutes(body)
 
     struct!(
       __MODULE__,
-      Map.merge(attrs, %{slug: slug, body: body, read_minutes: 0})
+      Map.merge(attrs, %{slug: slug, body: body, read_minutes: read_minutes})
     )
+  end
+
+  @words_per_minute 200
+
+  defp compute_read_minutes({:static, html}) do
+    html
+    |> Floki.parse_fragment!()
+    |> Floki.text()
+    |> count_words()
+    |> calculate_minutes()
+  end
+
+  defp compute_read_minutes({:dynamic, ast}) do
+    render({:dynamic, ast}, %{})
+    |> then(&Enum.join(&1.static, " "))
+    |> count_words()
+    |> calculate_minutes()
+  end
+
+  defp count_words(text) do
+    text
+    |> String.split(~r/\s+/, trim: true)
+    |> Enum.count()
+  end
+
+  defp calculate_minutes(word_count) do
+    max(1, ceil(word_count / @words_per_minute))
   end
 
   @spec render(body(), map()) :: Phoenix.LiveView.Rendered.t() | Phoenix.HTML.safe()

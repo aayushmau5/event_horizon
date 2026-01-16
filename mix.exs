@@ -64,7 +64,8 @@ defmodule EventHorizon.MixProject do
       {:nimble_publisher, "~> 1.1"},
       {:tidewave, "~> 0.5.4"},
       {:live_debugger, "~> 0.5.0", only: :dev},
-      {:yaml_elixir, "~> 2.12"}
+      {:yaml_elixir, "~> 2.12"},
+      {:floki, "~> 0.38.0"}
     ]
   end
 

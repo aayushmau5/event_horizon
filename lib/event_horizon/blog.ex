@@ -11,7 +11,14 @@ defmodule EventHorizon.Blog do
 
   @spec list_blogs() :: term()
   def list_blogs do
-    Enum.map(all_blogs(), fn blog -> %{title: blog.title, slug: blog.slug} end)
+    Enum.map(all_blogs(), fn blog ->
+      %{
+        title: blog.title,
+        slug: blog.slug,
+        date: blog.date,
+        read_minutes: blog.read_minutes
+      }
+    end)
   end
 
   @spec get_blog(slug :: String.t()) :: EventHorizon.Blog.Article.t() | nil
