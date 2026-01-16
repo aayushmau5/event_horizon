@@ -1,0 +1,101 @@
+<Layouts.app current_path={@current_path}>
+  <p
+    style="font-size: 1.2rem; font-style: italic; font-family: Handwriting; border-left: 5px solid var(--theme-three); padding: 0 10px;"
+  >
+    This too shall pass.
+  </p>
+
+  <div class="homeContainer">
+    <div class="homeHeading">
+      <div class="homeCircleContainer">
+        <div class="homeCircle" style="background: var(--theme-one);" />
+        <div class="homeCircle" style="background: var(--theme-two);" />
+        <div class="homeCircle" style="background: var(--theme-three);" />
+        <div class="homeCircle" style="background: var(--theme-four);" />
+      </div>
+      <div>
+        <p>
+          Hi there <span class="homeWaving">👋</span>
+        </p>
+        <p>
+          I'm <span class="homeHighlight">Aayush Sahu</span>.
+          Currently working as a Software Engineer at
+          <span class="homeHighlight">
+            <a href="https://tractable.ai/" rel="noreferrer" target="_blank">
+              tractable
+            </a>
+          </span>.
+        </p>
+        <p>
+          Previously, I worked at
+          <span class="homeHighlight">
+            <a href="https://beatoven.ai/" rel="noreferrer" target="_blank">
+              beatoven.ai
+            </a>
+          </span>
+          as a full-stack developer. Taking the startup from ground one to
+          the sky.
+        </p>
+        <p>
+          Apart from that, I'm an Open Sourcerer
+          <span title="Magic Wand">🪄</span>. I like to explore various
+          technologies, and write about my learnings. I love to talk about
+          <span class="homeHighlight">open source</span>,
+          <span class="homeHighlight">elixir</span>,
+          <span class="homeHighlight">programming languages</span>,
+          <span class="homeHighlight">linux</span>,
+          <span class="homeHighlight">vim/vscode</span>,
+          <span class="homeHighlight">compilers</span>,
+          <span class="homeHighlight">containers</span>, or anything
+          interesting :P
+        </p>
+      </div>
+    </div>
+
+    <div style="margin-top: 3rem;">
+      <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+        <div style="font-size: 1.5rem; font-weight: bold; font-family: Handwriting;">
+          Recent Posts
+        </div>
+        <.link navigate="/blog" class="homeViewAll">
+          View all
+        </.link>
+      </div>
+      <div class="homeBlogsContainer">
+        <%= for post <- @recent_posts do %>
+          <.link navigate={~p"/blog/#{post.slug}"} class="homeBlogContainer">
+            <h3><%= post.title %></h3>
+            <p class="homeBlogDate" style="margin: 5px 0;">
+              <%= post.description %>
+            </p>
+            <p class="homeBlogDate">
+              <%= format_date(post.date) %>
+            </p>
+          </.link>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="homeNextStepsContainer">
+      <div class="homeNextSteps">
+        <p>While you are here, feel free to:</p>
+        <.link navigate="/blog" class="styledLink">
+          <span style="display: inline-block; vertical-align: middle;">→</span>
+          Checkout my blogs
+        </.link>
+        <.link navigate="/projects" class="styledLink">
+          <span style="display: inline-block; vertical-align: middle;">→</span>
+          Checkout my projects
+        </.link>
+        <.link navigate="/about" class="styledLink">
+          <span style="display: inline-block; vertical-align: middle;">→</span>
+          Know more about me
+        </.link>
+        <.link navigate="/resume" target="_blank" rel="noreferrer" class="styledLink">
+          <span style="display: inline-block; vertical-align: middle;">→</span>
+          See my resume
+        </.link>
+      </div>
+    </div>
+  </div>
+</Layouts.app>

@@ -25,6 +25,21 @@
     --blog-no-of-blogs: #919191;
     --blog-container-hover: #191919;
     --blog-container-focus: rgb(236, 236, 236);
+    --blog-category-btn-bg: #191919;
+    --blog-category-btn-color: #eee;
+    --blog-category-btn-hover-bg: #252525;
+    --blog-category-btn-active-bg: #2a2a2a;
+    --blog-category-btn-active-color: #fff;
+    --blog-tag-bg: #191919;
+    --blog-tag-color: #eee;
+    --blog-tag-border: #2a2a2a;
+    --blog-tag-hover-bg: #252525;
+    --blog-tag-hover-border: #3a3a3a;
+    --blog-tag-selected-bg: #eee;
+    --blog-tag-selected-color: #101114;
+    --blog-tag-selected-border: #eee;
+    --blog-search-header-color: #fff;
+    --blog-no-blogs-color: #919191;
 
     /* ToC */
     --details-background: #22272a;
