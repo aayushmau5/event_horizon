@@ -85,7 +85,8 @@ defmodule EventHorizon.Blog.Parser do
         shortcodes: true,
         underline: true,
         spoiler: true,
-        phoenix_heex: true
+        phoenix_heex: true,
+        header_ids: ""
       ],
       parse: [
         relaxed_tasklist_matching: true,

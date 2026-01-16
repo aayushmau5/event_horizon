@@ -1,197 +1,132 @@
 defmodule EventHorizon.Blog.MDExPlugin do
   @moduledoc """
   MDEx plugin that transforms markdown AST nodes into custom Phoenix components.
-
-  Customizes:
-  - Blockquotes (`>`) → `<.blockquote>`
-  - Code blocks with `filename=` → `<.code filename="...">`
-  - Inline code → `<.codeblock>`
-  - Lists → `<.custom_ol>` / `<.custom_ul>`
-  - Links → `<.styled_anchor>`
-  - Pre blocks → `<.pre>`
   """
 
-  def transform(document) do
-    MDEx.traverse_and_update(document, &transform_node/1)
-  end
+  @blockquote_regex ~r/^\((\w+)(?::\s*"([^"]*)")?\)\s*/
+  @escape_map %{"&" => "&amp;", "<" => "&lt;", ">" => "&gt;", "{" => "&#123;", "}" => "&#125;"}
 
-  defp transform_node(%MDEx.BlockQuote{nodes: nodes}) do
-    {block_type, remaining_nodes} = extract_blockquote_type(nodes)
-    render_blockquote(block_type, remaining_nodes)
-  end
+  def transform(document), do: MDEx.traverse_and_update(document, &transform_node/1)
+
+  defp transform_node(%MDEx.BlockQuote{nodes: nodes}),
+    do: nodes |> extract_blockquote_type() |> render_blockquote()
 
   defp transform_node(%MDEx.CodeBlock{info: info, literal: code}) do
     {lang, attrs} = parse_code_info(info)
-    filename = get_attr(attrs, "filename")
+    html = wrap_code(highlight_code(code, lang), attrs["filename"])
+    %MDEx.HtmlBlock{literal: html}
+  end
 
-    highlighted_code = highlight_code(code, lang)
+  defp transform_node(%MDEx.Code{literal: code}),
+    do: %MDEx.HtmlInline{literal: "<.codeblock>#{escape_heex(code)}</.codeblock>"}
 
-    literal =
-      if filename do
-        """
-        <.code filename="#{escape_attr(filename)}">
-        #{highlighted_code}
-        </.code>
-        """
-      else
-        highlighted_code
+  defp transform_node(%MDEx.List{list_type: type, start: start, nodes: nodes}) do
+    {tag, attrs} =
+      case type do
+        :ordered -> {"ol", if(start != 1, do: ~s( start="#{start}"), else: "")}
+        :bullet -> {"ul", ""}
       end
 
-    %MDEx.HtmlBlock{literal: literal}
-  end
-
-  defp transform_node(%MDEx.Code{literal: code}) do
-    %MDEx.HtmlInline{literal: "<.codeblock>#{escape_heex(code)}</.codeblock>"}
-  end
-
-  defp transform_node(%MDEx.List{list_type: :ordered, start: start, nodes: nodes}) do
-    inner = render_nodes(nodes)
-    start_attr = if start != 1, do: ~s( start="#{start}"), else: ""
-    %MDEx.HtmlBlock{literal: "<ol class=\"custom-ol\"#{start_attr}>\n#{inner}\n</ol>"}
-  end
-
-  defp transform_node(%MDEx.List{list_type: :bullet, nodes: nodes}) do
-    inner = render_nodes(nodes)
-    %MDEx.HtmlBlock{literal: "<ul class=\"custom-ul\">\n#{inner}\n</ul>"}
-  end
-
-  defp transform_node(%MDEx.Link{url: url, nodes: nodes}) do
-    inner = render_nodes(nodes)
-
-    %MDEx.HtmlInline{
-      literal: ~s(<.styled_anchor href="#{escape_attr(url)}">#{inner}</.styled_anchor>)
+    %MDEx.HtmlBlock{
+      literal: ~s(<#{tag} class="custom-#{tag}"#{attrs}>\n#{render_nodes(nodes)}\n</#{tag}>)
     }
   end
+
+  defp transform_node(%MDEx.Link{url: url, nodes: nodes}),
+    do: %MDEx.HtmlInline{
+      literal:
+        ~s(<.styled_anchor href="#{escape_attr(url)}">#{render_nodes(nodes)}</.styled_anchor>)
+    }
 
   defp transform_node(node), do: node
 
   defp render_nodes(nodes) do
-    doc =
-      MDEx.new()
-      |> Map.put(:nodes, nodes)
-      |> MDEx.traverse_and_update(&transform_node/1)
-
-    MDEx.to_html!(doc, render: [unsafe: true, escape: false])
+    MDEx.new()
+    |> Map.put(:nodes, nodes)
+    |> MDEx.traverse_and_update(&transform_node/1)
+    |> MDEx.to_html!(render: [unsafe: true, escape: false])
   end
 
-  # Blockquote type extraction and rendering
-  # Supports: (info), (danger), (card), (card: "title"), or plain blockquote
-
   defp extract_blockquote_type([
-         %MDEx.Paragraph{nodes: [%MDEx.Text{literal: text} | rest]} | other_nodes
+         %MDEx.Paragraph{nodes: [%MDEx.Text{literal: text} | rest]} | other
        ]) do
-    case Regex.run(~r/^\((\w+)(?::\s*"([^"]*)")?\)\s*/, text) do
-      [full_match, type] ->
-        remaining_text = String.trim_leading(text, full_match)
-        updated_nodes = rebuild_paragraph_nodes(remaining_text, rest, other_nodes)
-        {{String.to_atom(type), nil}, updated_nodes}
-
-      [full_match, type, arg] ->
-        remaining_text = String.trim_leading(text, full_match)
-        updated_nodes = rebuild_paragraph_nodes(remaining_text, rest, other_nodes)
-        {{String.to_atom(type), arg}, updated_nodes}
+    case Regex.run(@blockquote_regex, text) do
+      [match, type | args] ->
+        arg = List.first(args)
+        remaining = String.trim_leading(text, match)
+        {{String.to_atom(type), arg}, rebuild_nodes(remaining, rest, other)}
 
       nil ->
-        {:blockquote, [%MDEx.Paragraph{nodes: [%MDEx.Text{literal: text} | rest]} | other_nodes]}
+        {:blockquote, [%MDEx.Paragraph{nodes: [%MDEx.Text{literal: text} | rest]} | other]}
     end
   end
 
   defp extract_blockquote_type(nodes), do: {:blockquote, nodes}
 
-  defp rebuild_paragraph_nodes("", [], other_nodes), do: other_nodes
+  defp rebuild_nodes("", [], other), do: other
+  defp rebuild_nodes("", rest, other), do: [%MDEx.Paragraph{nodes: rest} | other]
 
-  defp rebuild_paragraph_nodes("", rest, other_nodes),
-    do: [%MDEx.Paragraph{nodes: rest} | other_nodes]
+  defp rebuild_nodes(text, rest, other),
+    do: [%MDEx.Paragraph{nodes: [%MDEx.Text{literal: text} | rest]} | other]
 
-  defp rebuild_paragraph_nodes(text, rest, other_nodes) do
-    [%MDEx.Paragraph{nodes: [%MDEx.Text{literal: text} | rest]} | other_nodes]
-  end
-
-  defp render_blockquote(:blockquote, nodes) do
-    inner = render_nodes(nodes)
-    %MDEx.HtmlBlock{literal: "<.blockquote>\n#{inner}\n</.blockquote>"}
-  end
-
-  defp render_blockquote({:info, _}, nodes) do
-    inner = render_nodes(nodes)
-    %MDEx.HtmlBlock{literal: "<.callout type=\"info\">\n#{inner}\n</.callout>"}
-  end
-
-  defp render_blockquote({:danger, _}, nodes) do
-    inner = render_nodes(nodes)
-    %MDEx.HtmlBlock{literal: "<.callout type=\"danger\">\n#{inner}\n</.callout>"}
-  end
-
-  defp render_blockquote({:card, nil}, nodes) do
-    inner = render_nodes(nodes)
-    %MDEx.HtmlBlock{literal: "<.basic_card>\n#{inner}\n</.basic_card>"}
-  end
-
-  defp render_blockquote({:card, title}, nodes) do
+  defp render_blockquote({type, nodes}) do
     inner = render_nodes(nodes)
 
-    %MDEx.HtmlBlock{
-      literal: "<.card_with_title title=\"#{escape_attr(title)}\">\n#{inner}\n</.card_with_title>"
-    }
+    literal =
+      case type do
+        {:info, _} ->
+          ~s(<.callout type="info">\n#{inner}\n</.callout>)
+
+        {:danger, _} ->
+          ~s(<.callout type="danger">\n#{inner}\n</.callout>)
+
+        {:card, nil} ->
+          ~s(<.basic_card>\n#{inner}\n</.basic_card>)
+
+        {:card, title} ->
+          ~s(<.card_with_title title="#{escape_attr(title)}">\n#{inner}\n</.card_with_title>)
+
+        _ ->
+          ~s(<.blockquote>\n#{inner}\n</.blockquote>)
+      end
+
+    %MDEx.HtmlBlock{literal: literal}
   end
 
-  defp render_blockquote(_, nodes) do
-    inner = render_nodes(nodes)
-    %MDEx.HtmlBlock{literal: "<.blockquote>\n#{inner}\n</.blockquote>"}
-  end
+  defp wrap_code(html, nil), do: html
 
-  defp parse_code_info(nil), do: {"", []}
-  defp parse_code_info(""), do: {"", []}
+  defp wrap_code(html, filename),
+    do: ~s(<.code filename="#{escape_attr(filename)}">\n#{html}\n</.code>)
+
+  defp parse_code_info(info) when info in [nil, ""], do: {"", %{}}
 
   defp parse_code_info(info) do
-    parts = String.split(info, ~r/\s+/, trim: true)
-
-    case parts do
-      [] -> {"", []}
-      [lang | attrs] -> {lang, attrs}
+    case String.split(info, ~r/\s+/, trim: true) do
+      [] -> {"", %{}}
+      [lang | attrs] -> {lang, Map.new(attrs, &parse_attr/1)}
     end
   end
 
-  defp get_attr(attrs, key) do
-    Enum.find_value(attrs, fn attr ->
-      case String.split(attr, "=", parts: 2) do
-        [^key, value] -> String.trim(value, "\"")
-        _ -> nil
-      end
-    end)
+  defp parse_attr(attr) do
+    case String.split(attr, "=", parts: 2) do
+      [key, value] -> {key, String.trim(value, "\"")}
+      [key] -> {key, true}
+    end
   end
 
-  defp escape_heex(text) do
-    text
-    |> String.replace("&", "&amp;")
-    |> String.replace("<", "&lt;")
-    |> String.replace(">", "&gt;")
-    |> String.replace("{", "&#123;")
-    |> String.replace("}", "&#125;")
-  end
+  defp escape_heex(text), do: String.replace(text, Map.keys(@escape_map), &@escape_map[&1])
 
-  defp escape_attr(text) do
-    text
-    |> String.replace("\"", "&quot;")
-    |> String.replace("<", "&lt;")
-    |> String.replace(">", "&gt;")
-  end
+  defp escape_attr(text),
+    do: text |> String.replace("\"", "&quot;") |> String.replace(~r/[<>]/, &@escape_map[&1])
 
-  defp highlight_code(code, lang) when lang in ["", nil] do
-    "<pre class=\"custom-pre\"><code>#{escape_heex(code)}</code></pre>"
-  end
+  defp highlight_code(code, lang) when lang in ["", nil],
+    do: "<pre class=\"custom-pre\"><code>#{escape_heex(code)}</code></pre>"
 
   defp highlight_code(code, lang) do
-    case Autumn.highlight!(code, language: lang, formatter: {:html_inline, theme: "onedark"}) do
-      highlighted when is_binary(highlighted) ->
-        highlighted
-        |> String.replace("{", "&#123;")
-        |> String.replace("}", "&#125;")
-
-      _ ->
-        "<pre><code class=\"language-#{lang}\">#{escape_heex(code)}</code></pre>"
-    end
+    code
+    |> Autumn.highlight!(language: lang, formatter: {:html_inline, theme: "onedark"})
+    |> String.replace(~r/[{}]/, &@escape_map[&1])
   rescue
-    _ -> "<pre><code class=\"language-#{lang}\">#{escape_heex(code)}</code></pre>"
+    _ -> ~s(<pre><code class="language-#{lang}">#{escape_heex(code)}</code></pre>)
   end
 end
