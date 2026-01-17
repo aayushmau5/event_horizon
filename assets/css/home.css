@@ -70,6 +70,7 @@
 
 .homeWaving {
     display: inline-block;
+    margin: 1rem 0;
     animation-name: wave;
     animation-duration: 3.5s;
     transform-origin: 70% 70%;

@@ -5,6 +5,15 @@ defmodule EventHorizonWeb.PageComponents do
     ~H"""
     <nav class="text-(--text-color)">
       <div class="navbarContainer">
+        <%= if @current_path == "/" do %>
+          <div class="navImageContainer">
+            <img
+              src="/images/index.webp"
+              alt="Sunset by the mountains"
+              class="navImage"
+            />
+          </div>
+        <% end %>
         <div class="navbarLinksContainer">
           <.link
             navigate="/"
