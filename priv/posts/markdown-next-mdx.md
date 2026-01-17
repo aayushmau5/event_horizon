@@ -4,7 +4,7 @@ description: "Using Next-MDX-Remote with NextJS to write MDX blogs"
 date: 2022-02-15T07:27:46.681Z
 tags: ["mdx", "nextjs", "markdown"]
 cover:
-  image: "/blogImages/markdown-next-mdx/cover.png"
+  image: "/images/blog/markdown-next-mdx/cover.png"
   alt: "Cover image consisting of NextJS and MDX logo"
 draft: false
 ---
@@ -100,7 +100,7 @@ I was pretty confused as to which library should I go with. After having some pr
 > 
 > Though this didn't help because I started getting webpack warnings with these plugins, and some plugins refused to work. The internet didn't help 😞
 > 
-> ![Remark plugin error](/blogImages/markdown-next-mdx/webpack-error.png)
+> ![Remark plugin error](/images/blog/markdown-next-mdx/webpack-error.png)
 > 
 > And with that, my journey with `@next/mdx` ended.
 

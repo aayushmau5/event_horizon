@@ -38,6 +38,11 @@ defmodule EventHorizon.Blog.MDExPlugin do
         ~s(<.styled_anchor href="#{escape_attr(url)}">#{render_nodes(nodes)}</.styled_anchor>)
     }
 
+  defp transform_node(%MDEx.Image{url: url, title: title}) do
+    alt = title || ""
+    %MDEx.HtmlBlock{literal: ~s(<.image src="#{escape_attr(url)}" alt="#{escape_attr(alt)}" />)}
+  end
+
   defp transform_node(node), do: node
 
   defp render_nodes(nodes) do

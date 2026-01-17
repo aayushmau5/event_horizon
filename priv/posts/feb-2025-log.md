@@ -4,7 +4,7 @@ description: "Things I did in Feb 2025"
 date: 2025-03-01T07:17:58.490Z
 tags: ["life"]
 cover:
-  image: "/blogImages/feb-2025-log.png"
+  image: "/images/blog/feb-2025-log.png"
   alt: "Sun, Plants & Coffee"
   caption: "Sun, Plants & Coffee"
 draft: false

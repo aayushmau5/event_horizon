@@ -4,7 +4,7 @@ description: ""
 date: 2022-02-19T04:51:36.746Z
 tags: []
 cover:
-  image: "/blogImages/"
+  image: "/images/blog/"
   alt: ""
   caption: ""
 draft: true

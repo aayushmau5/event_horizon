@@ -4,7 +4,7 @@ description: "MeowUI is a TUI written in Rust"
 date: 2025-02-25T03:44:43.510Z
 tags: ["rust", "phoenix"]
 cover:
-  image: "/blogImages/meowui.png"
+  image: "/images/blog/meowui.png"
   alt: "Screenshot of MeowUI with ferris behind it"
   caption: "Ferris!!!"
 draft: false

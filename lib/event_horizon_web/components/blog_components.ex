@@ -182,6 +182,34 @@ defmodule EventHorizonWeb.BlogComponents do
   end
 
   # ============================================================================
+  # Image
+  # ============================================================================
+
+  attr :src, :string, required: true
+  attr :alt, :string, default: ""
+
+  def image(assigns) do
+    ~H"""
+    <figure class="my-6 flex justify-center">
+      <img src={@src} alt={@alt} class="rounded-lg" />
+    </figure>
+    """
+  end
+
+  attr :src, :string, required: true
+  attr :alt, :string, default: ""
+  attr :caption, :string, default: ""
+
+  def cover_image(assigns) do
+    ~H"""
+    <figure class="my-6 flex flex-col justify-center items-center">
+      <img src={@src} alt={@alt} class="rounded-lg" />
+      <div class="blogCaption">{Phoenix.HTML.raw(MDEx.to_html!(@caption))}</div>
+    </figure>
+    """
+  end
+
+  # ============================================================================
   # Callout
   # ============================================================================
 

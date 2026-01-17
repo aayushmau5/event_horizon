@@ -6,8 +6,9 @@ tags: ["vscode", "vim"]
 draft: false
 showToc: true
 cover:
-  image: "/blogImages/editor.png"
+  image: "/images/blog/editor.png"
   caption: "My VSCode editor. For theme and font, scroll to bottom of the page."
+  alt: "My VSCode editor. For theme and font, scroll to bottom of the page."
 ---
 
 Here are some VSCode tips and tricks that can take your programming experience to new heights.

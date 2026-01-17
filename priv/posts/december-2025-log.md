@@ -4,7 +4,7 @@ description: "Things I did in December 2025"
 date: 2026-01-13T15:04:08.664Z
 tags: ["life"]
 cover:
-  image: "/blogImages/logs/december-2025-log.jpg"
+  image: "/images/blog/logs/december-2025-log.jpg"
   alt: "Megatron The Cat"
   caption: "Megatron The Cat"
 draft: false

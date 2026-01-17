@@ -4,7 +4,7 @@ description: "Things I did in May 2025"
 date: 2025-06-10T05:04:42.848Z
 tags: ["life"]
 cover:
-  image: "/blogImages/may-2025-log.jpeg"
+  image: "/images/blog/may-2025-log.jpeg"
   alt: "A power tower"
   caption: "Photo taken by me!"
 draft: false
@@ -36,7 +36,7 @@ I used [tidewave](https://tidewave.ai/) for elixir and phoenix stuff. It works s
 
 The backend involves using ecto to save comments, channels to connect to and send/receive comments. I used Google's [Perspective API](https://perspectiveapi.com/) to stop abuse comments. Also, I have an "admin" dashboard where I can see the comments and delete it in case manual intervention is needed.
 
-![Comments Dashboard](/blogImages/comments-dashboard.png)
+![Comments Dashboard](/images/blog/comments-dashboard.png)
 
 On the frontend, It was just a matter of creating necessary UI components and connecting to phoenix channel.
 

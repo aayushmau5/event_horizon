@@ -5,8 +5,8 @@ date: 2021-09-04T00:00:00.00Z
 draft: false
 tags: ["design-pattern", "typescript"]
 cover:
-  image: "/blogImages/visitor/cover.png"
-  alt: "Cover Image"
+  image: "/images/blog/visitor/cover.png"
+  alt: "Visitor design pattern illustration"
 ---
 
 ### Introduction
@@ -76,7 +76,7 @@ class Human extends Animal {
 
 At this point, we can visualize our classes in a tabular form, where each row is a different class and every column is a method on that class.
 
-![class table](/blogImages/visitor/type-method-table.png#center)
+![Table showing classes (Cat, Dog, Human) as rows and methods (speak, eat, sleep) as columns](/images/blog/visitor/type-method-table.png#center)
 
 Now, here's where the problem arises.
 
@@ -477,11 +477,11 @@ The best way to know what's going on here is to visualize it. Here's a little vi
 
 **For calculating the purchase code**
 
-![purchase-cost-visitor](/blogImages/visitor/purchase-visitor.png#center)
+![Visualization of purchase cost visitor pattern flow showing accept method invocation](/images/blog/visitor/purchase-visitor.png#center)
 
 **For calculating the repair cost**
 
-![repair-cost-visitor](/blogImages/visitor/repair-cost-visitor.png#center)
+![Visualization of repair cost visitor pattern flow showing accept method invocation](/images/blog/visitor/repair-cost-visitor.png#center)
 
 We see that we invoke the `accept` method of our car **instance**, passing in the desired visitor we want our car instance to interact with. If we want to know the purchase price, we pass in the `purchaseVisitor` & if we want to know the repair cost, we pass in the `repairCostVisitor`.
 

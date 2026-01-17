@@ -9,7 +9,7 @@ showToc: false
 
 If you have multiple applications in Auth0, and you want to configure your email template to redirect user to different URL based on the application, you can do so by configuring the "Redirect To" field in Auth0 email dashboard.
 
-![Auth0 Redirect To Input box](/blogImages/auth0-redirect-to.png)
+![Auth0 Redirect To Input box](/images/blog/auth0-redirect-to.png)
 
 Let's say we have three application named `local`, `stage` and `prod`, and for each application, you want to redirect the user to `http://localhost`, `https://stageapp.example.com` and `https://prodapp.example.com`.
 

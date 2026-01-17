@@ -18,7 +18,7 @@ I make an extra effort to make these notes as self contained and understable as 
 There's not much to read right now, but I have a bunch of stuff to explore in the future.
 
 Here's a screengrab:
-![Notes list](/blogImages/notes-list.png)
+![Notes list](/images/blog/notes-list.png)
 
 Not sure about the frequency of new notes, but I plan on taking some time out of my day to make some.
 

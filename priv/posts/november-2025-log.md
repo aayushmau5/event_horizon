@@ -4,7 +4,7 @@ description: "Things I did in November 2025"
 date: 2025-12-25T00:00:00.00Z
 tags: ["life"]
 cover:
-  image: "/blogImages/logs/november-2025-log.JPG"
+  image: "/images/blog/logs/november-2025-log.JPG"
   alt: "Kangchenjunga"
   caption: "Kangchenjunga"
 draft: false

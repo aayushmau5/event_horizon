@@ -4,8 +4,8 @@ description: "Lots of cool stuff"
 date: 2022-12-31T16:26:05.215Z
 tags: ["tech"]
 cover:
-  image: "/blogImages/new-tech-2023.png"
-  alt: "Logos"
+  image: "/images/blog/new-tech-2023.png"
+  alt: "Technology logos for 2023 learning goals"
 draft: false
 showToc: false
 ---

@@ -4,7 +4,7 @@ description: "Things I did in January 2025"
 date: 2025-02-01T16:17:42.058Z
 tags: ["life"]
 cover:
-  image: "/blogImages/jan-log-cover.png"
+  image: "/images/blog/jan-log-cover.png"
   alt: "JAN 2025 LOG"
   caption: "Photo taken by me"
 draft: false

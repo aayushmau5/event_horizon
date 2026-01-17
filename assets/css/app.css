@@ -33,6 +33,12 @@
 
 /* This file is for your main application CSS */
 
+@font-face {
+    font-family: "Handwriting";
+    src: url("/fonts/Myfont.otf") format("opentype");
+    font-display: swap;
+}
+
 html {
     scroll-behavior: smooth;
 }
@@ -66,37 +72,46 @@ code {
 }
 
 #blog_body_container h1 {
-    font-size: 1.5rem;
+    font-size: 2.1rem;
     margin: 15px 0;
     font-weight: bold;
+    font-family: "Handwriting";
+    color: var(--blog-headers);
 }
 
 #blog_body_container h2 {
-    font-size: 1.25rem;
+    font-size: 1.8rem;
     margin: 14px 0;
     font-weight: bold;
+    font-family: "Handwriting";
+    color: var(--blog-headers);
 }
 
 #blog_body_container h3 {
-    font-size: 1.1rem;
+    font-size: 1.5rem;
     margin: 12px 0;
     font-weight: bold;
+    font-family: "Handwriting";
+    color: var(--blog-headers);
 }
 
 #blog_body_container h4 {
-    font-size: 1rem;
+    font-size: 1.2rem;
     margin: 10px 0;
     font-weight: bold;
+    color: var(--blog-headers);
 }
 
 #blog_body_container h5 {
-    font-size: 0.95rem;
+    font-size: 1rem;
     margin: 8px 0;
     font-weight: bold;
+    color: var(--blog-headers);
 }
 
 #blog_body_container h6 {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     margin: 6px 0;
     font-weight: bold;
+    color: var(--blog-headers);
 }

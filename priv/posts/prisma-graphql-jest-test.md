@@ -5,7 +5,7 @@ draft: false
 description: "Integration or Unit tests in TypeScript and GraphQL using Jest in NodeJS"
 tags: ["graphql", "typescript", "jest", "testing"]
 cover:
-  image: "/blogImages/ts-gql-jest/ts-gql-jest-cover.png"
+  image: "/images/blog/ts-gql-jest/ts-gql-jest-cover.png"
   alt: "TS GraphQL Jest logo"
 ---
 

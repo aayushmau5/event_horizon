@@ -4,7 +4,7 @@ description: "Things I did in July 2025"
 date: 2025-08-03T11:19:25.086Z
 tags: ["life"]
 cover:
-  image: "/blogImages/july-2025-log.jpeg"
+  image: "/images/blog/july-2025-log.jpeg"
   alt: "Some elixir code"
   caption: "Some elixir code"
 draft: false

@@ -4,7 +4,7 @@ description: "Blog on why I'm learning scheme & racket."
 date: 2024-03-18T07:30:00.615Z
 tags: ["scheme", "racket"]
 cover:
-  image: "/blogImages/learning-scheme-racket.png"
+  image: "/images/blog/learning-scheme-racket.png"
   alt: "Scheme and Racket logo"
   caption: "Scheme and Racket"
 draft: true

@@ -4,7 +4,7 @@ description: "Using channels and presence for user count"
 date: 2022-12-27T06:27:42.613Z
 tags: ["nextjs", "phoenix", "elixir"]
 cover:
-  image: "/blogImages/nextjs-phoenix-channels/cover.png"
+  image: "/images/blog/nextjs-phoenix-channels/cover.png"
   alt: "Cover image with NextJS and Phoenix Framework logo"
 draft: false
 showToc: true
@@ -26,11 +26,11 @@ Open up a new tab with this page link, and you should see the following metrics 
 
 For a blog, I have a count of people who are reading it right now:
 
-![Blog Count](/blogImages/nextjs-phoenix-channels/blog.png)
+![Blog Count](/images/blog/nextjs-phoenix-channels/blog.png)
 
 For my website as a whole, I have the count of people who have it open at the moment:
 
-![Website Count](/blogImages/nextjs-phoenix-channels/website.png)
+![Website Count](/images/blog/nextjs-phoenix-channels/website.png)
 
 Here's how I did it.
 

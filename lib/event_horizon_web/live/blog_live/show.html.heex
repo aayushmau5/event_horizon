@@ -1,7 +1,7 @@
 <Layouts.app current_path={@current_path}>
   <div class="min-h-screen text-(--text-color)">
-    <h1 class="text-(--blog-headers) text-2xl font-bold">{@post.title}</h1>
-    <p class="text-(--blog-description) text-sm mt-2 mb-4">{@post.description}</p>
+    <h1 class="text-(--blog-headers) text-4xl font-bold font-[handwriting]">{@post.title}</h1>
+    <p class="text-(--blog-description) text-sm my-4">{@post.description}</p>
     <p class="text-sm">
       <span>
         Published on {@post.formatted_date}
@@ -12,24 +12,23 @@
       <span>0 reading right now</span>
     </p>
 
-    <%= if length(@post.tags) != 0 do %>
-      <.blog_tags_container>
-        <%= for tag <- @post.tags do %>
-          <.blog_tag
-            value={tag}
-            is_selected={false}
-            selectable={false}
-          />
-        <% end %>
-      </.blog_tags_container>
-    <% end %>
-    <%!-- {post.tags ? (
-    <TagsContainer>
-        {post.tags.map((tag: string) => (
-        <Tag key={tag} value={tag} />
-        ))}
-    </TagsContainer>
-    ) : null} --%>
+    <.blog_tags_container :if={length(@post.tags) != 0}>
+      <%= for tag <- @post.tags do %>
+        <.blog_tag
+          value={tag}
+          is_selected={false}
+          selectable={false}
+        />
+      <% end %>
+    </.blog_tags_container>
+
+    <.cover_image
+      :if={@post.cover && @post.cover.image}
+      src={@post.cover.image}
+      alt={@post.cover.alt}
+      caption={@post.cover.caption}
+    />
+
     <%!-- {post.cover && post.cover.image && (
     <div className={styles.coverImage}>
         <img src={post.cover.image} alt={post.cover.alt} />
@@ -43,7 +42,7 @@
 
     <.table_of_contents :if={@post.showToc && @post.toc != []} toc={@post.toc} />
 
-    <div class="my-10" id="blog_body_container">
+    <div class="mb-10 text-(--blog-text-color)" id="blog_body_container">
       {Article.render(@post.body, assigns)}
     </div>
   </div>

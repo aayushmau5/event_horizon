@@ -4,7 +4,7 @@ description: "Things I did in March 2025"
 date: 2025-04-01T09:40:33.302Z
 tags: ["life"]
 cover:
-  image: "/blogImages/march-2025-log.jpeg"
+  image: "/images/blog/march-2025-log.jpeg"
   alt: "Sunset"
   caption: "🌇"
 draft: false
@@ -23,8 +23,8 @@ I created a "plants" project that reminds me when to give water to my plants, an
 
 I integrated Gemini Vision with it so that I can get those tips through AI by uploading the image of the plant.
 
-![Plants List](/blogImages/plants-list.png)
-![Jade Plant](/blogImages/plant-one.png)
+![Plants List](/images/blog/plants-list.png)
+![Jade Plant](/images/blog/plant-one.png)
 
 So there's that. Other things:
 

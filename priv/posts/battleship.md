@@ -4,7 +4,7 @@ description: "or a brief introduction to phoenix and liveview"
 date: 2023-03-09T17:27:37.585Z
 tags: ["elixir", "phoenix", "liveview"]
 cover:
-  image: "/blogImages/battleship.png"
+  image: "/images/blog/battleship.png"
   alt: "Battleship game"
   caption: "Screenshot from the game"
 draft: true

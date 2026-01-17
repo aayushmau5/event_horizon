@@ -5,7 +5,7 @@ draft: false
 description: "My GSoC experience blog"
 tags: ["gsoc", "open-source", "asyncapi"]
 cover:
-  image: "/blogImages/week-3/marek-piwnicki-cpNor3rFdWk-unsplash.jpg"
+  image: "/images/blog/week-3/marek-piwnicki-cpNor3rFdWk-unsplash.jpg"
   alt: "Moon and forest"
   caption: "Photo by <a href='https://unsplash.com/@marekpiwnicki' target='_blank'>Marek Piwnicki</a> on <a href='https://unsplash.com/' target='_blank'>Unsplash</a>"
 ---

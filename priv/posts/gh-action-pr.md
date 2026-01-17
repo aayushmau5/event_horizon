@@ -4,7 +4,7 @@ date: 2021-05-21T14:47:08+05:30
 draft: false
 tags: ["github", "actions"]
 cover:
-  image: "/blogImages/gh-action-logo.webp"
+  image: "/images/blog/gh-action-logo.webp"
   alt: "Github Action Logo"
 ---
 

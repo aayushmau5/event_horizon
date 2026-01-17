@@ -4,7 +4,7 @@ description: ""
 date: 2022-03-16T15:37:56.398Z
 tags: ["docker"]
 cover:
-  image: "/blogImages/"
+  image: "/images/blog/"
   alt: ""
   caption: ""
 draft: true

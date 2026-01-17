@@ -4,7 +4,7 @@ description: "Things I did in April 2025"
 date: 2025-05-10T07:16:40.977Z
 tags: ["life"]
 cover:
-  image: "/blogImages/april-2025-log.jpeg"
+  image: "/images/blog/april-2025-log.jpeg"
   alt: "Night tree"
   caption: "Night"
 draft: false

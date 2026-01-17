@@ -4,7 +4,7 @@ description: "Things I did in October 2025"
 date: 2025-11-24T18:04:46.332Z
 tags: ["life"]
 cover:
-  image: "/blogImages/logs/october-2025-log.webp"
+  image: "/images/blog/logs/october-2025-log.webp"
   alt: "Trees!"
   caption: "Trees!"
 draft: false

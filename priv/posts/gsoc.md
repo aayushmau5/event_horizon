@@ -4,7 +4,7 @@ date: 2021-06-03T19:59:26+05:30
 draft: false
 tags: ["gsoc", "open-source", "asyncapi"]
 cover:
-  image: "/blogImages/sunset.webp"
+  image: "/images/blog/sunset.webp"
   alt: "Sunset"
   caption: "Image taken from pexels.com"
 ---

@@ -4,8 +4,8 @@ description: "2024 review?"
 date: 2025-01-01T12:09:48.723Z
 tags: ["life"]
 cover:
-  image: "/blogImages/retrospective-2024/cover.jpeg"
-  alt: "Cover image"
+  image: "/images/blog/retrospective-2024/cover.jpeg"
+  alt: "2024 retrospective photo"
   caption: "Photo taken by me"
 draft: false
 showToc: false
@@ -29,7 +29,7 @@ Moreover explored music making and music theory, some Digital Signal Processing 
 
 This year, I want to get more deep into music making, exploring internals of LLMs, more generative art stuff(with touchdesigner/p5.js/threejs), database internals(sqlite), and making more personal projects(WebAudio, WASM, WebCodecs, etc.).
 
-![Setup](/blogImages/retrospective-2024/setup.jpeg)
+![Setup](/images/blog/retrospective-2024/setup.jpeg)
 
 ## Life
 
@@ -45,7 +45,7 @@ still working at beatoven.ai, and so far things have been fun(with some grunt wo
 
 read some books(the three body problem trilogy has been the highlight), watched a lot of movies(cinephile stuff xP), explored weird corners of music world.
 
-![My cat](/blogImages/retrospective-2024/cat.jpeg)
+![My cat](/images/blog/retrospective-2024/cat.jpeg)
 
 What's Next?
 

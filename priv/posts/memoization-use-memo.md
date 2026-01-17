@@ -161,7 +161,7 @@ b.suite(
 
 Running the program using `node benchmark.js`, we get the following result:
 
-![benchmark](/blogImages/memoization/benchmarks.png#center)
+![Benchmark results showing memoized function is 99.18% faster than non-memoized](/images/blog/memoization/benchmarks.png#center)
 
 **Woah!**, Memoized function is freaking **99.18% faster** than non-memoized function. That's just pretty surprising and cool.
 

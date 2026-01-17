@@ -5,7 +5,7 @@ date: 2021-05-03T12:23:26+05:30
 draft: false
 tags: ["apollo", "graphql", "typescript"]
 cover:
-  image: "/blogImages/graphql-typescript/ts-gql.png"
+  image: "/images/blog/graphql-typescript/ts-gql.png"
   alt: "TS with Apollo"
 ---
 
@@ -183,25 +183,25 @@ For the schema path, it is recommended to give a development server url(otherwis
 
 #### Step-1
 
-![first](/blogImages/graphql-typescript/step-1.png)
+![GraphQL Code Generator init step 1 - selecting project type](/images/blog/graphql-typescript/step-1.png)
 
 #### Step-2
 
 My `graphql` server is running on `http://localhost:8000/graphql`. Yours might be running on different port or route, use that.
 
-![first](/blogImages/graphql-typescript/step-2.png)
+![GraphQL Code Generator init step 2 - entering GraphQL server URL](/images/blog/graphql-typescript/step-2.png)
 
 #### Step-3
 
-![first](/blogImages/graphql-typescript/step-3.png)
+![GraphQL Code Generator init step 3 - selecting plugins](/images/blog/graphql-typescript/step-3.png)
 
 #### Step-4
 
-![first](/blogImages/graphql-typescript/step-4.png)
+![GraphQL Code Generator init step 4 - configuring output path](/images/blog/graphql-typescript/step-4.png)
 
 #### Step-5
 
-![first](/blogImages/graphql-typescript/step-5.png)
+![GraphQL Code Generator init step 5 - generating config file](/images/blog/graphql-typescript/step-5.png)
 
 Run `npm install` then `npm generate` to generate the schema file(**NOTE:** Your graphql server should be running)
 

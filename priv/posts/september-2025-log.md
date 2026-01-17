@@ -4,7 +4,7 @@ description: "Things I did in September 2025"
 date: 2025-10-08T16:36:15.784Z
 tags: ["life"]
 cover:
-  image: "/blogImages/logs/september-2025-log.webp"
+  image: "/images/blog/logs/september-2025-log.webp"
   alt: "Hey Moon!"
   caption: "Hey Moon!"
 draft: false

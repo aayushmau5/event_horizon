@@ -5,7 +5,7 @@ description: "Final blog for my GSoC journey"
 tags: ["gsoc", "open-source", "asyncapi"]
 draft: false
 cover:
-  image: "/blogImages/gsoc-final/gsoc-postman-asyncapi.jpeg"
+  image: "/images/blog/gsoc-final/gsoc-postman-asyncapi.jpeg"
   alt: "Poster with GSOC, Postman & AsyncAPI logo"
 ---
 
@@ -31,11 +31,11 @@ Each component had its own set of challenges. Lets see what they were and how we
 
 The main Input/Output flow of this library was, user will provide two **parsed** AsyncAPI data and the output will contain the differences as well as the type of change(checkout the diagram below 👇).
 
-![flow](/blogImages/gsoc-final/diff-flow.png#center)
+![Diagram showing input/output flow: two parsed AsyncAPI documents go in, differences with change types come out](/images/blog/gsoc-final/diff-flow.png#center)
 
 Thus, we have two parsed AsyncAPI data in a JSON format. In order to generate a diff between two JSON data, we can either **make our own JSON differ** or **use a pre-built library**. Luckily, [Lukasz Gornicki](https://github.com/derberg)(AsyncAPI maintainer) made that decision clear for me. (Thanks, Lukasz! 🙌)
 
-![comment](/blogImages/gsoc-final/lukasz_comment.png#center)
+![GitHub comment from Lukasz Gornicki recommending to use a pre-built JSON diffing library](/images/blog/gsoc-final/lukasz_comment.png#center)
 
 Now, it was time for me to decide which JSON diffing library to use. And let me tell you, [**there were a lot**](https://github.com/asyncapi/diff/issues/10#issue-935128289). Eventually I settled for [fast-json-patch](https://github.com/Starcounter-Jack/JSON-Patch), mainly because of its performance and the format it outputs the diff.
 

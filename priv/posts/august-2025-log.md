@@ -4,7 +4,7 @@ description: "Things I did in August 2025"
 date: 2025-09-14T12:27:39.210Z
 tags: ["life"]
 cover:
-  image: "/blogImages/logs/august-2025-log.jpeg"
+  image: "/images/blog/logs/august-2025-log.jpeg"
   alt: "Clouds"
   caption: "Clouds"
 draft: false
@@ -33,7 +33,7 @@ Tech:
 - I added a [Contact](/contact) page for people to reach out to me directly. It's powered by phoenix. Connected through channel. And I have created a dashboard to see the messages people have sent me.
   - Why? I don't know but I do like conversating with people about tech, life, art, books. Even though I don't advertise this.
 
-![Contact dashboard](/blogImages/contact-dashboard.png)
+![Contact dashboard](/images/blog/contact-dashboard.png)
 
 That's pretty much it!
 
