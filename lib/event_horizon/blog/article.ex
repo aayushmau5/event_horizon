@@ -2,6 +2,11 @@ defmodule EventHorizon.Blog.Article do
   use Phoenix.Component
   use EventHorizonWeb.BlogComponents
 
+  # Matches: <h1><a id="slug"></a>Text</h1>
+  # Won't match code examples like <h1>text</h1> or <h1><a id="x">text</a></h1>
+  # because it requires an empty anchor (></a>) followed by text outside the anchor.
+  @heading_regex ~r/<h([1-6])[^>]*><a[^>]*id="([^"]*)"[^>]*><\/a>([^<]+)<\/h[1-6]>/
+
   @type cover :: %{
           image: String.t(),
           alt: String.t(),
@@ -9,6 +14,12 @@ defmodule EventHorizon.Blog.Article do
         }
 
   @type body :: {:dynamic, Macro.t()} | {:static, String.t()}
+
+  @type toc_entry :: %{
+          level: integer(),
+          text: String.t(),
+          id: String.t()
+        }
 
   @type t :: %__MODULE__{
           slug: String.t(),
@@ -21,7 +32,8 @@ defmodule EventHorizon.Blog.Article do
           read_minutes: non_neg_integer(),
           draft: boolean(),
           showToc: boolean(),
-          cover: cover()
+          cover: cover(),
+          toc: [toc_entry()]
         }
 
   defstruct slug: "",
@@ -39,7 +51,8 @@ defmodule EventHorizon.Blog.Article do
               image: "",
               alt: "",
               caption: ""
-            }
+            },
+            toc: []
 
   @spec build(String.t(), map(), body()) :: t()
   def build(filepath, attrs, body) do
@@ -48,6 +61,7 @@ defmodule EventHorizon.Blog.Article do
     {:ok, date_time, _} = DateTime.from_iso8601(Map.fetch!(attrs, :date))
     date = DateTime.to_date(date_time)
     formatted_date = Calendar.strftime(date, "%B %d, %Y")
+    toc = if Map.get(attrs, :showToc, false), do: extract_toc(body), else: []
 
     struct!(
       __MODULE__,
@@ -56,9 +70,28 @@ defmodule EventHorizon.Blog.Article do
         body: body,
         read_minutes: read_minutes,
         date: date,
-        formatted_date: formatted_date
+        formatted_date: formatted_date,
+        toc: toc
       })
     )
+  end
+
+  defp extract_toc({:static, html}) do
+    @heading_regex
+    |> Regex.scan(html)
+    |> Enum.map(fn [_, level, id, text] ->
+      %{
+        level: String.to_integer(level),
+        id: id,
+        text: String.trim(text)
+      }
+    end)
+  end
+
+  defp extract_toc({:dynamic, ast}) do
+    {rendered, _} = Code.eval_quoted(ast, [assigns: %{}], __ENV__)
+    html = Enum.join(rendered.static, "")
+    extract_toc({:static, html})
   end
 
   @words_per_minute 200

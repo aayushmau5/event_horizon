@@ -127,6 +127,26 @@ defmodule EventHorizonWeb.BlogComponents do
   end
 
   # ============================================================================
+  # Table of Contents
+  # ============================================================================
+
+  attr :toc, :list, required: true
+
+  def table_of_contents(assigns) do
+    ~H"""
+    <.hidden_expand summary="Table of Contents">
+      <nav class="toc-nav">
+        <ul class="toc-list">
+          <li :for={entry <- @toc} class={"toc-item toc-level-#{entry.level}"}>
+            <a href={"##{entry.id}"} class="toc-link">{entry.text}</a>
+          </li>
+        </ul>
+      </nav>
+    </.hidden_expand>
+    """
+  end
+
+  # ============================================================================
   # Headings
   # ============================================================================
 

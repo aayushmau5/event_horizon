@@ -191,6 +191,52 @@
 
 .hidden-expand-children {
     padding: 1rem;
+    padding-top: 0;
+}
+
+/* ============================================================================
+   Table of Contents
+   ============================================================================ */
+.toc-nav {
+    font-size: 0.9rem;
+}
+
+.toc-list {
+    list-style: circle;
+    padding: 0;
+    margin: 0;
+}
+
+.toc-item {
+    padding: 0.25rem 0;
+}
+
+.toc-level-1 {
+    margin-left: 1rem;
+}
+.toc-level-2 {
+    margin-left: 2rem;
+}
+.toc-level-3 {
+    margin-left: 3rem;
+}
+.toc-level-4 {
+    margin-left: 4rem;
+}
+.toc-level-5 {
+    margin-left: 5rem;
+}
+.toc-level-6 {
+    margin-left: 6rem;
+}
+
+.toc-link {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.toc-link:hover {
+    text-decoration: underline;
 }
 
 /* ============================================================================

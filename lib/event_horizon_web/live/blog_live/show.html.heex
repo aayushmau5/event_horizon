@@ -41,6 +41,8 @@
         dangerouslySetInnerHTML={{ __html: post.cover.caption }}
     /> --%>
 
+    <.table_of_contents :if={@post.showToc && @post.toc != []} toc={@post.toc} />
+
     <div class="my-10" id="blog_body_container">
       {Article.render(@post.body, assigns)}
     </div>
