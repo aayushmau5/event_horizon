@@ -27,6 +27,7 @@ defmodule EventHorizon.Blog.Article do
   defstruct slug: "",
             title: "",
             date: nil,
+            formatted_date: nil,
             description: "",
             tags: [],
             body: nil,
@@ -46,10 +47,17 @@ defmodule EventHorizon.Blog.Article do
     read_minutes = compute_read_minutes(body)
     {:ok, date_time, _} = DateTime.from_iso8601(Map.fetch!(attrs, :date))
     date = DateTime.to_date(date_time)
+    formatted_date = Calendar.strftime(date, "%B %d, %Y")
 
     struct!(
       __MODULE__,
-      Map.merge(attrs, %{slug: slug, body: body, read_minutes: read_minutes, date: date})
+      Map.merge(attrs, %{
+        slug: slug,
+        body: body,
+        read_minutes: read_minutes,
+        date: date,
+        formatted_date: formatted_date
+      })
     )
   end
 

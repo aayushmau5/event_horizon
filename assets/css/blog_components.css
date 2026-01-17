@@ -71,7 +71,7 @@
     background-color: var(--blockquote-background);
     border-radius: 10px;
     overflow: hidden;
-    margin-bottom: 1rem;
+    margin: 1rem 0;
 }
 
 .code-container pre {
@@ -159,8 +159,6 @@
    ============================================================================ */
 .inline-codeblock {
     display: inline-block;
-    max-width: 100%;
-    overflow-x: auto;
     vertical-align: middle;
     font-weight: normal;
     background-color: var(--codeblock-background);
@@ -174,7 +172,7 @@
    HiddenExpand
    ============================================================================ */
 .hidden-expand-details {
-    margin-bottom: 1rem;
+    margin: 1rem 0;
     border-radius: 0.55rem;
     background-color: var(--hidden-expand-background);
 }

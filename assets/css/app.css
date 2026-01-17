@@ -39,6 +39,18 @@ html {
 
 pre[class="athl"] {
     background: var(--blockquote-background) !important;
+    code {
+        line-height: 1.8rem;
+    }
+}
+
+body {
+    font-family: var(--global-font);
+}
+
+code {
+    font-family: var(--code-font), monospace;
+    line-height: 20px;
 }
 
 :is(h1, h2, h3, h4, h5, h6) > a::before {

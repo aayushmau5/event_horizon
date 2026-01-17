@@ -73,7 +73,7 @@ defmodule EventHorizon.Blog.Parser do
       extension: [
         strikethrough: true,
         table: true,
-        autolink: false,
+        autolink: true,
         tasklist: true,
         superscript: true,
         footnotes: true,

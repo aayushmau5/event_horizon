@@ -39,7 +39,7 @@ defmodule EventHorizonWeb.Layouts do
   def app(assigns) do
     ~H"""
     <main class="px-4 py-4 sm:px-6 lg:px-8">
-      <div class="mx-auto max-w-4xl space-y-4 text-(--text-color)">
+      <div class="mx-auto max-w-4xl space-y-4 text-(--text-color) leading-8 text-lg">
         <.nav current_path={@current_path} />
         {render_slot(@inner_block)}
         <.footer />

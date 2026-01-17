@@ -131,9 +131,10 @@
     --command-bar-color: #fff;
     --command-bar-search-background: #101114;
     --command-bar-result-background: #191a1c;
+    --blog-description: gray;
 
     --global-font: "IBM Plex Sans";
-    --code-font: "Jetbrains Mono";
+    --code-font: "Fira Code";
 }
 
 .styledLink {

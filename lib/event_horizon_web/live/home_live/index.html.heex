@@ -1,7 +1,5 @@
 <Layouts.app current_path={@current_path}>
-  <p
-    style="font-size: 1.2rem; font-style: italic; font-family: Handwriting; border-left: 5px solid var(--theme-three); padding: 0 10px;"
-  >
+  <p style="font-size: 1.2rem; font-style: italic; font-family: Handwriting; border-left: 5px solid var(--theme-three); padding: 0 10px;">
     This too shall pass.
   </p>
 
@@ -19,9 +17,12 @@
         </p>
         <p>
           I'm <span class="homeHighlight">Aayush Sahu</span>.
-          Currently working as a Software Engineer at
-          <span class="homeHighlight">
-            <a href="https://tractable.ai/" rel="noreferrer" target="_blank">
+          Currently working as a Software Engineer at <span class="homeHighlight">
+            <a
+              href="https://tractable.ai/"
+              rel="noreferrer"
+              target="_blank"
+            >
               tractable
             </a>
           </span>.
@@ -37,16 +38,8 @@
           the sky.
         </p>
         <p>
-          Apart from that, I'm an Open Sourcerer
-          <span title="Magic Wand">🪄</span>. I like to explore various
-          technologies, and write about my learnings. I love to talk about
-          <span class="homeHighlight">open source</span>,
-          <span class="homeHighlight">elixir</span>,
-          <span class="homeHighlight">programming languages</span>,
-          <span class="homeHighlight">linux</span>,
-          <span class="homeHighlight">vim/vscode</span>,
-          <span class="homeHighlight">compilers</span>,
-          <span class="homeHighlight">containers</span>, or anything
+          Apart from that, I'm an Open Sourcerer <span title="Magic Wand">🪄</span>. I like to explore various
+          technologies, and write about my learnings. I love to talk about <span class="homeHighlight">open source</span>, <span class="homeHighlight">elixir</span>, <span class="homeHighlight">programming languages</span>, <span class="homeHighlight">linux</span>, <span class="homeHighlight">vim/vscode</span>, <span class="homeHighlight">compilers</span>, <span class="homeHighlight">containers</span>, or anything
           interesting :P
         </p>
       </div>
@@ -64,12 +57,12 @@
       <div class="homeBlogsContainer">
         <%= for post <- @recent_posts do %>
           <.link navigate={~p"/blog/#{post.slug}"} class="homeBlogContainer">
-            <h3><%= post.title %></h3>
+            <h3>{post.title}</h3>
             <p class="homeBlogDate" style="margin: 5px 0;">
-              <%= post.description %>
+              {post.description}
             </p>
             <p class="homeBlogDate">
-              <%= format_date(post.date) %>
+              {post.formatted_date}
             </p>
           </.link>
         <% end %>
@@ -80,20 +73,17 @@
       <div class="homeNextSteps">
         <p>While you are here, feel free to:</p>
         <.link navigate="/blog" class="styledLink">
-          <span style="display: inline-block; vertical-align: middle;">→</span>
-          Checkout my blogs
+          <span style="display: inline-block; vertical-align: middle;">→</span> Checkout my blogs
         </.link>
         <.link navigate="/projects" class="styledLink">
           <span style="display: inline-block; vertical-align: middle;">→</span>
           Checkout my projects
         </.link>
         <.link navigate="/about" class="styledLink">
-          <span style="display: inline-block; vertical-align: middle;">→</span>
-          Know more about me
+          <span style="display: inline-block; vertical-align: middle;">→</span> Know more about me
         </.link>
         <.link navigate="/resume" target="_blank" rel="noreferrer" class="styledLink">
-          <span style="display: inline-block; vertical-align: middle;">→</span>
-          See my resume
+          <span style="display: inline-block; vertical-align: middle;">→</span> See my resume
         </.link>
       </div>
     </div>

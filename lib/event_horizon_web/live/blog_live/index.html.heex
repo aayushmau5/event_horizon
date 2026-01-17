@@ -40,7 +40,7 @@
       <%= for blog <- @filtered_blogs do %>
         <.link class="blogIndexLink" href={"/blog/#{blog.slug}"}>
           <p class="blogIndexDate">
-            {format_date(blog.date)}
+            {blog.formatted_date}
           </p>
           <h3>{blog.title}</h3>
           <p class="blogIndexReadTime">{blog.read_minutes} min read</p>

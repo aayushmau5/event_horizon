@@ -1,6 +1,45 @@
 <Layouts.app current_path={@current_path}>
-  <div class="m-0 px-4 py-20 sm:px-6 lg:px-8 min-h-screen text-white">
-    <h1>{@post.title}</h1>
+  <div class="min-h-screen text-(--text-color)">
+    <h1 class="text-(--blog-headers) text-2xl font-bold">{@post.title}</h1>
+    <p class="text-(--blog-description) text-sm mt-2 mb-4">{@post.description}</p>
+    <p class="text-sm">
+      <span>
+        Published on {@post.formatted_date}
+      </span>
+      {" · "}
+      <span>{@post.read_minutes} min read</span>
+      {" · "}
+      <span>0 reading right now</span>
+    </p>
+
+    <%= if length(@post.tags) != 0 do %>
+      <.blog_tags_container>
+        <%= for tag <- @post.tags do %>
+          <.blog_tag
+            value={tag}
+            is_selected={false}
+            selectable={false}
+          />
+        <% end %>
+      </.blog_tags_container>
+    <% end %>
+    <%!-- {post.tags ? (
+    <TagsContainer>
+        {post.tags.map((tag: string) => (
+        <Tag key={tag} value={tag} />
+        ))}
+    </TagsContainer>
+    ) : null} --%>
+    <%!-- {post.cover && post.cover.image && (
+    <div className={styles.coverImage}>
+        <img src={post.cover.image} alt={post.cover.alt} />
+    </div>
+    )} --%>
+    <%!-- {post.cover && post.cover.caption && (
+    <div
+        className={styles.caption}
+        dangerouslySetInnerHTML={{ __html: post.cover.caption }}
+    /> --%>
 
     <div class="my-10" id="blog_body_container">
       {Article.render(@post.body, assigns)}

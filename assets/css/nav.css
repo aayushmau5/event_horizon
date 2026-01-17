@@ -29,7 +29,6 @@
 
 .navbarLinksContainer {
     color: var(--nav-links-color);
-    padding: 1rem;
     display: flex;
     display: flex;
     gap: 20px;

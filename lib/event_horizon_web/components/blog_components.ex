@@ -90,16 +90,26 @@ defmodule EventHorizonWeb.BlogComponents do
 
   attr :value, :string, required: true
   attr :is_selected, :boolean, default: false
+  attr :selectable, :boolean, default: true
 
   def blog_tag(assigns) do
     ~H"""
-    <div
-      phx-click="select_tag"
-      phx-value-tag={if @value == "All", do: "", else: @value}
-      class={["blogTag", if(@is_selected, do: "blogTagSelected")]}
-    >
-      {String.upcase(@value)}
-    </div>
+    <%= if @selectable do %>
+      <div
+        phx-click="select_tag"
+        phx-value-tag={if @value == "All", do: "", else: @value}
+        class={["blogTag", if(@is_selected, do: "blogTagSelected")]}
+      >
+        {String.upcase(@value)}
+      </div>
+    <% else %>
+      <div
+        phx-value-tag={if @value == "All", do: "", else: @value}
+        class={["blogTag", if(@is_selected, do: "blogTagSelected")]}
+      >
+        {String.upcase(@value)}
+      </div>
+    <% end %>
     """
   end
 

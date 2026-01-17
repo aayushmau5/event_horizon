@@ -61,9 +61,7 @@ defmodule EventHorizonWeb.BlogLive.Index do
     {:noreply, update_url(socket, socket.assigns.search_query, tag)}
   end
 
-  defp update_url(socket, query \\ nil, tag \\ nil, category \\ nil) do
-    query = query || socket.assigns.search_query
-    tag = tag || socket.assigns.selected_tag
+  defp update_url(socket, query, tag, category \\ nil) do
     category = category || socket.assigns.selected_category
 
     params =
@@ -80,8 +78,4 @@ defmodule EventHorizonWeb.BlogLive.Index do
   defp maybe_put(map, key, value, default \\ nil)
   defp maybe_put(map, _key, value, value), do: map
   defp maybe_put(map, key, value, _default), do: Map.put(map, key, value)
-
-  defp format_date(%Date{} = date) do
-    Calendar.strftime(date, "%B %d, %Y")
-  end
 end
