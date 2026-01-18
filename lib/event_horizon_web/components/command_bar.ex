@@ -252,11 +252,11 @@ defmodule EventHorizonWeb.CommandBar do
           const href = result.dataset.href;
           const action = result.dataset.action;
 
+          this.hide();
           if (href) {
-            window.location.href = href;
+            this.liveSocket.redirect(href);
           } else if (action === "copy-url") {
             navigator.clipboard.writeText(window.location.href);
-            this.hide();
           }
         }
       }

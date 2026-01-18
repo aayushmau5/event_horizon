@@ -5,6 +5,10 @@
     - projects
     - resume
     - uses
+- blog
+    - like button
+    - comments
+    - previous and next blogs
 - connect with cluster(for real-time metrics)
     - have a cluster page?
 - Footer live stuff

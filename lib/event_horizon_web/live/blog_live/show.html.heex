@@ -29,21 +29,14 @@
       caption={@post.cover.caption}
     />
 
-    <%!-- {post.cover && post.cover.image && (
-    <div className={styles.coverImage}>
-        <img src={post.cover.image} alt={post.cover.alt} />
-    </div>
-    )} --%>
-    <%!-- {post.cover && post.cover.caption && (
-    <div
-        className={styles.caption}
-        dangerouslySetInnerHTML={{ __html: post.cover.caption }}
-    /> --%>
+    <.separator header={true} />
 
     <.table_of_contents :if={@post.showToc && @post.toc != []} toc={@post.toc} />
 
-    <div class="mb-10 text-(--blog-text-color)" id="blog_body_container">
+    <div class="text-(--blog-text-color)" id="blog_body_container">
       {Article.render(@post.body, assigns)}
     </div>
+
+    <.separator />
   </div>
 </Layouts.app>
