@@ -1,8 +1,6 @@
 - Move over the remaining pages:
     - rss.xml
         - with rss generation on build
-- blog
-    - previous and next blogs
 - refactor code
     - right now, it's a mess of css & tailwind.
         - consider moving to tailwind
