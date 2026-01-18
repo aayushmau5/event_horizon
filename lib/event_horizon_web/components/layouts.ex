@@ -4,6 +4,7 @@ defmodule EventHorizonWeb.Layouts do
   used by your application.
   """
   use EventHorizonWeb, :html
+  import EventHorizonWeb.CommandBar
 
   # Embed all files in layouts/* within this module.
   # The default root.html.heex file contains the HTML
@@ -45,7 +46,7 @@ defmodule EventHorizonWeb.Layouts do
         <.footer />
       </div>
     </main>
-
+    <.command_bar id="command-bar" />
     <%!-- <.flash_group flash={@flash} /> --%>
     """
   end

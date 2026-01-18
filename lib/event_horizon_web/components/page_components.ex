@@ -1,5 +1,6 @@
 defmodule EventHorizonWeb.PageComponents do
   use Phoenix.Component
+  import EventHorizonWeb.CommandBar, only: [show_command_bar: 1]
 
   def nav(assigns) do
     ~H"""
@@ -51,6 +52,15 @@ defmodule EventHorizonWeb.PageComponents do
           >
             About
           </.link>
+          <button
+            type="button"
+            class="kbar"
+            phx-click={show_command_bar("command-bar")}
+            aria-label="Open command bar"
+          >
+            <span class="kbarClick">⌘</span>
+            <span class="kbarClick">K</span>
+          </button>
         </div>
       </div>
     </nav>
