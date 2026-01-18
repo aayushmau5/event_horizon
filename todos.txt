@@ -1,0 +1,17 @@
+- Move over the remaining pages:
+    - 404
+    - about
+    - contact
+    - projects
+    - resume
+    - uses
+- connect with cluster(for real-time metrics)
+    - have a cluster page?
+- Kbar component
+- Footer live stuff
+- refactor code
+    - right now, it's a mess of css & tailwind.
+        - consider moving to tailwind
+- themeing ability
+- SEO stuff
+- rss.xml
