@@ -241,6 +241,7 @@ defmodule EventHorizonWeb.CommandBar do
           visibleResults.forEach((result, index) => {
             if (index === this.selectedIndex) {
               result.style.background = "var(--command-bar-result-hover, #3a3a3a)";
+              result.scrollIntoView({ block: "nearest", behavior: "smooth" });
             } else {
               result.style.background = "";
             }
