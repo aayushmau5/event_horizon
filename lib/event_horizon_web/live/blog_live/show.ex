@@ -10,7 +10,8 @@ defmodule EventHorizonWeb.BlogLive.Show do
         {:ok, push_navigate(socket, to: "/not-found")}
 
       post ->
-        {:ok, socket |> assign(post: post)}
+        adjacent_posts = EventHorizon.Blog.get_adjacent_articles(post.slug)
+        {:ok, socket |> assign(post: post, adjacent_posts: adjacent_posts)}
     end
   end
 end

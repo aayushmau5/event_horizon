@@ -569,6 +569,49 @@ defmodule EventHorizonWeb.BlogComponents do
   # HiddenExpand (details/summary)
   # ============================================================================
 
+  # ============================================================================
+  # Next/Previous Articles Navigation
+  # ============================================================================
+
+  attr :adjacent, :map, required: true
+
+  def next_prev_articles(assigns) do
+    ~H"""
+    <div :if={@adjacent.prev || @adjacent.next} class="next-prev-container">
+      <p class="next-prev-header">Other articles</p>
+      <div class="next-prev-links">
+        <.article_link :if={@adjacent.prev} article={@adjacent.prev} direction={:prev} />
+        <.article_link :if={@adjacent.next} article={@adjacent.next} direction={:next} />
+      </div>
+    </div>
+    """
+  end
+
+  attr :article, :map, required: true
+  attr :direction, :atom, values: [:prev, :next], required: true
+
+  defp article_link(assigns) do
+    ~H"""
+    <a
+      href={"/blog/#{@article.slug}"}
+      class={["next-prev-link", @direction == :next && "next-prev-link-next"]}
+    >
+      <p class={["next-prev-info", @direction == :next && "next-prev-info-next"]}>
+        <%= if @direction == :prev do %>
+          <.icon name="hero-arrow-left" class="w-4 h-4" /> Previous article
+        <% else %>
+          Next article <.icon name="hero-arrow-right" class="w-4 h-4" />
+        <% end %>
+      </p>
+      {@article.title}
+    </a>
+    """
+  end
+
+  # ============================================================================
+  # HiddenExpand (details/summary)
+  # ============================================================================
+
   attr :summary, :string, required: true
 
   slot :inner_block, required: true

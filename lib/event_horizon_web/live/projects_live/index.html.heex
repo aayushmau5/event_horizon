@@ -1,3 +1,102 @@
 <Layouts.app current_path={@current_path}>
-  WIP
+  <div class="animate-fadeIn">
+    <h1 class="font-[Handwriting] text-4xl font-bold mb-0">Projects</h1>
+    <p class="text-(--projects-paragraph) mb-4">Checkout the work I have done :)</p>
+
+    <.project_box
+      name="Blog Project"
+      description="A multi-user blog website made using React and NodeJS."
+      image="/images/projects/blogs.png"
+      source_link="https://github.com/aayushmau5/blog-frontend"
+      demo_link="https://aayushblogs.netlify.app/"
+    />
+    <.project_box
+      name="Projman"
+      description="A CLI project manager made using TypeScript and NodeJS."
+      image="/images/projects/projman.png"
+      source_link="https://github.com/aayushmau5/projman"
+      demo_link="https://www.npmjs.com/package/projman"
+    />
+    <.project_box
+      name="Members Only"
+      description="A private members only board made using EJS, Express & MongoDB."
+      image="/images/projects/membersOnly.png"
+      source_link="https://github.com/aayushmau5/members-only"
+      demo_link="https://sheltered-basin-30302.herokuapp.com"
+    />
+    <.project_box
+      name="Taburei"
+      description="A browser extension to manage and store tab clutter and restore them. Fully Open Source, and lots of features."
+      image="/images/projects/taburei.png"
+      source_link="https://github.com/osdc/TabuRei"
+      demo_link="https://addons.mozilla.org/en-US/firefox/addon/taburei/"
+    />
+    <.project_box
+      name="CV Generator"
+      description="A CV generator made using React and Headless Chrome backend in express."
+      image="/images/projects/cv.png"
+      source_link="https://github.com/aayushmau5/cv-generator"
+      demo_link="https://aayushmau5.github.io/cv-generator/"
+    />
+    <.project_box
+      name="aayushsahu.com"
+      description="My personal website. Built with NextJS."
+      image="/images/projects/aayushsahu.png"
+      source_link="https://www.github.com/aayushmau5/aayushsahu.com"
+      demo_link="https://www.aayushsahu.com"
+    />
+    <.project_box
+      name="Battleship"
+      description="Battleship game made using Elixir & Phoenix framework."
+      image="/images/projects/battleship.png"
+      source_link="https://www.github.com/aayushmau5/battleship"
+      demo_link="https://aayush-battleship.fly.dev/"
+    />
+
+    <h2 class="text-2xl font-bold mt-8 mb-0">Skills</h2>
+    <p class="text-(--projects-paragraph) mb-4">
+      These are the skills/technologies I feel comfortable with. Though I
+      keep experimenting with new/exciting technologies.
+    </p>
+
+    <h4 class="text-lg font-bold mt-4 mb-2">Frontend</h4>
+    <.skills_container>
+      <.skill_box name="HTML" icon="html" />
+      <.skill_box name="CSS" icon="css" />
+      <.skill_box name="JavaScript" icon="javascript" />
+      <.skill_box name="TypeScript" icon="typescript" />
+      <.skill_box name="React" icon="react" />
+      <.skill_box name="NextJS" icon="nextjs" />
+      <.skill_box name="Svelte" icon="svelte" />
+      <.skill_box name="Phoenix Framework" icon="phoenix" />
+    </.skills_container>
+
+    <h4 class="text-lg font-bold mt-4 mb-2">Backend</h4>
+    <.skills_container>
+      <.skill_box name="Elixir" icon="elixir" />
+      <.skill_box name="NodeJS" icon="nodejs" />
+      <.skill_box name="Deno" icon="deno" />
+      <.skill_box name="Python" icon="python" />
+      <.skill_box name="GraphQL" icon="graphql" />
+      <.skill_box name="Postgresql" icon="postgresql" />
+      <.skill_box name="MongoDB" icon="mongodb" />
+    </.skills_container>
+
+    <h4 class="text-lg font-bold mt-4 mb-2">Tools</h4>
+    <.skills_container>
+      <.skill_box name="Git" icon="git" />
+      <.skill_box name="Vim" icon="vim" />
+      <.skill_box name="VSCode" icon="vscode" />
+      <.skill_box name="Linux" icon="linux" />
+      <.skill_box name="Figma" icon="figma" />
+      <.skill_box name="Docker" icon="docker" />
+      <.skill_box name="Amazon Web Services" icon="aws" />
+    </.skills_container>
+
+    <h4 class="text-lg font-bold mt-4 mb-2">Familiar with</h4>
+    <.skills_container>
+      <.skill_box name="Rust" icon="rust" />
+      <.skill_box name="Go" icon="go" />
+    </.skills_container>
+  </div>
 </Layouts.app>

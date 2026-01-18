@@ -17,6 +17,8 @@ defmodule EventHorizonWeb.Router do
   scope "/", EventHorizonWeb do
     pipe_through :browser
 
+    get "/resume", ResumeController, :show
+
     live_session :default, on_mount: EventHorizonWeb.InitAssigns do
       live "/", HomeLive.Index, :index
       live "/blog", BlogLive.Index, :index

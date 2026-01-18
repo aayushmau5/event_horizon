@@ -296,3 +296,66 @@ pre.athl code {
 .styled-anchor:focus {
     text-decoration: underline;
 }
+
+/* ============================================================================
+   Next/Previous Articles Navigation
+   ============================================================================ */
+.next-prev-container {
+    margin-top: 2rem;
+}
+
+.next-prev-header {
+    text-align: center;
+    color: var(--blog-description);
+    margin-bottom: 1rem;
+}
+
+.next-prev-links {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-direction: column;
+    margin-top: 1.7rem;
+}
+
+.next-prev-link {
+    padding: 1rem;
+    border-radius: 0.55rem;
+    word-break: break-word;
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.next-prev-link:hover {
+    background-color: var(--hidden-expand-background);
+}
+
+.next-prev-link-next {
+    width: 100%;
+    margin-left: auto;
+    text-align: right;
+}
+
+.next-prev-info {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    color: var(--blog-description);
+    gap: 5px;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.next-prev-info-next {
+    justify-content: flex-end;
+}
+
+@media (min-width: 1024px) {
+    .next-prev-links {
+        flex-direction: row;
+    }
+
+    .next-prev-link {
+        width: 50%;
+    }
+}

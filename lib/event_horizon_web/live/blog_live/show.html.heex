@@ -23,7 +23,7 @@
     </.blog_tags_container>
 
     <.cover_image
-      :if={@post.cover && @post.cover.image}
+      :if={@post.cover && @post.cover.image !== ""}
       src={@post.cover.image}
       alt={@post.cover.alt}
       caption={@post.cover.caption}
@@ -38,5 +38,7 @@
     </div>
 
     <.separator />
+
+    <.next_prev_articles adjacent={@adjacent_posts} />
   </div>
 </Layouts.app>

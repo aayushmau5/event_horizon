@@ -106,7 +106,7 @@ defmodule EventHorizonWeb.PageComponents do
     ~H"""
     <div class="my-4 flex justify-center">
       <svg
-        class={if(@header, do: "headerSvg", else: "otherSvg" )}
+        class={if(@header, do: "headerSvg", else: "otherSvg")}
         width="282"
         height="12"
         viewBox="0 0 476 30"
@@ -119,6 +119,22 @@ defmodule EventHorizonWeb.PageComponents do
         />
       </svg>
     </div>
+    """
+  end
+
+  attr :href, :string, required: true
+  slot :inner_block, required: true
+
+  def external_link(assigns) do
+    ~H"""
+    <a
+      class="text-(--link-color) hover:underline inline-block w-fit"
+      href={@href}
+      target="_blank"
+      rel="noreferrer"
+    >
+      {render_slot(@inner_block)}
+    </a>
     """
   end
 end

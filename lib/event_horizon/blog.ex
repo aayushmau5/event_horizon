@@ -122,12 +122,28 @@ defmodule EventHorizon.Blog do
   def get_blog(slug), do: get_article_by_slug(slug)
 
   @doc """
-  Returns recommended articles for a given article.
+  Returns the previous and next articles for a given slug.
+
+  Articles are ordered by date (newest first), so:
+  - `prev` is the older article (next in the list)
+  - `next` is the newer article (previous in the list)
+
+  Returns `%{prev: article | nil, next: article | nil}`.
   """
-  def get_recommended_articles(current_article, count \\ 3) do
-    all_articles()
-    |> Enum.reject(&(&1.slug == current_article.slug))
-    |> Enum.take_random(count)
+  @spec get_adjacent_articles(String.t()) :: %{prev: Article.t() | nil, next: Article.t() | nil}
+  def get_adjacent_articles(slug) do
+    articles = all_articles()
+    index = Enum.find_index(articles, &(&1.slug == slug))
+
+    case index do
+      nil ->
+        %{prev: nil, next: nil}
+
+      idx ->
+        prev = Enum.at(articles, idx + 1)
+        next = if idx > 0, do: Enum.at(articles, idx - 1), else: nil
+        %{prev: prev, next: next}
+    end
   end
 
   # Private helpers

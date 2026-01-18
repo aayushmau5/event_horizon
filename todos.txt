@@ -1,21 +1,29 @@
 - Move over the remaining pages:
-    - 404
-    - about
-    - contact
-    - projects
-    - resume
-    - uses
+    - rss.xml
+        - with rss generation on build
 - blog
-    - like button
-    - comments
     - previous and next blogs
-- connect with cluster(for real-time metrics)
-    - have a cluster page?
-- Footer live stuff
 - refactor code
     - right now, it's a mess of css & tailwind.
         - consider moving to tailwind
 - themeing ability
 - SEO stuff
 - favicon
-- rss.xml
+- image generation for blogs(compile time). Should be fast enough!
+    - aiming to do this with code
+
+
+- connect with cluster(for real-time metrics)
+    - have a cluster page?
+- Footer live stuff
+    - after clustering
+- contact page
+    - after clustering
+- blog
+    - like button
+        - after clustering
+    - comments
+        - after clustering
+
+Future:
+- HTML view of the resume(with download button to download)
