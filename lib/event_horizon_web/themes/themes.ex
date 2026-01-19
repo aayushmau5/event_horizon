@@ -190,7 +190,7 @@ defmodule EventHorizonWeb.Themes do
       "--highlight-border" => "rgb(59, 130, 246)",
       "--line-number-color" => "rgb(107, 107, 107)",
       "--inserted-line-bg" => "rgba(16, 185, 129, 0.2)",
-      "--deleted-line-bg" => "rgba(239, 68, 68, 0.2)",
+      "--deleted-line-bg" => "rgba(239, 68, 68, 0.2)"
     }
   end
 
@@ -316,7 +316,7 @@ defmodule EventHorizonWeb.Themes do
       "--highlight-border" => "rgb(59, 130, 246)",
       "--line-number-color" => "rgb(107, 107, 107)",
       "--inserted-line-bg" => "rgba(16, 185, 129, 0.2)",
-      "--deleted-line-bg" => "rgba(239, 68, 68, 0.2)",
+      "--deleted-line-bg" => "rgba(239, 68, 68, 0.2)"
     }
   end
 
@@ -442,7 +442,7 @@ defmodule EventHorizonWeb.Themes do
       "--highlight-border" => "rgb(59, 130, 246)",
       "--line-number-color" => "rgb(107, 107, 107)",
       "--inserted-line-bg" => "rgba(16, 185, 129, 0.2)",
-      "--deleted-line-bg" => "rgba(239, 68, 68, 0.2)",
+      "--deleted-line-bg" => "rgba(239, 68, 68, 0.2)"
     }
   end
 
@@ -568,7 +568,7 @@ defmodule EventHorizonWeb.Themes do
       "--highlight-border" => "rgb(59, 130, 246)",
       "--line-number-color" => "rgb(107, 107, 107)",
       "--inserted-line-bg" => "rgba(16, 185, 129, 0.2)",
-      "--deleted-line-bg" => "rgba(239, 68, 68, 0.2)",
+      "--deleted-line-bg" => "rgba(239, 68, 68, 0.2)"
     }
   end
 
@@ -694,7 +694,7 @@ defmodule EventHorizonWeb.Themes do
       "--highlight-border" => "rgb(59, 130, 246)",
       "--line-number-color" => "rgb(107, 107, 107)",
       "--inserted-line-bg" => "rgba(16, 185, 129, 0.2)",
-      "--deleted-line-bg" => "rgba(239, 68, 68, 0.2)",
+      "--deleted-line-bg" => "rgba(239, 68, 68, 0.2)"
     }
   end
 
@@ -820,7 +820,7 @@ defmodule EventHorizonWeb.Themes do
       "--highlight-border" => "#c4a7e7",
       "--line-number-color" => "#6e6a86",
       "--inserted-line-bg" => "rgba(156, 207, 216, 0.2)",
-      "--deleted-line-bg" => "rgba(235, 111, 146, 0.2)",
+      "--deleted-line-bg" => "rgba(235, 111, 146, 0.2)"
     }
   end
 end

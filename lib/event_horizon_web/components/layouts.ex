@@ -5,6 +5,7 @@ defmodule EventHorizonWeb.Layouts do
   """
   use EventHorizonWeb, :html
   import EventHorizonWeb.CommandBar
+  import EventHorizonWeb.Background
 
   # Embed all files in layouts/* within this module.
   # The default root.html.heex file contains the HTML
@@ -39,6 +40,7 @@ defmodule EventHorizonWeb.Layouts do
 
   def app(assigns) do
     ~H"""
+    <.abstract_background />
     <.nav current_path={@current_path} />
     <main class="px-4 py-4 sm:px-6 lg:px-8">
       <div class="mx-auto max-w-4xl space-y-4 text-(--text-color) leading-8 text-lg">

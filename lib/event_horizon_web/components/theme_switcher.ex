@@ -79,6 +79,9 @@ defmodule EventHorizonWeb.ThemeSwitcher do
             swatch.classList.toggle('selected', isSelected);
             swatch.setAttribute('aria-checked', isSelected);
           });
+
+          // Dispatch event for background to update
+          window.dispatchEvent(new CustomEvent('theme-changed', { detail: { themeId } }));
         }
       }
     </script>
