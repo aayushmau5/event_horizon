@@ -38,7 +38,7 @@
 
     <div class="blogIndexBlogsContainer">
       <%= for blog <- @filtered_blogs do %>
-        <.link class="blogIndexLink" href={"/blog/#{blog.slug}"}>
+        <.link class="blogIndexLink" navigate={"/blog/#{blog.slug}"}>
           <p class="blogIndexDate">
             {blog.formatted_date}
           </p>
