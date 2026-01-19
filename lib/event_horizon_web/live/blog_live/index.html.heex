@@ -32,20 +32,23 @@
       <h3 class="blogIndexSearchHeader">Search result</h3>
     <% end %>
 
-    <%= if Enum.empty?(@filtered_blogs) do %>
+    <%= if @blogs_empty? do %>
       <h3 class="blogIndexNoBlogs">No blogs found</h3>
     <% end %>
 
-    <div class="blogIndexBlogsContainer">
-      <%= for blog <- @filtered_blogs do %>
-        <.link class="blogIndexLink" navigate={"/blog/#{blog.slug}"}>
-          <p class="blogIndexDate">
-            {blog.formatted_date}
-          </p>
-          <h3>{blog.title}</h3>
-          <p class="blogIndexReadTime">{blog.read_minutes} min read</p>
-        </.link>
-      <% end %>
+    <div id="blogs-list" class="blogIndexBlogsContainer" phx-update="stream">
+      <.link
+        :for={{dom_id, blog} <- @streams.blogs}
+        id={dom_id}
+        class="blogIndexLink"
+        navigate={"/blog/#{blog.slug}"}
+      >
+        <p class="blogIndexDate">
+          {blog.formatted_date}
+        </p>
+        <h3>{blog.title}</h3>
+        <p class="blogIndexReadTime">{blog.read_minutes} min read</p>
+      </.link>
     </div>
   </div>
 </Layouts.app>

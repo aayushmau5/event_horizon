@@ -251,10 +251,15 @@ defmodule EventHorizonWeb.CommandBar do
         executeCommand(result) {
           const href = result.dataset.href;
           const action = result.dataset.action;
+          const external = result.dataset.external === "true";
 
           this.hide();
           if (href) {
-            this.liveSocket.redirect(href);
+            if (external) {
+              window.location.href = href;
+            } else {
+              this.liveSocket.js().navigate(href);
+            }
           } else if (action === "copy-url") {
             navigator.clipboard.writeText(window.location.href);
           }
@@ -264,6 +269,14 @@ defmodule EventHorizonWeb.CommandBar do
     """
   end
 
+  attr :id, :string, required: true
+  attr :icon, :string, required: true
+  attr :title, :string, required: true
+  attr :subtitle, :string, required: true
+  attr :href, :string, default: nil
+  attr :action, :string, default: nil
+  attr :external, :boolean, default: false
+
   defp command_result(assigns) do
     ~H"""
     <div
@@ -272,8 +285,9 @@ defmodule EventHorizonWeb.CommandBar do
       data-command-result
       data-title={@title}
       data-subtitle={@subtitle}
-      data-href={assigns[:href]}
-      data-action={assigns[:action]}
+      data-href={@href}
+      data-action={@action}
+      data-external={to_string(@external)}
     >
       <div class="commandBarResultItems">
         <span class="commandBarResultIcon">

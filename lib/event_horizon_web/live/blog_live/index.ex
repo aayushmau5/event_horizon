@@ -42,8 +42,9 @@ defmodule EventHorizonWeb.BlogLive.Index do
        search_query: search_query,
        selected_tag: selected_tag,
        selected_category: selected_category,
-       filtered_blogs: filtered_blogs
-     )}
+       blogs_empty?: filtered_blogs == []
+     )
+     |> stream(:blogs, filtered_blogs, reset: true, dom_id: &"blog-#{&1.slug}")}
   end
 
   @impl true
