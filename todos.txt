@@ -1,6 +1,7 @@
 Things to do first:
 - image generation for blogs(compile time). Should be fast enough!
     - aiming to do this with code
+    - maybe compile and store before pushing it to git?
 
 Cluster:
 - connect with cluster(for real-time metrics)

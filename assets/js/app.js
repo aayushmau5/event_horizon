@@ -35,9 +35,25 @@ const liveSocket = new LiveSocket("/live", Socket, {
 });
 
 // Show progress bar on live navigation and form submits
-topbar.config();
+function getThemeColors() {
+  const computedStyles = window.getComputedStyle(document.body);
+  return {
+    0: computedStyles.getPropertyValue("--theme-one").trim(),
+    ".25": computedStyles.getPropertyValue("--theme-one").trim(),
+    ".50": computedStyles.getPropertyValue("--theme-two").trim(),
+    ".75": computedStyles.getPropertyValue("--theme-three").trim(),
+    "1.0": computedStyles.getPropertyValue("--theme-four").trim(),
+  };
+}
+
+topbar.config({ barColors: getThemeColors() });
 window.addEventListener("phx:page-loading-start", (_info) => topbar.show(300));
 window.addEventListener("phx:page-loading-stop", (_info) => topbar.hide());
+
+// Update topbar colors when theme changes
+window.addEventListener("theme-changed", () => {
+  topbar.config({ barColors: getThemeColors() });
+});
 
 // connect if there are any LiveViews on the page
 liveSocket.connect();

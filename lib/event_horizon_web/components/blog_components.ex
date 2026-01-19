@@ -566,10 +566,6 @@ defmodule EventHorizonWeb.BlogComponents do
   end
 
   # ============================================================================
-  # HiddenExpand (details/summary)
-  # ============================================================================
-
-  # ============================================================================
   # Next/Previous Articles Navigation
   # ============================================================================
 
@@ -592,8 +588,8 @@ defmodule EventHorizonWeb.BlogComponents do
 
   defp article_link(assigns) do
     ~H"""
-    <a
-      href={"/blog/#{@article.slug}"}
+    <.link
+      navigate={"/blog/#{@article.slug}"}
       class={["next-prev-link", @direction == :next && "next-prev-link-next"]}
     >
       <p class={["next-prev-info", @direction == :next && "next-prev-info-next"]}>
@@ -604,7 +600,7 @@ defmodule EventHorizonWeb.BlogComponents do
         <% end %>
       </p>
       {@article.title}
-    </a>
+    </.link>
     """
   end
 
