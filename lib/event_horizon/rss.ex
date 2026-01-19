@@ -30,6 +30,7 @@ defmodule EventHorizon.RSS do
             <generator>EventHorizon RSS Generator</generator>
             <language>en</language>
             <atom:link href="#{@site_url}/rss.xml" rel="self" type="application/rss+xml"/>
+            <atom:icon>#{@site_url}/favicon.ico</atom:icon>
             <image>
                 <title>#{escape_xml(@site_title)}</title>
                 <url>#{@site_url}/socialBanner.png</url>

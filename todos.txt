@@ -1,9 +1,6 @@
-- refactor code
-    - right now, it's a mess of css & tailwind.
-        - consider moving to tailwind
+Things to do first:
 - themeing ability
 - SEO stuff
-- favicon
 - image generation for blogs(compile time). Should be fast enough!
     - aiming to do this with code
 
@@ -19,6 +16,11 @@ Cluster:
         - after clustering
     - comments
         - after clustering
+
+
+- refactor code
+    - right now, it's a mess of css & tailwind.
+        - consider moving to tailwind
 
 Future:
 - HTML view of the resume(with download button to download)

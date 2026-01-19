@@ -5,11 +5,12 @@
         <title>Aayush Kumar Sahu - Developer and Explorer</title>
         <link>https://aayushsahu.com</link>
         <description>Welcome to aayush&apos;s digital garden!</description>
-        <lastBuildDate>Mon, 19 Jan 2026 14:45:14 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 19 Jan 2026 15:12:14 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>EventHorizon RSS Generator</generator>
         <language>en</language>
         <atom:link href="https://aayushsahu.com/rss.xml" rel="self" type="application/rss+xml"/>
+        <atom:icon>https://aayushsahu.com/favicon.ico</atom:icon>
         <image>
             <title>Aayush Kumar Sahu - Developer and Explorer</title>
             <url>https://aayushsahu.com/socialBanner.png</url>

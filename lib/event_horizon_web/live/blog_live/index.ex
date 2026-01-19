@@ -8,6 +8,7 @@ defmodule EventHorizonWeb.BlogLive.Index do
     {:ok,
      socket
      |> assign(
+       page_title: "Blog | Aayush Sahu",
        all_tags: Blog.all_tags(),
        total_articles: length(Blog.all_articles())
      )}

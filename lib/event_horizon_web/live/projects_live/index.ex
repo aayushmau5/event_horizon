@@ -24,10 +24,20 @@ defmodule EventHorizonWeb.ProjectsLive.Index do
         <div class="lg:w-full">
           <h3 class="text-xl font-bold m-0">{@name}</h3>
           <p class="text-(--projects-paragraph)">{@description}</p>
-          <a href={@demo_link} class="styledLink mb-2.5 flex items-center gap-1" target="_blank" rel="noreferrer">
+          <a
+            href={@demo_link}
+            class="styledLink mb-2.5 flex items-center gap-1"
+            target="_blank"
+            rel="noreferrer"
+          >
             <.icon name="hero-arrow-right" class="w-5 h-5" /> Demo
           </a>
-          <a href={@source_link} class="styledLink flex items-center gap-1" target="_blank" rel="noreferrer">
+          <a
+            href={@source_link}
+            class="styledLink flex items-center gap-1"
+            target="_blank"
+            rel="noreferrer"
+          >
             <.icon name="hero-arrow-right" class="w-5 h-5" /> Source
           </a>
         </div>
