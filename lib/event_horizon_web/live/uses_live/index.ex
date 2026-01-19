@@ -3,7 +3,7 @@ defmodule EventHorizonWeb.UsesLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, socket}
+    {:ok, assign(socket, page_title: "Uses | Aayush Sahu")}
   end
 
   @impl true

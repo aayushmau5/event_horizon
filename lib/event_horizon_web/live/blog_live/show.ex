@@ -11,7 +11,11 @@ defmodule EventHorizonWeb.BlogLive.Show do
 
       post ->
         adjacent_posts = EventHorizon.Blog.get_adjacent_articles(post.slug)
-        {:ok, socket |> assign(post: post, adjacent_posts: adjacent_posts)}
+
+        {:ok,
+         socket
+         |> assign(post: post, adjacent_posts: adjacent_posts)
+         |> SEO.assign(post)}
     end
   end
 end

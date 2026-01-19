@@ -5,7 +5,7 @@ defmodule EventHorizonWeb.ProjectsLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, socket}
+    {:ok, assign(socket, page_title: "Projects | Aayush Sahu")}
   end
 
   attr :name, :string, required: true

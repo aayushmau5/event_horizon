@@ -1,6 +1,5 @@
 Things to do first:
 - themeing ability
-- SEO stuff
 - image generation for blogs(compile time). Should be fast enough!
     - aiming to do this with code
 

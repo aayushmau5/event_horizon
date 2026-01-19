@@ -21,7 +21,10 @@ defmodule EventHorizonWeb.LinksLive.Index do
       %{path: "https://dev.to/aayushmau5", name: "DevTo"}
     ]
 
-    {:ok, socket |> assign(links: links)}
+    {:ok,
+     socket
+     |> assign(links: links)
+     |> assign(page_title: "Links | Aayush Sahu")}
   end
 
   @impl true

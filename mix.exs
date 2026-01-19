@@ -65,7 +65,8 @@ defmodule EventHorizon.MixProject do
       {:tidewave, "~> 0.5.4"},
       {:live_debugger, "~> 0.5.0", only: :dev},
       {:yaml_elixir, "~> 2.12"},
-      {:floki, "~> 0.38.0"}
+      {:floki, "~> 0.38.0"},
+      {:phoenix_seo, "~> 0.1"}
     ]
   end
 
@@ -77,7 +78,7 @@ defmodule EventHorizon.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "assets.setup", "assets.build", "rss.generate"],
+      setup: ["deps.get", "assets.setup", "assets.build", "rss.generate", "sitemap.generate"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
       "assets.build": ["compile", "tailwind event_horizon", "esbuild event_horizon"],
       "assets.deploy": [

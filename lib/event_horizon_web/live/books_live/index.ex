@@ -129,7 +129,8 @@ defmodule EventHorizonWeb.BooksLive.Index do
      socket
      |> assign(tech_books: tech_books)
      |> assign(fiction_books: fiction_books)
-     |> assign(shorts: shorts)}
+     |> assign(shorts: shorts)
+     |> assign(page_title: "Books | Aayush Sahu")}
   end
 
   @impl true
