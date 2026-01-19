@@ -1,6 +1,3 @@
-- Move over the remaining pages:
-    - rss.xml
-        - with rss generation on build
 - refactor code
     - right now, it's a mess of css & tailwind.
         - consider moving to tailwind
@@ -10,7 +7,7 @@
 - image generation for blogs(compile time). Should be fast enough!
     - aiming to do this with code
 
-
+Cluster:
 - connect with cluster(for real-time metrics)
     - have a cluster page?
 - Footer live stuff
