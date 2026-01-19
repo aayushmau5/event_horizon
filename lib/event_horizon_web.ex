@@ -87,6 +87,8 @@ defmodule EventHorizonWeb do
       import EventHorizonWeb.BlogComponents
       # Page components
       import EventHorizonWeb.PageComponents
+      # Theme switcher component
+      import EventHorizonWeb.ThemeSwitcher
 
       # Common modules used in templates
       alias Phoenix.LiveView.JS

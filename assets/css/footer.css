@@ -9,6 +9,11 @@
     flex-direction: column;
     justify-content: space-between;
     border-top: 1px solid var(--footer-border-top);
+    gap: 1.5rem;
+}
+
+.footerTop {
+    padding: 0.5rem;
 }
 
 .footerOthers {

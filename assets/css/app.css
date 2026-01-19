@@ -13,6 +13,7 @@
 @import "./blog_index.css";
 @import "./home.css";
 @import "./command_bar.css";
+@import "./theme_switcher.css";
 
 /* A Tailwind plugin that makes "hero-#{ICON}" classes available.
    The heroicons installation itself is managed by your mix.exs */

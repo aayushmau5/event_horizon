@@ -1,6 +1,7 @@
 defmodule EventHorizonWeb.PageComponents do
   use Phoenix.Component
   import EventHorizonWeb.CommandBar, only: [show_command_bar: 1]
+  import EventHorizonWeb.ThemeSwitcher, only: [theme_switcher: 1]
 
   def nav(assigns) do
     ~H"""
@@ -70,6 +71,9 @@ defmodule EventHorizonWeb.PageComponents do
   def footer(assigns) do
     ~H"""
     <div class="footerContainer">
+      <div class="footerTop">
+        <.theme_switcher />
+      </div>
       <div class="footerOthers">
         <div class="footerLinks">
           <div class="footerLinksColumn">
