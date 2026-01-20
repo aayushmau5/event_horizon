@@ -102,14 +102,21 @@ Add cluster configuration:
 #### 1.3 Runtime Configuration (`config/runtime.exs`)
 
 ```elixir
-# Cluster configuration
-config :event_horizon, EventHorizon.Cluster,
-  remote_app: System.get_env("CLUSTER_REMOTE_APP"),
-  enabled: System.get_env("CLUSTER_ENABLED", "true") == "true",
-  retry_base_ms: String.to_integer(System.get_env("CLUSTER_RETRY_BASE_MS", "1000")),
-  retry_max_ms: String.to_integer(System.get_env("CLUSTER_RETRY_MAX_MS", "30000")),
-  discovery_interval_ms: String.to_integer(System.get_env("CLUSTER_DISCOVERY_MS", "10000"))
+if config_env() == :prod do
+  # DNS queries for clustering - includes both apps
+  config :event_horizon, :dns_cluster_query, [
+    # Intra-app clustering (your own instances)
+    "aayush-event-horizon.internal",
+    # Cross-app clustering (phoenix.aayushsahu.com)
+    System.get_env("CLUSTER_REMOTE_DNS") || "phoenix-aayushsahu.internal"
+  ]
+  
+  # Prefix to identify remote nodes (for buffer sync targeting)
+  config :event_horizon, :remote_node_prefix, "phoenix"
+end
 ```
+
+That's it - `dns_cluster` handles discovery, connection, and retry internally.
 
 ---
 
@@ -163,10 +170,7 @@ defmodule EventHorizon.Cluster.Monitor do
 
   alias EventHorizon.Buffer.Outbox
 
-  # Prefix to identify remote app nodes (e.g., "phoenix-aayushsahu")
-  @remote_app_prefix Application.compile_env(:event_horizon, :remote_app_prefix, "phoenix")
-
-  defstruct connected_nodes: MapSet.new()
+  defstruct [:remote_prefix, connected_nodes: MapSet.new()]
 
   # ============================================================================
   # Public API
@@ -199,16 +203,21 @@ defmodule EventHorizon.Cluster.Monitor do
   # ============================================================================
 
   @impl true
-  def init(_opts) do
+  def init(opts) do
     # Subscribe to node events
     :net_kernel.monitor_nodes(true, node_type: :visible)
+    
+    # Get remote prefix from opts or config (runtime)
+    remote_prefix = 
+      Keyword.get(opts, :remote_prefix) ||
+      Application.get_env(:event_horizon, :remote_node_prefix, "phoenix")
     
     # Capture any already-connected nodes
     initial_nodes = Node.list() |> MapSet.new()
     
     Logger.info("Cluster.Monitor started, initial nodes: #{inspect(MapSet.to_list(initial_nodes))}")
     
-    {:ok, %__MODULE__{connected_nodes: initial_nodes}}
+    {:ok, %__MODULE__{connected_nodes: initial_nodes, remote_prefix: remote_prefix}}
   end
 
   @impl true
@@ -225,7 +234,7 @@ defmodule EventHorizon.Cluster.Monitor do
   def handle_call(:remote_nodes, _from, state) do
     remote = 
       state.connected_nodes
-      |> Enum.filter(&is_remote_node?/1)
+      |> Enum.filter(&is_remote_node?(&1, state.remote_prefix))
       |> Enum.to_list()
     
     {:reply, remote, state}
@@ -238,8 +247,8 @@ defmodule EventHorizon.Cluster.Monitor do
     state = %{state | connected_nodes: MapSet.put(state.connected_nodes, node)}
     
     # Trigger buffer sync for remote nodes
-    if is_remote_node?(node) do
-      spawn(fn -> Outbox.trigger_sync(node) end)
+    if is_remote_node?(node, state.remote_prefix) do
+      Outbox.trigger_sync(node)
     end
     
     {:noreply, state}
@@ -258,10 +267,10 @@ defmodule EventHorizon.Cluster.Monitor do
   # Private Functions
   # ============================================================================
 
-  defp is_remote_node?(node) do
+  defp is_remote_node?(node, prefix) do
     node
     |> Atom.to_string()
-    |> String.starts_with?(@remote_app_prefix)
+    |> String.starts_with?(prefix)
   end
 end
 ```
@@ -285,7 +294,6 @@ defmodule EventHorizon.Buffer.Outbox do
 
   @table_name :cluster_outbox
   @max_entries 10_000
-  @batch_size 100
 
   defstruct [:table, syncing: false]
 
@@ -388,7 +396,7 @@ defmodule EventHorizon.Buffer.Outbox do
   def handle_cast({:sync, target_node}, state) do
     state = %{state | syncing: true}
     
-    spawn_link(fn ->
+    Task.Supervisor.start_child(EventHorizon.TaskSupervisor, fn ->
       drain_to_node(state.table, target_node)
       GenServer.cast(__MODULE__, :sync_complete)
     end)
@@ -406,64 +414,28 @@ defmodule EventHorizon.Buffer.Outbox do
   # ============================================================================
 
   defp drain_to_node(table, target_node) do
-    case :ets.first(table) do
-      :"$end_of_table" ->
-        Logger.debug("Outbox empty, nothing to sync")
-        :ok
-
-      first_key ->
-        drain_batch(table, target_node, first_key, 0)
-    end
-  end
-
-  defp drain_batch(_table, _target_node, :"$end_of_table", count) do
-    Logger.info("Outbox sync complete, sent #{count} events")
-    :ok
-  end
-
-  defp drain_batch(table, target_node, key, count) when count >= @batch_size do
-    # Pause between batches to avoid overwhelming the remote
-    Process.sleep(100)
-    drain_batch(table, target_node, key, 0)
-  end
-
-  defp drain_batch(table, target_node, key, count) do
-    case :ets.lookup(table, key) do
-      [{^key, event}] ->
+    entries = :ets.tab2list(table)
+    
+    count =
+      Enum.reduce_while(entries, 0, fn {key, event}, acc ->
         case replay_event(target_node, event) do
           :ok ->
             :ets.delete(table, key)
-            next_key = :ets.next(table, key)
-            drain_batch(table, target_node, next_key, count + 1)
+            {:cont, acc + 1}
 
           {:error, reason} ->
             Logger.warning("Failed to replay event #{event.event_id}: #{inspect(reason)}")
-            # Stop draining on first failure
-            :ok
+            {:halt, acc}
         end
+      end)
 
-      [] ->
-        next_key = :ets.next(table, key)
-        drain_batch(table, target_node, next_key, count)
-    end
+    Logger.info("Outbox sync complete, sent #{count} events")
   end
 
   defp replay_event(target_node, event) do
-    # Route to appropriate handler based on event type
-    result = :rpc.call(
-      target_node,
-      EventHorizon.Remote.Handler,
-      :handle_buffered_event,
-      [event],
-      5_000
-    )
-
-    case result do
-      {:badrpc, reason} -> {:error, reason}
-      :ok -> :ok
-      {:ok, _} -> :ok
-      error -> {:error, error}
-    end
+    :erpc.call(target_node, EventHorizon.Remote.Handler, :handle_buffered_event, [event], 5_000)
+  rescue
+    e in ErlangError -> {:error, e.original}
   end
 
   defp generate_event_id do
@@ -488,10 +460,10 @@ defmodule EventHorizon.Remote.Metrics do
 
   require Logger
 
-  alias EventHorizon.Cluster.Manager
+  alias EventHorizon.Cluster.Monitor
   alias EventHorizon.Buffer.Outbox
 
-  @rpc_timeout 5_000
+  @timeout 5_000
 
   # ============================================================================
   # Visit Tracking
@@ -544,25 +516,19 @@ defmodule EventHorizon.Remote.Metrics do
   
   Read operations are not buffered - they return an error if disconnected.
   """
-  @spec get_realtime_count(String.t()) :: {:ok, non_neg_integer()} | {:error, :disconnected}
+  @spec get_realtime_count(String.t()) :: {:ok, non_neg_integer()} | {:error, :disconnected | :rpc_failed}
   def get_realtime_count(metric_key) do
     case get_connected_node() do
       nil ->
         {:error, :disconnected}
 
       node ->
-        case :rpc.call(node, Remote.Metrics, :get_count, [metric_key], @rpc_timeout) do
-          {:badrpc, reason} ->
-            Logger.error("RPC failed for get_realtime_count: #{inspect(reason)}")
-            {:error, :rpc_failed}
-
-          count when is_integer(count) ->
-            {:ok, count}
-
-          other ->
-            {:ok, other}
-        end
+        {:ok, :erpc.call(node, Remote.Metrics, :get_count, [metric_key], @timeout)}
     end
+  rescue
+    e in ErlangError ->
+      Logger.error("RPC failed for get_realtime_count: #{inspect(e.original)}")
+      {:error, :rpc_failed}
   end
 
   # ============================================================================
@@ -595,34 +561,25 @@ defmodule EventHorizon.Remote.Metrics do
   defp execute_or_buffer(event_type, payload, {module, function, args}) do
     case get_connected_node() do
       nil ->
-        # Buffer for later
-        event_id = generate_event_id()
-        Outbox.enqueue(event_type, payload, event_id)
-        {:buffered, event_id}
+        buffer_event(event_type, payload)
 
       node ->
-        case :rpc.call(node, module, function, args, @rpc_timeout) do
-          {:badrpc, reason} ->
-            Logger.warning("RPC failed, buffering: #{inspect(reason)}")
-            event_id = generate_event_id()
-            Outbox.enqueue(event_type, payload, event_id)
-            {:buffered, event_id}
-
-          :ok ->
-            :ok
-
-          {:ok, _result} ->
-            :ok
-
-          error ->
-            Logger.error("Remote call returned error: #{inspect(error)}")
-            {:error, error}
-        end
+        :erpc.call(node, module, function, args, @timeout)
     end
+  rescue
+    e in ErlangError ->
+      Logger.warning("RPC failed, buffering: #{inspect(e.original)}")
+      buffer_event(event_type, payload)
+  end
+
+  defp buffer_event(event_type, payload) do
+    event_id = generate_event_id()
+    Outbox.enqueue(event_type, payload, event_id)
+    {:buffered, event_id}
   end
 
   defp get_connected_node do
-    case Manager.connected_nodes() do
+    case Monitor.remote_nodes() do
       [] -> nil
       [node | _] -> node
     end
@@ -717,6 +674,7 @@ defmodule EventHorizon.Application do
       {Phoenix.PubSub, name: EventHorizon.PubSub},
       
       # Cluster management (add these)
+      {Task.Supervisor, name: EventHorizon.TaskSupervisor},
       EventHorizon.Buffer.Outbox,
       EventHorizon.Cluster.Monitor,
       

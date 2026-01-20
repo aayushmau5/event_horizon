@@ -11,9 +11,12 @@ defmodule EventHorizon.Application do
       EventHorizonWeb.Telemetry,
       {DNSCluster, query: Application.get_env(:event_horizon, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: EventHorizon.PubSub},
-      # Start a worker by calling: EventHorizon.Worker.start_link(arg)
-      # {EventHorizon.Worker, arg},
-      # Start to serve requests, typically the last entry
+
+      # Cluster management
+      {Task.Supervisor, name: EventHorizon.TaskSupervisor},
+      EventHorizon.Cluster.Outbox,
+      EventHorizon.Cluster.Monitor,
+
       EventHorizonWeb.Endpoint
     ]
 
