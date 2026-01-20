@@ -17,6 +17,8 @@ Cluster:
         - after clustering
 
 
+- Move to MDEx v 0.11.1
+
 - refactor code
     - right now, it's a mess of css & tailwind.
         - consider moving to tailwind
