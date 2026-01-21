@@ -5,7 +5,7 @@ defmodule EventHorizon.MixProject do
     [
       app: :event_horizon,
       version: "0.1.0",
-      elixir: "~> 1.15",
+      elixir: "~> 1.18",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
@@ -66,7 +66,9 @@ defmodule EventHorizon.MixProject do
       {:live_debugger, "~> 0.5.0", only: :dev},
       {:yaml_elixir, "~> 2.12"},
       {:floki, "~> 0.38.0"},
-      {:phoenix_seo, "~> 0.1"}
+      {:phoenix_seo, "~> 0.1"},
+      {:pub_sub_contract, github: "aayushmau5/PubSubContract", override: true},
+      {:eha_pubsub_messages, github: "aayushmau5/eha_pubsub_messages"}
     ]
   end
 

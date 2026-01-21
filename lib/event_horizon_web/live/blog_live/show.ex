@@ -3,8 +3,13 @@ defmodule EventHorizonWeb.BlogLive.Show do
 
   alias EventHorizon.Blog.Article
   alias EventHorizon.Presence
+  alias EventHorizon.PubSubContract
+  alias EhaPubsubMessages.Analytics.BlogVisit
+  alias EhaPubsubMessages.Stats.BlogUpdated
+  alias EhaPubsubMessages.Presence.{BlogPresence, PresenceRequest}
+  alias EhaPubsubMessages.Topics
 
-  @remote_request_topic "remote:presence:request"
+  @pubsub EventHorizon.PubSub
 
   @impl true
   def mount(%{"slug" => slug}, _session, socket) do
@@ -26,21 +31,25 @@ defmodule EventHorizonWeb.BlogLive.Show do
   defp setup_analytics(socket, post) do
     if connected?(socket) do
       presence_topic = "presence:blog:#{post.slug}"
+      blog_stats_topic = Topics.blog_stats(slug: post.slug)
 
-      # Subscribe to presence changes and stats updates
-      Phoenix.PubSub.subscribe(EventHorizon.PubSub, presence_topic)
-      # Subscribes to stats update received from remote node
-      Phoenix.PubSub.subscribe(EventHorizon.PubSub, "stats:blog:#{post.slug}")
-      # Subscribe to remote presence requests
-      Phoenix.PubSub.subscribe(EventHorizon.PubSub, @remote_request_topic)
+      # Subscribe to presence changes
+      Phoenix.PubSub.subscribe(@pubsub, presence_topic)
+
+      # Subscribe to blog-specific stats updates (dynamic topic)
+      Phoenix.PubSub.subscribe(@pubsub, blog_stats_topic)
+
+      # Subscribe to presence requests from remote
+      PubSubContract.subscribe!(@pubsub, PresenceRequest)
 
       # Track this viewer
       Presence.track(self(), presence_topic, socket.id, %{
         joined_at: System.system_time(:second)
       })
 
-      # Publish visit event to remote node
-      Phoenix.PubSub.broadcast(EventHorizon.PubSub, "analytics:events", {:blog_visit, post.slug})
+      # Publish visit event to remote node using contract
+      msg = BlogVisit.new!(slug: post.slug)
+      PubSubContract.publish!(@pubsub, msg)
 
       current_viewers = count_presence(presence_topic)
       assign(socket, current_viewers: current_viewers, stats: default_stats())
@@ -49,10 +58,18 @@ defmodule EventHorizonWeb.BlogLive.Show do
     end
   end
 
-  # Handle stats updates from remote node
+  # Handle stats updates from remote node (contract message)
   @impl true
-  def handle_info({:stats_updated, stats}, socket) do
-    {:noreply, assign(socket, :stats, stats)}
+  def handle_info(
+        %BlogUpdated{slug: slug, visits: visits, likes: likes, comments: comments},
+        socket
+      ) do
+    if slug == socket.assigns.post.slug do
+      stats = %{visits: visits, likes: likes, comments: comments}
+      {:noreply, assign(socket, :stats, stats)}
+    else
+      {:noreply, socket}
+    end
   end
 
   # Handle presence changes
@@ -62,17 +79,12 @@ defmodule EventHorizonWeb.BlogLive.Show do
     {:noreply, assign(socket, :current_viewers, current_viewers)}
   end
 
-  # Handle remote presence request - respond with current count for this blog
-  def handle_info({:get_presence, :blog}, socket) do
+  # Handle remote presence request - respond with current count for this blog (contract message)
+  def handle_info(%PresenceRequest{type: :blog}, socket) do
     slug = socket.assigns.post.slug
     count = count_presence("presence:blog:#{slug}")
-
-    Phoenix.PubSub.broadcast(
-      EventHorizon.PubSub,
-      "presence:response",
-      {:blog_presence, slug, count}
-    )
-
+    msg = BlogPresence.new!(slug: slug, count: count)
+    PubSubContract.publish!(@pubsub, msg)
     {:noreply, socket}
   end
 

@@ -9,9 +9,13 @@ defmodule EventHorizonWeb.SiteStatsLive do
   use EventHorizonWeb, :live_view
 
   alias EventHorizon.Presence
+  alias EventHorizon.PubSubContract
+  alias EhaPubsubMessages.Analytics.SiteVisit
+  alias EhaPubsubMessages.Stats.SiteUpdated
+  alias EhaPubsubMessages.Presence.{SitePresence, PresenceRequest}
 
+  @pubsub EventHorizon.PubSub
   @presence_topic "presence:site"
-  @remote_request_topic "remote:presence:request"
 
   @impl true
   def mount(_params, _session, socket) do
@@ -22,18 +26,18 @@ defmodule EventHorizonWeb.SiteStatsLive do
   defp setup_analytics(socket) do
     if connected?(socket) do
       # Subscribe to presence changes
-      Phoenix.PubSub.subscribe(EventHorizon.PubSub, @presence_topic)
-      # Subscribe to stats update received from remote node
-      Phoenix.PubSub.subscribe(EventHorizon.PubSub, "stats:site")
-      # Subscribe to remote presence requests
-      Phoenix.PubSub.subscribe(EventHorizon.PubSub, @remote_request_topic)
+      Phoenix.PubSub.subscribe(@pubsub, @presence_topic)
+
+      # Subscribe to messages we receive per contract
+      PubSubContract.subscribe_all(@pubsub)
 
       Presence.track(self(), @presence_topic, socket.id, %{
         joined_at: System.system_time(:second)
       })
 
-      # Publish visit event to remote node
-      Phoenix.PubSub.broadcast(EventHorizon.PubSub, "analytics:events", {:site_visit})
+      # Publish visit event to remote node using contract
+      msg = SiteVisit.new!(%{})
+      PubSubContract.publish!(@pubsub, msg)
 
       assign(socket, online_count: count_presence(), total_visits: 0)
     else
@@ -55,10 +59,10 @@ defmodule EventHorizonWeb.SiteStatsLive do
     """
   end
 
-  # Handle stats updates from remote node
+  # Handle stats updates from remote node (contract message)
   @impl true
-  def handle_info({:site_stats_updated, stats}, socket) do
-    {:noreply, assign(socket, :total_visits, stats.visits)}
+  def handle_info(%SiteUpdated{visits: visits}, socket) do
+    {:noreply, assign(socket, :total_visits, visits)}
   end
 
   # Handle presence changes
@@ -66,10 +70,11 @@ defmodule EventHorizonWeb.SiteStatsLive do
     {:noreply, assign(socket, :online_count, count_presence())}
   end
 
-  # Handle remote presence request - respond with current count
-  def handle_info({:get_presence, :site}, socket) do
+  # Handle remote presence request - respond with current count (contract message)
+  def handle_info(%PresenceRequest{type: :site}, socket) do
     count = count_presence()
-    Phoenix.PubSub.broadcast(EventHorizon.PubSub, "presence:response", {:site_presence, count})
+    msg = SitePresence.new!(count: count)
+    PubSubContract.publish!(@pubsub, msg)
     {:noreply, socket}
   end
 
