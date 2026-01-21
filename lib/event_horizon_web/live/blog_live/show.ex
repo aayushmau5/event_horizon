@@ -4,6 +4,8 @@ defmodule EventHorizonWeb.BlogLive.Show do
   alias EventHorizon.Blog.Article
   alias EventHorizon.Presence
 
+  @remote_request_topic "remote:presence:request"
+
   @impl true
   def mount(%{"slug" => slug}, _session, socket) do
     case EventHorizon.Blog.get_blog(String.downcase(slug)) do
@@ -29,6 +31,8 @@ defmodule EventHorizonWeb.BlogLive.Show do
       Phoenix.PubSub.subscribe(EventHorizon.PubSub, presence_topic)
       # Subscribes to stats update received from remote node
       Phoenix.PubSub.subscribe(EventHorizon.PubSub, "stats:blog:#{post.slug}")
+      # Subscribe to remote presence requests
+      Phoenix.PubSub.subscribe(EventHorizon.PubSub, @remote_request_topic)
 
       # Track this viewer
       Presence.track(self(), presence_topic, socket.id, %{
@@ -57,6 +61,22 @@ defmodule EventHorizonWeb.BlogLive.Show do
     current_viewers = count_presence(presence_topic)
     {:noreply, assign(socket, :current_viewers, current_viewers)}
   end
+
+  # Handle remote presence request - respond with current count for this blog
+  def handle_info({:get_presence, :blog}, socket) do
+    slug = socket.assigns.post.slug
+    count = count_presence("presence:blog:#{slug}")
+
+    Phoenix.PubSub.broadcast(
+      EventHorizon.PubSub,
+      "presence:response",
+      {:blog_presence, slug, count}
+    )
+
+    {:noreply, socket}
+  end
+
+  def handle_info(_msg, socket), do: {:noreply, socket}
 
   defp count_presence(topic) do
     Presence.list(topic) |> map_size()

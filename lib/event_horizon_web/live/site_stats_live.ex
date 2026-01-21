@@ -11,6 +11,7 @@ defmodule EventHorizonWeb.SiteStatsLive do
   alias EventHorizon.Presence
 
   @presence_topic "presence:site"
+  @remote_request_topic "remote:presence:request"
 
   @impl true
   def mount(_params, _session, socket) do
@@ -23,7 +24,9 @@ defmodule EventHorizonWeb.SiteStatsLive do
       # Subscribe to presence changes
       Phoenix.PubSub.subscribe(EventHorizon.PubSub, @presence_topic)
       # Subscribe to stats update received from remote node
-      Phoenix.PubSub.subscribe(EventHorizon.PubSub, "stats: site")
+      Phoenix.PubSub.subscribe(EventHorizon.PubSub, "stats:site")
+      # Subscribe to remote presence requests
+      Phoenix.PubSub.subscribe(EventHorizon.PubSub, @remote_request_topic)
 
       Presence.track(self(), @presence_topic, socket.id, %{
         joined_at: System.system_time(:second)
@@ -61,6 +64,13 @@ defmodule EventHorizonWeb.SiteStatsLive do
   # Handle presence changes
   def handle_info(%Phoenix.Socket.Broadcast{event: "presence_diff"}, socket) do
     {:noreply, assign(socket, :online_count, count_presence())}
+  end
+
+  # Handle remote presence request - respond with current count
+  def handle_info({:get_presence, :site}, socket) do
+    count = count_presence()
+    Phoenix.PubSub.broadcast(EventHorizon.PubSub, "presence:response", {:site_presence, count})
+    {:noreply, socket}
   end
 
   def handle_info(_msg, socket), do: {:noreply, socket}

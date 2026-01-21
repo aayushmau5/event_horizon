@@ -130,7 +130,10 @@ defmodule EventHorizon.Blog do
 
   Returns `%{prev: article | nil, next: article | nil}`.
   """
-  @spec get_adjacent_articles(String.t()) :: %{prev: EventHorizon.Blog.Article.t() | nil, next: EventHorizon.Blog.Article.t() | nil}
+  @spec get_adjacent_articles(String.t()) :: %{
+          prev: EventHorizon.Blog.Article.t() | nil,
+          next: EventHorizon.Blog.Article.t() | nil
+        }
   def get_adjacent_articles(slug) do
     articles = all_articles()
     index = Enum.find_index(articles, &(&1.slug == slug))
