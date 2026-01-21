@@ -3,6 +3,8 @@ defmodule EventHorizonWeb.PageComponents do
   import EventHorizonWeb.CommandBar, only: [show_command_bar: 1]
   import EventHorizonWeb.ThemeSwitcher, only: [theme_switcher: 1]
 
+  attr :current_path, :string, default: ""
+
   def nav(assigns) do
     ~H"""
     <nav class="text-(--text-color)">
@@ -68,9 +70,16 @@ defmodule EventHorizonWeb.PageComponents do
     """
   end
 
+  attr :socket, :any, default: nil
+
   def footer(assigns) do
     ~H"""
     <div class="footerContainer">
+      <%= if @socket do %>
+        <div class="site-stats-container">
+          {live_render(@socket, EventHorizonWeb.SiteStatsLive, id: "site-stats", sticky: true)}
+        </div>
+      <% end %>
       <div class="footerTop">
         <.theme_switcher />
       </div>

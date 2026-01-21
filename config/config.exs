@@ -15,7 +15,7 @@ config :event_horizon, EventHorizonWeb.Endpoint,
   url: [host: "localhost"],
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
-    formats: [html: EventHorizonWeb.ErrorHTML, json: EventHorizonWeb.ErrorJSON],
+    formats: [html: EventHorizonWeb.ErrorHTML],
     layout: false
   ],
   pubsub_server: EventHorizon.PubSub,

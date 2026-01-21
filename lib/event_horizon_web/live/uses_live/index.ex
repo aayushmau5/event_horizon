@@ -9,7 +9,7 @@ defmodule EventHorizonWeb.UsesLive.Index do
   @impl true
   def render(assigns) do
     ~H"""
-    <Layouts.app current_path={@current_path}>
+    <Layouts.app current_path={@current_path} socket={@socket}>
       <div class="animate-fadeIn">
         <h1 class="font-[Handwriting] text-4xl font-bold mb-4">Uses</h1>
         <p class="mb-4">

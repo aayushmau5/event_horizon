@@ -28,9 +28,8 @@ defmodule EventHorizonWeb.Layouts do
 
   """
 
-  # attr :flash, :map, required: true, doc: "the map of flash messages"
-
   attr :current_path, :string, default: nil
+  attr :socket, :any, default: nil, doc: "the LiveView socket for embedding live_render"
 
   attr :current_scope, :map,
     default: nil,
@@ -45,11 +44,10 @@ defmodule EventHorizonWeb.Layouts do
     <main class="px-4 py-4 sm:px-6 lg:px-8">
       <div class="mx-auto max-w-4xl space-y-4 text-(--text-color) leading-8 text-lg">
         {render_slot(@inner_block)}
-        <.footer />
+        <.footer socket={@socket} />
       </div>
     </main>
     <.command_bar id="command-bar" />
-    <%!-- <.flash_group flash={@flash} /> --%>
     """
   end
 

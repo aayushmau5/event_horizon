@@ -10,7 +10,8 @@ defmodule EventHorizon.Application do
     children = [
       EventHorizonWeb.Telemetry,
       {DNSCluster, query: Application.get_env(:event_horizon, :dns_cluster_query) || :ignore},
-      {Phoenix.PubSub, name: EventHorizon.PubSub},
+      {Phoenix.PubSub, name: EventHorizon.PubSub, adapter: Phoenix.PubSub.PG2},
+      EventHorizon.Presence,
       # Start a worker by calling: EventHorizon.Worker.start_link(arg)
       # {EventHorizon.Worker, arg},
       # Start to serve requests, typically the last entry

@@ -19,6 +19,11 @@ defmodule EventHorizonWeb.Router do
 
     get "/resume", ResumeController, :show
 
+    # Embedded LiveView for site stats (no on_mount hooks)
+    live_session :embedded do
+      live "/live/site-stats", SiteStatsLive
+    end
+
     live_session :default, on_mount: EventHorizonWeb.InitAssigns do
       live "/", HomeLive.Index, :index
       live "/blog", BlogLive.Index, :index
@@ -29,6 +34,7 @@ defmodule EventHorizonWeb.Router do
       live "/contact", ContactLive.Index, :index
       live "/books", BooksLive.Index, :index
       live "/uses", UsesLive.Index, :index
+      live "/not-found", NotFoundLive, :index
     end
   end
 

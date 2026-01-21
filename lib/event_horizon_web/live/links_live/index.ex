@@ -30,7 +30,7 @@ defmodule EventHorizonWeb.LinksLive.Index do
   @impl true
   def render(assigns) do
     ~H"""
-    <Layouts.app current_path={@current_path}>
+    <Layouts.app current_path={@current_path} socket={@socket}>
       <h1 class="font-[Handwriting] text-4xl font-bold mb-4">Links</h1>
 
       <ul class="flex flex-col gap-[7px]">
