@@ -18,8 +18,11 @@ defmodule EventHorizonWeb do
   """
 
   def static_paths,
+    do: ~w(assets fonts images)
+
+  def static_paths_matching,
     do:
-      ~w(assets fonts images favicon apple-touch-icon android-chrome socialBanner site.webmanifest robots.txt rss.xml rss-styles.xsl sitemap.xml)
+      ~w(favicon apple-touch-icon android-chrome socialBanner site.webmanifest robots.txt rss.xml rss-styles.xsl sitemap.xml)
 
   def router do
     quote do

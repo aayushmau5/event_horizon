@@ -25,6 +25,7 @@ defmodule EventHorizonWeb.Endpoint do
     from: :event_horizon,
     gzip: not code_reloading?,
     only: EventHorizonWeb.static_paths(),
+    only_matching: EventHorizonWeb.static_paths_matching(),
     raise_on_missing_only: code_reloading?
 
   if Code.ensure_loaded?(Tidewave) do
