@@ -6,6 +6,7 @@ tags: ["tech"]
 cover:
   image: "/images/blog/new-tech-2023.png"
   alt: "Technology logos for 2023 learning goals"
+  caption: "Techno!"
 draft: false
 showToc: false
 ---

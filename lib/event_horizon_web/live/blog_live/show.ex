@@ -48,8 +48,7 @@ defmodule EventHorizonWeb.BlogLive.Show do
       })
 
       # Publish visit event to remote node using contract
-      msg = BlogVisit.new!(slug: post.slug)
-      PubSubContract.publish!(@pubsub, msg)
+      PubSubContract.publish!(@pubsub, BlogVisit.new!(slug: post.slug))
 
       current_viewers = count_presence(presence_topic)
       assign(socket, current_viewers: current_viewers, stats: default_stats())

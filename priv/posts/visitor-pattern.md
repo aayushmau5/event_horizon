@@ -7,6 +7,7 @@ tags: ["design-pattern", "typescript"]
 cover:
   image: "/images/blog/visitor/cover.png"
   alt: "Visitor design pattern illustration"
+  caption: "Patterns"
 ---
 
 ### Introduction

@@ -10,6 +10,8 @@ dynamic: true
 
 # Callout
 
+This is a callout component.
+
 > (info) **Info** Callout
 
 > (danger) Danger Callout

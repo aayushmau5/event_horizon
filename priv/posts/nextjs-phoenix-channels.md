@@ -6,6 +6,7 @@ tags: ["nextjs", "phoenix", "elixir"]
 cover:
   image: "/images/blog/nextjs-phoenix-channels/cover.png"
   alt: "Cover image with NextJS and Phoenix Framework logo"
+  caption: "NextJS 🤝 Phoenix"
 draft: false
 showToc: true
 ---

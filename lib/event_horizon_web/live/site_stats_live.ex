@@ -36,8 +36,7 @@ defmodule EventHorizonWeb.SiteStatsLive do
       })
 
       # Publish visit event to remote node using contract
-      msg = SiteVisit.new!(%{})
-      PubSubContract.publish!(@pubsub, msg)
+      PubSubContract.publish!(@pubsub, SiteVisit.new!(%{}))
 
       assign(socket, online_count: count_presence(), total_visits: 0)
     else
@@ -73,8 +72,7 @@ defmodule EventHorizonWeb.SiteStatsLive do
   # Handle remote presence request - respond with current count (contract message)
   def handle_info(%PresenceRequest{type: :site}, socket) do
     count = count_presence()
-    msg = SitePresence.new!(count: count)
-    PubSubContract.publish!(@pubsub, msg)
+    PubSubContract.publish!(@pubsub, SitePresence.new!(count: count))
     {:noreply, socket}
   end
 

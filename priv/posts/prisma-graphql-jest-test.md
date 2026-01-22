@@ -7,6 +7,7 @@ tags: ["graphql", "typescript", "jest", "testing"]
 cover:
   image: "/images/blog/ts-gql-jest/ts-gql-jest-cover.png"
   alt: "TS GraphQL Jest logo"
+  cover: "TS + GraphQL + Jest"
 ---
 
 When your project gets big enough to check each parts manually, tests does it for you. You write tests, and test runners do all the work and check if the application does what its supposed to do or not.

@@ -20,6 +20,9 @@ defmodule EventHorizon.Blog.MDExPlugin do
   defp transform_node(%MDEx.Code{literal: code}),
     do: %MDEx.HtmlInline{literal: "<.codeblock>#{escape_heex(code)}</.codeblock>"}
 
+  defp transform_node(%MDEx.ThematicBreak{}),
+    do: %MDEx.HtmlBlock{literal: "<.separator />"}
+
   defp transform_node(%MDEx.List{list_type: type, start: start, nodes: nodes}) do
     {tag, attrs} =
       case type do

@@ -6,6 +6,7 @@ tags: ["mdx", "nextjs", "markdown"]
 cover:
   image: "/images/blog/markdown-next-mdx/cover.png"
   alt: "Cover image consisting of NextJS and MDX logo"
+  caption: "NextJS & MDX"
 draft: false
 ---
 
