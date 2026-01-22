@@ -40,7 +40,15 @@ if config_env() == :prod do
 
   host = System.get_env("PHX_HOST") || "example.com"
 
-  config :event_horizon, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
+  dns_cluster_query =
+    case System.get_env("DNS_CLUSTER_QUERY") do
+      nil -> nil
+      query ->
+        basename = System.get_env("DNS_CLUSTER_BASENAME")
+        if basename, do: [{basename, query}], else: query
+    end
+
+  config :event_horizon, :dns_cluster_query, dns_cluster_query
 
   config :event_horizon, EventHorizonWeb.Endpoint,
     url: [host: host, port: 443, scheme: "https"],
