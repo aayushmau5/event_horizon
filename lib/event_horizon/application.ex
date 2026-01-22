@@ -9,7 +9,9 @@ defmodule EventHorizon.Application do
   def start(_type, _args) do
     children = [
       EventHorizonWeb.Telemetry,
-      {DNSCluster, query: Application.get_env(:event_horizon, :dns_cluster_query) || :ignore},
+      {DNSCluster,
+       query: Application.get_env(:event_horizon, :dns_cluster_query) || :ignore,
+       basename: "phoenix-aayushsahu-com"},
       {Phoenix.PubSub, name: EventHorizon.PubSub, adapter: Phoenix.PubSub.PG2},
       EventHorizon.Presence,
       # Start a worker by calling: EventHorizon.Worker.start_link(arg)
