@@ -12,7 +12,7 @@ config :event_horizon, EventHorizonWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}],
   check_origin: false,
   code_reloader: true,
-  debug_errors: false,
+  debug_errors: true,
   secret_key_base: "JBvz6Au0GHvsOHg/E1y6UfT+6wjUqIuDCvyZl4wbvSfUqdY1pS2tFQ7HmKH7qxii",
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:event_horizon, ~w(--sourcemap=inline --watch)]},

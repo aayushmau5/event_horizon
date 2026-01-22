@@ -9,7 +9,7 @@ defimpl SEO.OpenGraph.Build, for: EventHorizon.Blog.Article do
       type: :article,
       image:
         SEO.OpenGraph.Image.build(
-          url: cloudinary_og_image(article.title),
+          url: banner_image_url(article.slug),
           alt: article.title
         ),
       detail:
@@ -20,26 +20,8 @@ defimpl SEO.OpenGraph.Build, for: EventHorizon.Blog.Article do
     )
   end
 
-  defp cloudinary_og_image(title) do
-    cloud_name = "dbsdoq31k"
-    image_public_id = "blog_banner.png"
-    version = "v1641893609"
-
-    image_config = "w_1200,h_630,c_fill,f_auto"
-
-    title_config =
-      [
-        "w_600",
-        "h_430",
-        "c_fit",
-        "co_rgb:BBBBBB",
-        "y_-40",
-        "x_290",
-        "l_text:roboto_40_bold:#{URI.encode(title)}"
-      ]
-      |> Enum.join(",")
-
-    "https://res.cloudinary.com/#{cloud_name}/image/upload/#{image_config},#{title_config}/#{version}/#{image_public_id}"
+  defp banner_image_url(slug) do
+    EventHorizonWeb.SEO.site_url() <> "/images/banners/#{slug}.webp"
   end
 end
 
@@ -61,31 +43,12 @@ defimpl SEO.Twitter.Build, for: EventHorizon.Blog.Article do
       title: article.title,
       description: article.description,
       card: :summary_large_image,
-      image: cloudinary_og_image(article.title)
+      image: banner_image_url(article.slug)
     )
   end
 
-  # TODO: replace this with inhouse solution
-  defp cloudinary_og_image(title) do
-    cloud_name = "dbsdoq31k"
-    image_public_id = "blog_banner.png"
-    version = "v1641893609"
-
-    image_config = "w_1200,h_630,c_fill,f_auto"
-
-    title_config =
-      [
-        "w_600",
-        "h_430",
-        "c_fit",
-        "co_rgb:BBBBBB",
-        "y_-40",
-        "x_290",
-        "l_text:roboto_40_bold:#{URI.encode(title)}"
-      ]
-      |> Enum.join(",")
-
-    "https://res.cloudinary.com/#{cloud_name}/image/upload/#{image_config},#{title_config}/#{version}/#{image_public_id}"
+  defp banner_image_url(slug) do
+    EventHorizonWeb.SEO.site_url() <> "/images/banners/#{slug}.webp"
   end
 end
 

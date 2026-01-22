@@ -1,7 +1,7 @@
 defmodule EventHorizonWeb.SEO do
   use EventHorizonWeb, :verified_routes
 
-  @site_url "https://aayushsahu.com"
+  @site_url "https://aayush-event-horizon.fly.dev"
   @site_title "Aayush Kumar Sahu"
   @site_description "Developer and Explorer"
   @social_image "/socialBanner.png"

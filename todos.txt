@@ -1,11 +1,4 @@
-Things to do first:
-- image generation for blogs(compile time). Should be fast enough!
-    - aiming to do this with code
-    - maybe compile and store before pushing it to git?
-
 Cluster:
-- connect with cluster(for real-time metrics)
-    - have a cluster page?
 - Footer live stuff
     - after clustering
 - contact page
@@ -17,7 +10,8 @@ Cluster:
         - after clustering
 
 
-- Move to MDEx v 0.11.1
+- change @site_url in SEO to "aayushsahu.com" once we deploy this app to aayushsahu.com
+- Move to MDEx v0.11.1
 
 - refactor code
     - right now, it's a mess of css & tailwind.
@@ -25,3 +19,4 @@ Cluster:
 
 Future:
 - HTML view of the resume(with download button to download)
+- have a cluster page?

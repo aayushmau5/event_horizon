@@ -60,13 +60,15 @@ defmodule EventHorizon.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.2.0"},
       {:bandit, "~> 1.5"},
-      {:mdex, "~> 0.11.0"},
+      {:mdex, "~> 0.11.1"},
       {:nimble_publisher, "~> 1.1"},
       {:tidewave, "~> 0.5.4"},
       {:live_debugger, "~> 0.5.0", only: :dev},
       {:yaml_elixir, "~> 2.12"},
       {:floki, "~> 0.38.0"},
       {:phoenix_seo, "~> 0.1"},
+      {:image, "~> 0.62"},
+      # Personal deps
       {:pub_sub_contract, github: "aayushmau5/PubSubContract", override: true},
       {:eha_pubsub_messages, github: "aayushmau5/eha_pubsub_messages"}
     ]
