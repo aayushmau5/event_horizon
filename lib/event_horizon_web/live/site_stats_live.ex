@@ -8,10 +8,13 @@ defmodule EventHorizonWeb.SiteStatsLive do
 
   use EventHorizonWeb, :live_view
 
+  import EventHorizonWeb.Components.SpotifyNowPlaying
+
   alias EventHorizon.Presence
   alias EventHorizon.PubSubContract
   alias EhaPubsubMessages.Analytics.SiteVisit
   alias EhaPubsubMessages.Stats.SiteUpdated
+  alias EhaPubsubMessages.Stats.Spotify.NowPlaying
   alias EhaPubsubMessages.Presence.{SitePresence, PresenceRequest}
 
   @pubsub EventHorizon.PubSub
@@ -38,9 +41,9 @@ defmodule EventHorizonWeb.SiteStatsLive do
       # Publish visit event to remote node using contract
       PubSubContract.publish!(@pubsub, SiteVisit.new!(%{}))
 
-      assign(socket, online_count: count_presence(), total_visits: 0)
+      assign(socket, online_count: count_presence(), total_visits: 0, now_playing: nil)
     else
-      assign(socket, online_count: 1, total_visits: 0)
+      assign(socket, online_count: 1, total_visits: 0, now_playing: nil)
     end
   end
 
@@ -55,18 +58,27 @@ defmodule EventHorizonWeb.SiteStatsLive do
       <span class="site-stats-separator">·</span>
       <span class="site-stats-item">{@total_visits} visits</span>
     </div>
+    <.spotify_now_playing now_playing={@now_playing} />
     """
   end
 
   # Handle stats updates from remote node (contract message)
   @impl true
   def handle_info(%SiteUpdated{visits: visits}, socket) do
-    {:noreply, assign(socket, :total_visits, visits)}
+    {:noreply, assign(socket, total_visits: visits)}
+  end
+
+  def handle_info(%NowPlaying{data: nil}, socket) do
+    {:noreply, assign(socket, now_playing: nil)}
+  end
+
+  def handle_info(%NowPlaying{data: data}, socket) do
+    {:noreply, assign(socket, now_playing: data)}
   end
 
   # Handle presence changes
   def handle_info(%Phoenix.Socket.Broadcast{event: "presence_diff"}, socket) do
-    {:noreply, assign(socket, :online_count, count_presence())}
+    {:noreply, assign(socket, online_count: count_presence())}
   end
 
   # Handle remote presence request - respond with current count (contract message)

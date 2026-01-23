@@ -1,7 +1,3 @@
-- Footer
-    - live stuff
-    - spotify now playing
-
 - change @site_url in SEO to "aayushsahu.com" once we deploy this app to aayushsahu.com
 - Move to MDEx v0.11.1
 

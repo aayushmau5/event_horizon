@@ -688,7 +688,10 @@ defmodule EventHorizonWeb.BlogComponents do
           viewBox="0 0 490 490"
           class={[
             "transition-all duration-200",
-            if(@has_liked, do: "fill-[rgb(199,73,73)]", else: "fill-white group-hover:fill-[rgb(199,73,73)]")
+            if(@has_liked,
+              do: "fill-[rgb(199,73,73)]",
+              else: "fill-white group-hover:fill-[rgb(199,73,73)]"
+            )
           ]}
         >
           <path d="M316.554,108.336c4.553,6.922,2.629,16.223-4.296,20.774c-3.44,2.261-6.677,4.928-9.621,7.929
@@ -833,17 +836,29 @@ defmodule EventHorizonWeb.BlogComponents do
       <div :if={@comment.replies && length(@comment.replies) > 0} class="flex items-center gap-4 mt-2">
         <button
           id={@show_replies_btn_id}
-          phx-click={JS.hide(to: "##{@show_replies_btn_id}") |> JS.show(to: "##{@hide_replies_btn_id}") |> JS.show(to: "##{@replies_container_id}")}
+          phx-click={
+            JS.hide(to: "##{@show_replies_btn_id}")
+            |> JS.show(to: "##{@hide_replies_btn_id}")
+            |> JS.show(to: "##{@replies_container_id}")
+          }
           class="bg-transparent border-none text-[var(--theme-one)] cursor-pointer text-sm py-1 opacity-80 transition-opacity duration-200 font-medium hover:opacity-100"
         >
-          Show {length(@comment.replies)} {if length(@comment.replies) == 1, do: "reply", else: "replies"}
+          Show {length(@comment.replies)} {if length(@comment.replies) == 1,
+            do: "reply",
+            else: "replies"}
         </button>
         <button
           id={@hide_replies_btn_id}
-          phx-click={JS.hide(to: "##{@hide_replies_btn_id}") |> JS.show(to: "##{@show_replies_btn_id}") |> JS.hide(to: "##{@replies_container_id}")}
+          phx-click={
+            JS.hide(to: "##{@hide_replies_btn_id}")
+            |> JS.show(to: "##{@show_replies_btn_id}")
+            |> JS.hide(to: "##{@replies_container_id}")
+          }
           class="hidden bg-transparent border-none text-[var(--theme-one)] cursor-pointer text-sm py-1 opacity-80 transition-opacity duration-200 font-medium hover:opacity-100"
         >
-          Hide {length(@comment.replies)} {if length(@comment.replies) == 1, do: "reply", else: "replies"}
+          Hide {length(@comment.replies)} {if length(@comment.replies) == 1,
+            do: "reply",
+            else: "replies"}
         </button>
       </div>
       <div
@@ -862,7 +877,10 @@ defmodule EventHorizonWeb.BlogComponents do
           Reply
         </button>
         <div id={"#{@reply_form_id}-wrapper"} class="hidden">
-          <.comment_input parent_id={@comment.id} on_cancel={JS.show(to: "##{@reply_btn_id}") |> JS.hide(to: "##{@reply_form_id}-wrapper")} />
+          <.comment_input
+            parent_id={@comment.id}
+            on_cancel={JS.show(to: "##{@reply_btn_id}") |> JS.hide(to: "##{@reply_form_id}-wrapper")}
+          />
         </div>
       </div>
     </div>

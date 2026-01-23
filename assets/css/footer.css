@@ -9,24 +9,24 @@
 
 .footerTop {
     padding: 0.5rem;
+    display: flex;
+    justify-content: center;
 }
 
 .footerOthers {
+    margin-top: 2rem;
     display: flex;
     padding: 0.5rem;
-    width: fit-content;
-}
-
-.footerLinks {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    align-items: center;
 }
 
 .footerLinksColumn {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
 }
 
 .footerLink:focus,
@@ -39,6 +39,10 @@
         flex-direction: row;
     }
 
+    .footerOthers {
+        justify-content: center;
+    }
+
     .footerLinksColumn {
         flex-direction: row;
     }
@@ -49,10 +53,6 @@
         width: 55%;
     }
 
-    .footerOthers {
-        justify-content: space-between;
-    }
-
     .footerLinksColumn {
         gap: 4rem;
     }
@@ -61,7 +61,10 @@
 /* Site Stats */
 .site-stats-container {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
+    gap: 10px;
     padding: 1rem 0;
 }
 
