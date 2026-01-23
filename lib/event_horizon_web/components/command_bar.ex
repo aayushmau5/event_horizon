@@ -18,7 +18,13 @@ defmodule EventHorizonWeb.CommandBar do
 
   def command_bar(assigns) do
     ~H"""
-    <div id={@id} class="commandBarPositioner" style="display: none;" phx-hook=".CommandBar">
+    <div
+      id={@id}
+      class="commandBarPositioner"
+      style="display: none;"
+      phx-hook=".CommandBar"
+      phx-update="ignore"
+    >
       <div class="commandBarAnimator" data-animator>
         <input
           type="text"
@@ -105,6 +111,8 @@ defmodule EventHorizonWeb.CommandBar do
           this.searchInput = this.el.querySelector("[data-search-input]");
           this.animator = this.el.querySelector("[data-animator]");
           this.selectedIndex = 0;
+          this._isOpen = false;
+          this._hideTimeout = null;
 
           this.searchInput.addEventListener("input", (e) => {
             this.filterResults(e.target.value);
@@ -135,25 +143,28 @@ defmodule EventHorizonWeb.CommandBar do
               e.preventDefault();
               this.toggle();
             }
-            if (e.key === "Escape") {
+            if (e.key === "Escape" && this._isOpen) {
               e.preventDefault();
               this.hide();
             }
           };
 
           window.addEventListener("keydown", this.handleGlobalKeydown);
+
+          this.el.addEventListener("command-bar:show", () => {
+            this.show();
+          });
         },
 
         destroyed() {
           window.removeEventListener("keydown", this.handleGlobalKeydown);
-        },
-
-        isVisible() {
-          return this.el.style.display !== "none";
+          if (this._hideTimeout) {
+            clearTimeout(this._hideTimeout);
+          }
         },
 
         toggle() {
-          if (this.isVisible()) {
+          if (this._isOpen) {
             this.hide();
           } else {
             this.show();
@@ -161,7 +172,13 @@ defmodule EventHorizonWeb.CommandBar do
         },
 
         show() {
-          if (this.isVisible()) return;
+          if (this._isOpen) return;
+          // Cancel any pending hide animation
+          if (this._hideTimeout) {
+            clearTimeout(this._hideTimeout);
+            this._hideTimeout = null;
+          }
+          this._isOpen = true;
           this.el.style.display = "flex";
           this.el.classList.remove("commandBarPositionerHide");
           this.el.classList.add("commandBarPositionerShow");
@@ -173,12 +190,14 @@ defmodule EventHorizonWeb.CommandBar do
         },
 
         hide() {
-          if (!this.isVisible()) return;
+          if (!this._isOpen) return;
+          this._isOpen = false;
           this.el.classList.add("commandBarPositionerHide");
           this.el.classList.remove("commandBarPositionerShow");
-          setTimeout(() => {
+          this._hideTimeout = setTimeout(() => {
             this.el.style.display = "none";
             this.el.classList.remove("commandBarPositionerHide");
+            this._hideTimeout = null;
           }, 200);
         },
 
@@ -303,9 +322,6 @@ defmodule EventHorizonWeb.CommandBar do
   end
 
   def show_command_bar(id) do
-    JS.show(to: "##{id}", display: "flex")
-    |> JS.remove_class("commandBarPositionerHide", to: "##{id}")
-    |> JS.add_class("commandBarPositionerShow", to: "##{id}")
-    |> JS.focus(to: "##{id}-search")
+    JS.dispatch("command-bar:show", to: "##{id}")
   end
 end
