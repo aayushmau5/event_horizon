@@ -7,13 +7,14 @@ defmodule EventHorizon.BlogImage do
 
   def generate(title, output_path) do
     with {:ok, bg} <- Image.open(@banner_path),
-         {:ok, title_text} <- Image.Text.text(title,
-           font: "IBM Plex Sans",
-           font_size: 30,
-           text_fill_color: :white,
-           width: 400,
-           align: :left
-         ) do
+         {:ok, title_text} <-
+           Image.Text.text(title,
+             font: "IBM Plex Sans",
+             font_size: 30,
+             text_fill_color: :white,
+             width: 400,
+             align: :left
+           ) do
       bg
       |> Image.compose!(title_text, x: -40, y: :middle)
       |> Image.write!(output_path)

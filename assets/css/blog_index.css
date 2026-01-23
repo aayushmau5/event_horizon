@@ -13,13 +13,6 @@
     }
 }
 
-.blogIndexTitle {
-    font-size: 2.5rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-    font-family: "Handwriting";
-}
-
 .blogIndexInfo {
     color: var(--blog-no-of-blogs);
     margin-top: 0;

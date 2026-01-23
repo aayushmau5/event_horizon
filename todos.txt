@@ -1,8 +1,7 @@
 Cluster:
 - Footer live stuff
     - after clustering
-- contact page
-    - after clustering
+    - spotify
 - blog
     - like button
         - after clustering

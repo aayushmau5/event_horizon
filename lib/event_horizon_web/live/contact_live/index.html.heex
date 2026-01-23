@@ -1,3 +1,76 @@
 <Layouts.app current_path={@current_path} socket={@socket}>
-  Under Construction
+  <div>
+    <h1 class="font-bold font-[Handwriting] mb-4 text-[2.5rem]">Contact Me</h1>
+    <p class="text-lg mb-4 opacity-90">
+      Reach out to me if you wanna have a chat.
+    </p>
+    <p class="text-base opacity-80">
+      <strong>Warning:</strong> I will respond back!
+    </p>
+  </div>
+
+  <div class="flex flex-col gap-5 bg-(--spotify-container-background) p-8 rounded-2xl transition-all duration-200 my-5 hover:bg-(--spotify-container-hover) md:p-5 md:gap-4">
+    <.form
+      for={@form}
+      id="contact-form"
+      phx-change="validate"
+      phx-submit="submit"
+      class="flex flex-col gap-5 md:gap-4"
+    >
+      <div class="flex flex-col">
+        <input
+          type="email"
+          name={@form[:email].name}
+          value={@form[:email].value}
+          placeholder="Your Email"
+          disabled={@submitting}
+          required
+          class={[
+            "w-full py-4 px-5 rounded-xl border border-white/20 bg-white/10 text-inherit text-base font-inherit box-border transition-all duration-200",
+            "focus:outline-none focus:border-(--theme-one) focus:ring-2 focus:ring-(--theme-one)/20",
+            "disabled:opacity-60 disabled:cursor-not-allowed",
+            "md:py-3 md:px-4 md:text-[0.95rem]"
+          ]}
+        />
+      </div>
+      <div class="flex flex-col">
+        <textarea
+          name={@form[:message].name}
+          placeholder="Your Message"
+          disabled={@submitting}
+          rows="4"
+          maxlength="1000"
+          required
+          class={[
+            "w-full py-4 px-5 rounded-xl border border-white/20 bg-white/10 text-inherit text-base font-inherit box-border transition-all duration-200 resize-y min-h-[120px] leading-relaxed",
+            "focus:outline-none focus:border-(--theme-one) focus:ring-2 focus:ring-(--theme-one)/20",
+            "disabled:opacity-60 disabled:cursor-not-allowed",
+            "md:py-3 md:px-4 md:text-[0.95rem] md:min-h-[100px]"
+          ]}
+        ><%= @form[:message].value %></textarea>
+      </div>
+      <div class="flex gap-4 justify-center items-center flex-wrap">
+        <button
+          type="submit"
+          disabled={@submitting || @form[:email].value == "" || @form[:message].value == ""}
+          class={[
+            "py-4 px-8 rounded-xl border-none bg-linear-to-r from-(--theme-one) to-(--theme-two) text-(--background) cursor-pointer font-bold text-base transition-all duration-200 whitespace-nowrap min-w-[140px]",
+            "hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/20",
+            "disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none",
+            "md:py-3 md:px-6 md:text-[0.95rem] md:min-w-[120px]"
+          ]}
+        >
+          <%= if @submitting do %>
+            <span class="flex items-center gap-2">
+              Sending...
+              <span class="w-3.5 h-3.5 border-2 border-transparent border-t-current rounded-full animate-spin">
+              </span>
+            </span>
+          <% else %>
+            Send Message
+          <% end %>
+        </button>
+      </div>
+    </.form>
+  </div>
 </Layouts.app>

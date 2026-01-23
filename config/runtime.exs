@@ -42,7 +42,9 @@ if config_env() == :prod do
 
   dns_cluster_query =
     case System.get_env("DNS_CLUSTER_QUERY") do
-      nil -> nil
+      nil ->
+        nil
+
       query ->
         basename = System.get_env("DNS_CLUSTER_BASENAME")
         if basename, do: [{basename, query}], else: query
