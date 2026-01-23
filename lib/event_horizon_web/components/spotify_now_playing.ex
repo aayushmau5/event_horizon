@@ -10,7 +10,7 @@ defmodule EventHorizonWeb.Components.SpotifyNowPlaying do
   def spotify_now_playing(assigns) do
     ~H"""
     <a
-      href={if @now_playing, do: @now_playing.url, else: "#"}
+      href={if @now_playing, do: @now_playing["url"], else: "#"}
       target={if @now_playing, do: "_blank", else: ""}
       rel="noopener noreferrer"
       class="flex items-center gap-3 min-h-[75px] w-max bg-black/20 hover:bg-black/30 px-5 py-2.5 rounded-2xl transition-all duration-200 no-underline"
@@ -32,9 +32,9 @@ defmodule EventHorizonWeb.Components.SpotifyNowPlaying do
   defp play_message(assigns) do
     ~H"""
     <div class="text-xs text-gray-400">Currently playing</div>
-    <div class="text-white font-medium">{@now_playing.name}</div>
-    <div class="text-xs text-gray-300">{@now_playing.artists}</div>
-    <div class="text-xs text-gray-400">{@now_playing.album_name}</div>
+    <div class="text-white font-medium">{@now_playing["name"]}</div>
+    <div class="text-xs text-gray-300">{@now_playing["artists"]}</div>
+    <div class="text-xs text-gray-400">{@now_playing["album_name"]}</div>
     """
   end
 
