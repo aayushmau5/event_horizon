@@ -4,7 +4,7 @@ defmodule EventHorizonWeb.BlogLive.Show do
   alias EventHorizon.Blog.Article
   alias EventHorizon.Presence
   alias EventHorizon.PubSubContract
-  alias EhaPubsubMessages.Analytics.BlogVisit
+  alias EhaPubsubMessages.Analytics.{BlogVisit, BlogLike, BlogComment}
   alias EhaPubsubMessages.Stats.BlogUpdated
   alias EhaPubsubMessages.Presence.{BlogPresence, PresenceRequest}
   alias EhaPubsubMessages.Topics
@@ -64,7 +64,13 @@ defmodule EventHorizonWeb.BlogLive.Show do
         socket
       ) do
     if slug == socket.assigns.post.slug do
-      stats = %{visits: visits, likes: likes, comments: comments}
+      stats = %{
+        visits: visits,
+        likes: likes,
+        has_liked: socket.assigns.stats.has_liked,
+        comments: comments
+      }
+
       {:noreply, assign(socket, :stats, stats)}
     else
       {:noreply, socket}
@@ -89,12 +95,69 @@ defmodule EventHorizonWeb.BlogLive.Show do
 
   def handle_info(_msg, socket), do: {:noreply, socket}
 
+  @impl true
+  def handle_event("like", _params, socket) do
+    msg = BlogLike.new!(slug: socket.assigns.post.slug)
+    PubSubContract.publish!(@pubsub, msg)
+
+    {:noreply, assign(socket, stats: %{socket.assigns.stats | has_liked: true})}
+  end
+
+  def handle_event("send_comment", params, socket) do
+    author = normalize_author(Map.get(params, "author", ""))
+    content = Map.get(params, "content", "")
+
+    socket =
+      if content != "" do
+        msg = BlogComment.new!(slug: socket.assigns.post.slug, author: author, content: content)
+        PubSubContract.publish!(@pubsub, msg)
+        push_event(socket, "reset-form", %{id: "comment-form"})
+      else
+        socket
+      end
+
+    {:noreply, socket}
+  end
+
+  def handle_event("send_reply", params, socket) do
+    author = normalize_author(Map.get(params, "author", ""))
+    content = Map.get(params, "content", "")
+    parent_id = Map.get(params, "parent_id")
+
+    socket =
+      if content != "" do
+        msg =
+          BlogComment.new!(
+            slug: socket.assigns.post.slug,
+            author: author,
+            content: content,
+            parent_id: parent_id
+          )
+
+        PubSubContract.publish!(@pubsub, msg)
+        push_event(socket, "reset-form", %{id: "reply-form-#{parent_id}"})
+      else
+        socket
+      end
+
+    {:noreply, socket}
+  end
+
+  defp normalize_author(author) when is_binary(author) do
+    case String.trim(author) do
+      "" -> "Anonymous"
+      trimmed -> trimmed
+    end
+  end
+
+  defp normalize_author(_), do: "Anonymous"
+
   defp count_presence(topic) do
     Presence.list(topic) |> map_size()
   end
 
   # A placeholder value until we get real data from remote node
   defp default_stats do
-    %{visits: 1, likes: 0, comments: []}
+    %{visits: 1, likes: 0, has_liked: false, comments: []}
   end
 end

@@ -25,13 +25,23 @@ import { LiveSocket } from "phoenix_live_view";
 import { hooks as colocatedHooks } from "phoenix-colocated/event_horizon";
 import topbar from "../vendor/topbar";
 
+const ResetForm = {
+  mounted() {
+    this.handleEvent("reset-form", ({ id }) => {
+      if (this.el.id === id) {
+        this.el.reset();
+      }
+    });
+  },
+};
+
 const csrfToken = document
   .querySelector("meta[name='csrf-token']")
   .getAttribute("content");
 const liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
   params: { _csrf_token: csrfToken },
-  hooks: { ...colocatedHooks },
+  hooks: { ...colocatedHooks, ResetForm },
 });
 
 // Show progress bar on live navigation and form submits

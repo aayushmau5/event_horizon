@@ -9,7 +9,41 @@ defmodule EventHorizonWeb.BlogComponents do
   use Phoenix.Component
   import EventHorizonWeb.CoreComponents
 
+  alias Phoenix.LiveView.JS
   alias EventHorizonWeb.BlogComponents.Counter
+
+  # ============================================================================
+  # Helper Functions
+  # ============================================================================
+
+  defp format_relative_time(datetime) when is_binary(datetime) do
+    case DateTime.from_iso8601(datetime) do
+      {:ok, dt, _} -> format_relative_time(dt)
+      _ -> datetime
+    end
+  end
+
+  defp format_relative_time(%DateTime{} = datetime) do
+    now = DateTime.utc_now()
+    diff_seconds = DateTime.diff(now, datetime, :second)
+
+    cond do
+      diff_seconds < 60 -> "just now"
+      diff_seconds < 3600 -> "#{div(diff_seconds, 60)} min ago"
+      diff_seconds < 86400 -> "#{div(diff_seconds, 3600)} hours ago"
+      diff_seconds < 2_592_000 -> "#{div(diff_seconds, 86400)} days ago"
+      diff_seconds < 31_536_000 -> "#{div(diff_seconds, 2_592_000)} months ago"
+      true -> "#{div(diff_seconds, 31_536_000)} years ago"
+    end
+  end
+
+  defp format_relative_time(%NaiveDateTime{} = datetime) do
+    datetime
+    |> DateTime.from_naive!("Etc/UTC")
+    |> format_relative_time()
+  end
+
+  defp format_relative_time(_), do: ""
 
   # ============================================================================
   # Blog Index Components
@@ -627,6 +661,231 @@ defmodule EventHorizonWeb.BlogComponents do
       </p>
       {@article.title}
     </.link>
+    """
+  end
+
+  # ============================================================================
+  # Like Button
+  # ============================================================================
+
+  attr :likes, :integer, default: 0
+  attr :has_liked, :boolean, default: false
+
+  def like_button(assigns) do
+    ~H"""
+    <div class="mt-6 flex flex-col items-center gap-2">
+      <div class="text-sm opacity-80">
+        {@likes} {if @likes == 1, do: "like", else: "likes"}
+      </div>
+      <button
+        phx-click="like"
+        disabled={@has_liked}
+        class="bg-transparent border-none cursor-pointer transition-all duration-200 disabled:cursor-not-allowed group"
+      >
+        <svg
+          height="35px"
+          width="35px"
+          viewBox="0 0 490 490"
+          class={[
+            "transition-all duration-200",
+            if(@has_liked, do: "fill-[rgb(199,73,73)]", else: "fill-white group-hover:fill-[rgb(199,73,73)]")
+          ]}
+        >
+          <path d="M316.554,108.336c4.553,6.922,2.629,16.223-4.296,20.774c-3.44,2.261-6.677,4.928-9.621,7.929
+            c-2.938,2.995-6.825,4.497-10.715,4.497c-3.791,0-7.585-1.427-10.506-4.291c-5.917-5.801-6.009-15.298-0.207-21.212
+            c4.439-4.524,9.338-8.559,14.562-11.992C302.698,99.491,312.002,101.414,316.554,108.336z M447.022,285.869
+            c-1.506,1.536-148.839,151.704-148.839,151.704C283.994,452.035,265.106,460,245,460s-38.994-7.965-53.183-22.427L42.978,285.869
+            c-57.304-58.406-57.304-153.441,0-211.847C70.83,45.634,107.882,30,147.31,30c36.369,0,70.72,13.304,97.69,37.648
+            C271.971,43.304,306.32,30,342.689,30c39.428,0,76.481,15.634,104.332,44.021C504.326,132.428,504.326,227.463,447.022,285.869z
+            M425.596,95.028C403.434,72.44,373.991,60,342.69,60c-31.301,0-60.745,12.439-82.906,35.027c-1.122,1.144-2.129,2.533-3.538,3.777
+            c-7.536,6.654-16.372,6.32-22.491,0c-1.308-1.352-2.416-2.633-3.538-3.777C208.055,72.44,178.612,60,147.31,60
+            c-31.301,0-60.744,12.439-82.906,35.027c-45.94,46.824-45.94,123.012,0,169.836c1.367,1.393,148.839,151.704,148.839,151.704
+            C221.742,425.229,233.02,430,245,430c11.98,0,23.258-4.771,31.757-13.433l148.839-151.703l0,0
+            C471.535,218.04,471.535,141.852,425.596,95.028z M404.169,116.034c-8.975-9.148-19.475-16.045-31.208-20.499
+            c-7.746-2.939-16.413,0.953-19.355,8.698c-2.942,7.744,0.953,16.407,8.701,19.348c7.645,2.902,14.521,7.431,20.436,13.459
+            c23.211,23.658,23.211,62.153,0,85.811l-52.648,53.661c-5.803,5.915-5.711,15.412,0.206,21.212
+            c2.921,2.863,6.714,4.291,10.506,4.291c3.889,0,7.776-1.502,10.714-4.497l52.648-53.661
+            C438.744,208.616,438.744,151.275,404.169,116.034z" />
+        </svg>
+      </button>
+    </div>
+    """
+  end
+
+  # ============================================================================
+  # Comments Section
+  # ============================================================================
+
+  attr :comments, :list, default: []
+
+  slot :inner_block
+
+  def comments_section(assigns) do
+    ~H"""
+    <div class="mb-5">
+      <h2 class="text-2xl font-bold mb-6">
+        <span class="font-[Handwriting] font-bold bg-gradient-to-r from-(--theme-one) via-(--theme-two) to-(--theme-four) bg-clip-text text-transparent">
+          Comments
+        </span>
+      </h2>
+      <.comment_input />
+      <.comments_list comments={@comments} />
+    </div>
+    """
+  end
+
+  attr :parent_id, :integer, default: nil
+  attr :on_cancel, :any, default: nil
+
+  def comment_input(assigns) do
+    form_id = if assigns.parent_id, do: "reply-form-#{assigns.parent_id}", else: "comment-form"
+    assigns = assign(assigns, :form_id, form_id)
+
+    ~H"""
+    <form
+      id={@form_id}
+      phx-submit={if @parent_id, do: "send_reply", else: "send_comment"}
+      phx-hook="ResetForm"
+      class={[
+        "flex flex-col gap-3 bg-(--spotify-container-background) rounded-2xl transition-all duration-200 hover:bg-(--spotify-container-hover)",
+        if(@parent_id, do: "p-3 mt-2", else: "p-5 my-5")
+      ]}
+    >
+      <input :if={@parent_id} type="hidden" name="parent_id" value={@parent_id} />
+      <div class="flex flex-col">
+        <input
+          type="text"
+          name="author"
+          placeholder="Your name (optional)"
+          class="w-full max-w-[200px] py-3 px-4 rounded-xl border border-white/20 bg-white/10 text-inherit text-sm focus:outline-none focus:border-(--theme-one) focus:shadow-[0_0_0_2px_rgba(var(--theme-one),0.2)]"
+        />
+      </div>
+      <div class="flex flex-col">
+        <textarea
+          name="content"
+          placeholder={if @parent_id, do: "Write a reply...", else: "Write a comment..."}
+          rows="3"
+          class="w-full py-3 px-4 rounded-xl border border-white/20 bg-white/10 text-inherit text-sm resize-y min-h-20 leading-relaxed focus:outline-none focus:border-(--theme-one) focus:shadow-[0_0_0_2px_rgba(var(--theme-one),0.2)]"
+        />
+      </div>
+      <div class="flex gap-2.5 justify-end items-center flex-wrap">
+        <button
+          :if={@on_cancel}
+          type="button"
+          phx-click={@on_cancel}
+          class="py-3 px-5 rounded-xl border border-white/30 bg-transparent text-inherit cursor-pointer font-medium transition-all duration-200 text-sm whitespace-nowrap hover:bg-white/10"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="py-2 px-4 rounded-xl border-none bg-gradient-to-r from-[var(--theme-one)] to-[var(--theme-two)] text-[var(--background)] cursor-pointer font-bold transition-all duration-200 whitespace-nowrap hover:translate-y-[-1px] hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
+        >
+          {if @parent_id, do: "Reply", else: "Send"}
+        </button>
+      </div>
+    </form>
+    """
+  end
+
+  attr :comments, :list, default: []
+
+  def comments_list(assigns) do
+    ~H"""
+    <div class="flex flex-col gap-5 mb-5">
+      <.comment_item :for={comment <- @comments} comment={comment} />
+    </div>
+    """
+  end
+
+  attr :comment, :map, required: true
+
+  def comment_item(assigns) do
+    comment_id = assigns.comment.id
+    reply_form_id = "reply-form-#{comment_id}"
+    reply_btn_id = "reply-btn-#{comment_id}"
+    replies_container_id = "replies-#{comment_id}"
+    show_replies_btn_id = "show-replies-btn-#{comment_id}"
+    hide_replies_btn_id = "hide-replies-btn-#{comment_id}"
+
+    assigns =
+      assign(assigns,
+        reply_form_id: reply_form_id,
+        reply_btn_id: reply_btn_id,
+        replies_container_id: replies_container_id,
+        show_replies_btn_id: show_replies_btn_id,
+        hide_replies_btn_id: hide_replies_btn_id
+      )
+
+    ~H"""
+    <div class="text-base flex flex-col bg-white/[0.02] py-2.5 px-4 rounded-xl border-l-[3px] border-l-[var(--theme-one)]">
+      <div class="flex items-center gap-3 mb-2.5 max-md:flex-col max-md:items-start max-md:gap-1.5">
+        <span class="opacity-90 font-bold text-sm text-[var(--theme-two)]">
+          {@comment.author}
+        </span>
+        <span class="text-xs opacity-60 ml-auto max-md:ml-0">
+          {format_relative_time(@comment.inserted_at)}
+        </span>
+      </div>
+      <div class="m-0">
+        {@comment.content}
+      </div>
+      <div :if={@comment.replies && length(@comment.replies) > 0} class="flex items-center gap-4 mt-2">
+        <button
+          id={@show_replies_btn_id}
+          phx-click={JS.hide(to: "##{@show_replies_btn_id}") |> JS.show(to: "##{@hide_replies_btn_id}") |> JS.show(to: "##{@replies_container_id}")}
+          class="bg-transparent border-none text-[var(--theme-one)] cursor-pointer text-sm py-1 opacity-80 transition-opacity duration-200 font-medium hover:opacity-100"
+        >
+          Show {length(@comment.replies)} {if length(@comment.replies) == 1, do: "reply", else: "replies"}
+        </button>
+        <button
+          id={@hide_replies_btn_id}
+          phx-click={JS.hide(to: "##{@hide_replies_btn_id}") |> JS.show(to: "##{@show_replies_btn_id}") |> JS.hide(to: "##{@replies_container_id}")}
+          class="hidden bg-transparent border-none text-[var(--theme-one)] cursor-pointer text-sm py-1 opacity-80 transition-opacity duration-200 font-medium hover:opacity-100"
+        >
+          Hide {length(@comment.replies)} {if length(@comment.replies) == 1, do: "reply", else: "replies"}
+        </button>
+      </div>
+      <div
+        :if={@comment.replies && length(@comment.replies) > 0}
+        id={@replies_container_id}
+        class="hidden pl-3 flex flex-col gap-4 border-l-2 border-l-white/15 mt-3"
+      >
+        <.reply_item :for={reply <- @comment.replies} reply={reply} />
+      </div>
+      <div class="mt-3">
+        <button
+          id={@reply_btn_id}
+          phx-click={JS.hide(to: "##{@reply_btn_id}") |> JS.show(to: "##{@reply_form_id}-wrapper")}
+          class="bg-transparent border-none text-white text-xs cursor-pointer font-medium p-0 m-0 hover:opacity-80"
+        >
+          Reply
+        </button>
+        <div id={"#{@reply_form_id}-wrapper"} class="hidden">
+          <.comment_input parent_id={@comment.id} on_cancel={JS.show(to: "##{@reply_btn_id}") |> JS.hide(to: "##{@reply_form_id}-wrapper")} />
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  attr :reply, :map, required: true
+
+  def reply_item(assigns) do
+    ~H"""
+    <div class="bg-white/[0.03] p-3 rounded-lg border-l-2 border-l-[var(--theme-three)] mt-2 first:mt-0">
+      <div class="flex items-center gap-3 mb-1.5 max-md:flex-col max-md:items-start max-md:gap-1">
+        <span class="opacity-90 font-bold text-sm text-[var(--theme-two)]">
+          {@reply.author}
+        </span>
+        <span class="text-xs opacity-60 ml-auto max-md:ml-0">
+          {format_relative_time(@reply.inserted_at)}
+        </span>
+      </div>
+      <div class="m-0 text-sm">
+        {@reply.content}
+      </div>
+    </div>
     """
   end
 

@@ -1,21 +1,14 @@
-Cluster:
-- Footer live stuff
-    - after clustering
-    - spotify
-- blog
-    - like button
-        - after clustering
-    - comments
-        - after clustering
-
+- Footer
+    - live stuff
+    - spotify now playing
 
 - change @site_url in SEO to "aayushsahu.com" once we deploy this app to aayushsahu.com
 - Move to MDEx v0.11.1
 
 - refactor code
     - right now, it's a mess of css & tailwind.
-        - consider moving to tailwind
+        - consider moving quite a lot of it to tailwind
 
 Future:
+- A cluster pgae with live latency between three nodes
 - HTML view of the resume(with download button to download)
-- have a cluster page?

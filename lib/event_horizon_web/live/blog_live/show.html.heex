@@ -39,6 +39,10 @@
       {Article.render(@post.body, assigns)}
     </div>
 
+    <.like_button likes={@stats.likes} has_liked={@stats.has_liked} />
+
+    <.comments_section comments={@stats.comments} />
+
     <.separator />
 
     <.next_prev_articles adjacent={@adjacent_posts} />
