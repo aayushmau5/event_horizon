@@ -34,6 +34,7 @@ defmodule EventHorizonWeb.Router do
       live "/contact", ContactLive.Index, :index
       live "/books", BooksLive.Index, :index
       live "/uses", UsesLive.Index, :index
+      live "/cluster", ClusterLive, :index
       live "/not-found", NotFoundLive, :index
     end
   end
