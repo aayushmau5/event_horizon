@@ -13,13 +13,11 @@
 
 .abstract-bg {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    filter: blur(60px);
+    top: -25%;
+    left: -25%;
+    width: 150%;
+    height: 150%;
     opacity: 0.03;
-    transition: background 0.5s ease, transform 0.5s ease;
 }
 
 /* Grainy texture overlay */

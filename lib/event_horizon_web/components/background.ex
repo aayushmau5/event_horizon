@@ -86,14 +86,12 @@ defmodule EventHorizonWeb.Background do
 
           if (abstractBgsElements.length >= 2) {
             const firstEl = abstractBgsElements[0];
-            firstEl.style.transform = this.randomTransform();
             const [posX, posY] = this.getRandomPosition();
-            firstEl.style.background = `radial-gradient(circle at ${posX}% ${posY}%, var(--accent-color) 0%, transparent ${40 + Math.floor(Math.random() * 40)}%)`;
+            firstEl.style.background = `radial-gradient(ellipse 80% 80% at ${posX}% ${posY}%, var(--accent-color) 0%, transparent 70%)`;
 
             const secondEl = abstractBgsElements[1];
-            secondEl.style.transform = this.randomTransform();
             secondEl.style.opacity = '0.6';
-            secondEl.style.background = `radial-gradient(circle at ${100 - posX}% ${100 - posY}%, var(--accent-color) 0%, transparent ${40 + Math.floor(Math.random() * 20)}%)`;
+            secondEl.style.background = `radial-gradient(ellipse 80% 80% at ${100 - posX}% ${100 - posY}%, var(--accent-color) 0%, transparent 70%)`;
           }
         }
       }
