@@ -7,6 +7,7 @@ tags: ["apollo", "graphql", "typescript"]
 cover:
   image: "/images/blog/graphql-typescript/ts-gql.png"
   alt: "TS with Apollo"
+  caption: "TS with Apollo"
 ---
 
 Using [Apollo GraphQL](https://www.apollographql.com/) with JavaScript has always been pretty straighforward and error prone.

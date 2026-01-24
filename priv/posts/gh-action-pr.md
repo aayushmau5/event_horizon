@@ -6,6 +6,7 @@ tags: ["github", "actions"]
 cover:
   image: "/images/blog/gh-action-logo.webp"
   alt: "Github Action Logo"
+  caption: "Github Actions"
 ---
 
 **This post is not an introduction to Github Actions.**

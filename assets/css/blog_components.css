@@ -193,6 +193,22 @@
     font-size: 1.1rem;
     cursor: pointer;
     padding: 1rem;
+    list-style: none;
+}
+
+.hidden-expand-summary::-webkit-details-marker {
+    display: none;
+}
+
+.hidden-expand-summary::before {
+    content: "▶ ";
+    display: inline-block;
+    margin-right: 10px;
+    transition: transform 0.2s ease;
+}
+
+.hidden-expand-details[open] > .hidden-expand-summary::before {
+    transform: rotate(90deg);
 }
 
 .hidden-expand-children {

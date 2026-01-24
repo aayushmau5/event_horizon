@@ -7,6 +7,7 @@ draft: false
 cover:
   image: "/images/blog/gsoc-final/gsoc-postman-asyncapi.jpeg"
   alt: "Poster with GSOC, Postman & AsyncAPI logo"
+  caption: "GSOC, Postman & AsyncAPI"
 ---
 
 # Introduction
