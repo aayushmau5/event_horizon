@@ -272,14 +272,17 @@ defmodule EventHorizonWeb.CommandBar do
           const action = result.dataset.action;
           const external = result.dataset.external === "true";
 
-          this.hide();
           if (href) {
+            // Immediately hide without animation to prevent flicker during navigation
+            this._isOpen = false;
+            this.el.style.display = "none";
             if (external) {
               window.location.href = href;
             } else {
               this.liveSocket.js().navigate(href);
             }
           } else if (action === "copy-url") {
+            this.hide();
             navigator.clipboard.writeText(window.location.href);
           }
         }
