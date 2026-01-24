@@ -17,7 +17,7 @@ defmodule EventHorizonWeb.ClusterLive do
 
   @impl true
   def handle_event("ping", _params, socket) do
-    {:noreply, push_event(socket, "pong", %{})}
+    {:reply, %{}, socket}
   end
 
   @impl true
@@ -220,11 +220,6 @@ defmodule EventHorizonWeb.ClusterLive do
       export default {
         mounted() {
           this.label = document.getElementById("client-rtt-label")
-          this.handleEvent("pong", () => {
-            const rtt = Date.now() - this.startTime
-            this.updateLabel(rtt)
-            this.timer = setTimeout(() => this.ping(), 5000)
-          })
           this.ping()
         },
         reconnected() {
@@ -235,8 +230,12 @@ defmodule EventHorizonWeb.ClusterLive do
           clearTimeout(this.timer)
         },
         ping() {
-          this.startTime = Date.now()
-          this.pushEvent("ping", {})
+          const startTime = Date.now()
+          this.pushEvent("ping", {}, () => {
+            const rtt = Date.now() - startTime
+            this.updateLabel(rtt)
+            this.timer = setTimeout(() => this.ping(), 5000)
+          })
         },
         updateLabel(rtt) {
           if (!this.label) return
