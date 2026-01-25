@@ -1,10 +1,12 @@
+Immediate:
 - change @site_url in SEO to "aayushsahu.com" once we deploy this app to aayushsahu.com
-- Move to MDEx v0.11.1
-
 - refactor code
     - right now, it's a mess of css & tailwind.
         - consider moving quite a lot of it to tailwind
 
 Future:
-- A cluster pgae with live latency between three nodes
 - HTML view of the resume(with download button to download)
+
+Not yet planned:
+- Move to MDEx v0.11.1
+    - Evaluate the changes. Nothing major to change. Skipping using the `to_heex!` function.

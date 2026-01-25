@@ -95,8 +95,14 @@ defmodule EventHorizonWeb.PageComponents do
             <.link class="footerLink" navigate="/about">
               About
             </.link>
+            <.link class="footerLink" navigate="/links">
+              Links
+            </.link>
           </div>
           <div class="footerLinksColumn">
+            <.link class="footerLink" navigate="/cluster">
+              Cluster
+            </.link>
             <.link class="footerLink" navigate="/contact">
               Contact
             </.link>
