@@ -3,6 +3,10 @@ title: "Moving my website from NextJS to Phoenix"
 description: "My journey of moving from NextJS to Phoenix"
 date: 2026-01-27T00:00:00.0Z
 tags: ["elixir", "phoenix", "liveview", "mdex", "nextjs"]
+cover:
+  image: "/images/blog/nextjs-to-phoenix.png"
+  alt: "Move to Phoenix"
+  caption: "Logos are trademarks of their respective owners: Next.js (Vercel), Phoenix Framework, Elixir, Fly.io and Amp"
 draft: false
 showToc: true
 dynamic: true
