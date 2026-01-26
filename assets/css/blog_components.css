@@ -298,12 +298,23 @@ pre.athl code {
     min-width: max-content;
 }
 
+pre.athl code .line::before {
+    display: inline-block;
+    width: 1rem;
+    text-align: right;
+    margin-right: 16px;
+    color: var(--line-number-color);
+    content: attr(data-line);
+}
+
 /* ============================================================================
    StyledAnchor
    ============================================================================ */
 .styled-anchor {
     position: relative;
     color: var(--anchor-color);
+    width: max-content;
+    display: inline-block;
 }
 
 .styled-anchor:hover {

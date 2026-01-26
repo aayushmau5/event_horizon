@@ -782,7 +782,7 @@ defmodule EventHorizonWeb.BlogComponents do
         </button>
         <button
           type="submit"
-          class="py-2 px-4 rounded-xl border-none bg-gradient-to-r from-[var(--theme-one)] to-[var(--theme-two)] text-[var(--background)] cursor-pointer font-bold transition-all duration-200 whitespace-nowrap hover:translate-y-[-1px] hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
+          class="py-2 px-4 text-sm rounded-lg border-none bg-gradient-to-r from-[var(--theme-one)] to-[var(--theme-two)] text-[var(--background)] cursor-pointer font-bold transition-all duration-200 whitespace-nowrap hover:translate-y-[-1px] hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
         >
           {if @parent_id, do: "Reply", else: "Send"}
         </button>

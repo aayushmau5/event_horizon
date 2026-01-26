@@ -6,6 +6,7 @@ defmodule EventHorizon.Blog.Article do
   # Won't match code examples like <h1>text</h1> or <h1><a id="x">text</a></h1>
   # because it requires an empty anchor (></a>) followed by text outside the anchor.
   @heading_regex ~r/<h([1-6])[^>]*><a[^>]*id="([^"]*)"[^>]*><\/a>([^<]+)<\/h[1-6]>/
+  @words_per_minute 200
 
   @type cover :: %{
           image: String.t(),
@@ -83,7 +84,7 @@ defmodule EventHorizon.Blog.Article do
       %{
         level: String.to_integer(level),
         id: id,
-        text: String.trim(text)
+        text: text |> String.trim() |> decode_html_entities()
       }
     end)
   end
@@ -94,7 +95,14 @@ defmodule EventHorizon.Blog.Article do
     extract_toc({:static, html})
   end
 
-  @words_per_minute 200
+  defp decode_html_entities(text) do
+    text
+    |> String.replace("&amp;", "&")
+    |> String.replace("&lt;", "<")
+    |> String.replace("&gt;", ">")
+    |> String.replace("&quot;", "\"")
+    |> String.replace("&#39;", "'")
+  end
 
   defp compute_read_minutes({:static, html}) do
     html
@@ -107,6 +115,8 @@ defmodule EventHorizon.Blog.Article do
   defp compute_read_minutes({:dynamic, ast}) do
     render({:dynamic, ast}, %{})
     |> then(&Enum.join(&1.static, " "))
+    |> Floki.parse_fragment!()
+    |> Floki.text()
     |> count_words()
     |> calculate_minutes()
   end
