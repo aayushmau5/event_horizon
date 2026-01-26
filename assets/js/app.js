@@ -57,7 +57,7 @@ function getThemeColors() {
 }
 
 topbar.config({ barColors: getThemeColors() });
-window.addEventListener("phx:page-loading-start", (_info) => topbar.show(300));
+window.addEventListener("phx:page-loading-start", (_info) => topbar.show(500));
 window.addEventListener("phx:page-loading-stop", (_info) => topbar.hide());
 
 // Update topbar colors when theme changes
