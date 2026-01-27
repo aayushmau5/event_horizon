@@ -1,5 +1,4 @@
 Immediate:
-- change @site_url in SEO to "aayushsahu.com" once we deploy this app to aayushsahu.com
 - refactor code
     - right now, it's a mess of css & tailwind.
         - consider moving quite a lot of it to tailwind

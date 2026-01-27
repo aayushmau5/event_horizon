@@ -15,22 +15,31 @@ defmodule EventHorizonWeb.BlogComponents.Poll do
   """
   use EventHorizonWeb, :live_view
 
-  alias EventHorizonWeb.BlogComponents.PollMockVoter
+  alias EventHorizon.PubSubContract
+
+  @pubsub EventHorizon.PubSub
 
   @impl true
   def mount(_params, _session, socket) do
-    if connected?(socket) do
-      Phoenix.PubSub.subscribe(EventHorizon.PubSub, PollMockVoter.topic())
-    end
-
     results = [
-      %{name: "Phoenix LiveView", key: "phx_lv", votes: 0},
+      %{name: "Phoenix LiveView", key: "phx", votes: 0},
       %{name: "NextJS", key: "next", votes: 0}
     ]
 
-    total_votes = Enum.reduce(results, 0, fn opt, acc -> acc + opt.votes end)
+    keys = Enum.map(results, & &1.key)
 
-    {:ok, assign(socket, results: results, voted_for: nil, total_votes: total_votes)}
+    if connected?(socket) do
+      PubSubContract.subscribe!(@pubsub, EhaPubsubMessages.PollResult)
+      request_current_votes(keys)
+    end
+
+    {:ok,
+     assign(socket,
+       results: results,
+       keys: keys,
+       voted_for: nil,
+       total_votes: calculate_total_votes(results)
+     )}
   end
 
   @impl true
@@ -38,39 +47,34 @@ defmodule EventHorizonWeb.BlogComponents.Poll do
     if socket.assigns.voted_for do
       {:noreply, socket}
     else
-      results =
-        Enum.map(socket.assigns.results, fn option ->
-          if option.key == key do
-            %{option | votes: option.votes + 1}
-          else
-            option
-          end
-        end)
-
-      total_votes = Enum.reduce(results, 0, fn opt, acc -> acc + opt.votes end)
-
-      # TODO: Broadcast vote via PubSub for other users
-      # Phoenix.PubSub.broadcast(EventHorizon.PubSub, PollMockVoter.topic(), {:poll_vote, key})
-
-      {:noreply, assign(socket, results: results, voted_for: key, total_votes: total_votes)}
+      cast_vote(key, socket.assigns.keys)
+      {:noreply, assign(socket, voted_for: key)}
     end
   end
 
   @impl true
-  def handle_info({:poll_vote, key}, socket) do
+  def handle_info(%EhaPubsubMessages.PollResult{votes: votes}, socket) do
     results =
       Enum.map(socket.assigns.results, fn option ->
-        if option.key == key do
-          %{option | votes: option.votes + 1}
-        else
-          option
-        end
+        %{option | votes: Map.get(votes, option.key, 0)}
       end)
 
-    total_votes = Enum.reduce(results, 0, fn opt, acc -> acc + opt.votes end)
-
-    {:noreply, assign(socket, results: results, total_votes: total_votes)}
+    {:noreply, assign(socket, results: results, total_votes: calculate_total_votes(results))}
   end
+
+  defp request_current_votes(keys) do
+    PubSubContract.publish!(@pubsub, EhaPubsubMessages.PollRequest.new!(keys: keys))
+  end
+
+  defp cast_vote(key, keys) do
+    PubSubContract.publish!(@pubsub, EhaPubsubMessages.PollVote.new!(key: key, keys: keys))
+  end
+
+  defp calculate_total_votes(results) do
+    Enum.reduce(results, 0, fn opt, acc -> acc + opt.votes end)
+  end
+
+  # UI rendering stuff
 
   @impl true
   def render(assigns) do

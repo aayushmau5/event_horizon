@@ -26,6 +26,11 @@ defmodule EventHorizon.PubSubContract do
   sends(EhaPubsubMessages.Presence.SitePresence)
   sends(EhaPubsubMessages.Presence.BlogPresence)
 
+  # Poll messages
+  sends(EhaPubsubMessages.PollRequest)
+  sends(EhaPubsubMessages.PollVote)
+  receives(EhaPubsubMessages.PollResult)
+
   # Messages we receive FROM Accumulator
   receives(EhaPubsubMessages.Stats.SiteUpdated)
   receives(EhaPubsubMessages.Stats.BlogUpdated)
