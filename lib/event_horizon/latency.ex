@@ -7,6 +7,7 @@ defmodule EventHorizon.Latency do
   """
 
   use GenServer
+  require Logger
 
   @phx_prefix "phoenix-aayushsahu-com"
   @bsh_prefix "aayush-battleship"
