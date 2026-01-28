@@ -99,6 +99,14 @@ defmodule EventHorizon.Latency do
         Logger.error("RPC error: #{inspect(reason)}")
         {:error, reason}
 
+      :exit, {:exception, {:erpc, :timeout}, _} ->
+        Logger.warning("RPC timeout (exception) calling #{node}")
+        {:error, :timeout}
+
+      :exit, {:exception, reason, _} ->
+        Logger.error("RPC exception: #{inspect(reason)}")
+        {:error, reason}
+
       :exit, {kind, exit} ->
         Logger.error("RPC exit: #{inspect(kind)} - #{inspect(exit)}")
         {:error, :remote_exit}
@@ -126,6 +134,14 @@ defmodule EventHorizon.Latency do
 
       :error, {:erpc, reason} ->
         Logger.error("RPC error: #{inspect(reason)}")
+        {:error, reason}
+
+      :exit, {:exception, {:erpc, :timeout}, _} ->
+        Logger.warning("RPC timeout (exception) calling #{phx_node}")
+        {:error, :timeout}
+
+      :exit, {:exception, reason, _} ->
+        Logger.error("RPC exception: #{inspect(reason)}")
         {:error, reason}
 
       :exit, {kind, exit} ->
