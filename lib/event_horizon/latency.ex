@@ -116,11 +116,11 @@ defmodule EventHorizon.Latency do
       :erpc.call(phx_node, Accumulator.Latency, :measure_bsh, [], @timeout * 2)
     catch
       :error, {:erpc, :noconnection} ->
-        Logger.warning("RPC failed: could not connect to node #{node}")
+        Logger.warning("RPC failed: could not connect to node #{phx_node}")
         {:error, :noconnection}
 
       :error, {:erpc, :timeout} ->
-        Logger.warning("RPC timeout calling #{node}")
+        Logger.warning("RPC timeout calling #{phx_node}")
         {:error, :timeout}
 
       :error, {:erpc, reason} ->
