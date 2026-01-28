@@ -87,29 +87,8 @@ defmodule EventHorizon.Latency do
     try do
       :erpc.call(node, :erlang, :monotonic_time, [:native], @timeout)
     catch
-      :error, {:erpc, :noconnection} ->
-        Logger.warning("RPC failed: could not connect to node #{node}")
-        {:error, :noconnection}
-
-      :error, {:erpc, :timeout} ->
-        Logger.warning("RPC timeout calling #{node}")
-        {:error, :timeout}
-
-      :error, {:erpc, reason} ->
-        Logger.error("RPC error: #{inspect(reason)}")
-        {:error, reason}
-
-      :exit, {:exception, {:erpc, :timeout}, _} ->
-        Logger.warning("RPC timeout (exception) calling #{node}")
-        {:error, :timeout}
-
-      :exit, {:exception, reason, _} ->
-        Logger.error("RPC exception: #{inspect(reason)}")
-        {:error, reason}
-
-      :exit, {kind, exit} ->
-        Logger.error("RPC exit: #{inspect(kind)} - #{inspect(exit)}")
-        {:error, :remote_exit}
+      kind, reason ->
+        handle_rpc_error(kind, reason, node)
     else
       _result ->
         end_time = System.monotonic_time(:microsecond)
@@ -124,32 +103,43 @@ defmodule EventHorizon.Latency do
     try do
       :erpc.call(phx_node, Accumulator.Latency, :measure_bsh, [], @timeout * 2)
     catch
-      :error, {:erpc, :noconnection} ->
-        Logger.warning("RPC failed: could not connect to node #{phx_node}")
-        {:error, :noconnection}
-
-      :error, {:erpc, :timeout} ->
-        Logger.warning("RPC timeout calling #{phx_node}")
-        {:error, :timeout}
-
-      :error, {:erpc, reason} ->
-        Logger.error("RPC error: #{inspect(reason)}")
-        {:error, reason}
-
-      :exit, {:exception, {:erpc, :timeout}, _} ->
-        Logger.warning("RPC timeout (exception) calling #{phx_node}")
-        {:error, :timeout}
-
-      :exit, {:exception, reason, _} ->
-        Logger.error("RPC exception: #{inspect(reason)}")
-        {:error, reason}
-
-      :exit, {kind, exit} ->
-        Logger.error("RPC exit: #{inspect(kind)} - #{inspect(exit)}")
-        {:error, :remote_exit}
+      kind, reason ->
+        handle_rpc_error(kind, reason, phx_node)
     else
       {:ok, ms} -> {:ok, Float.round(ms / 1.0, 2)}
       {:error, _} = err -> err
+    end
+  end
+
+  defp handle_rpc_error(kind, reason, node) do
+    case {kind, reason} do
+      {:error, {:erpc, :noconnection}} ->
+        Logger.warning("RPC failed: could not connect to node #{node}")
+        {:error, :noconnection}
+
+      {:error, {:erpc, :timeout}} ->
+        Logger.warning("RPC timeout calling #{node}")
+        {:error, :timeout}
+
+      {_, {:exception, {:erpc, :timeout}, _}} ->
+        Logger.warning("RPC timeout (remote) calling #{node}")
+        {:error, :timeout}
+
+      {_, {:exception, {:erpc, reason}, _}} ->
+        Logger.warning("RPC error (remote) calling #{node}: #{inspect(reason)}")
+        {:error, reason}
+
+      {_, {:exception, reason, _}} ->
+        Logger.error("RPC remote exception calling #{node}: #{inspect(reason)}")
+        {:error, :remote_exception}
+
+      {_, {:erpc, reason}} ->
+        Logger.warning("RPC erpc error calling #{node}: #{inspect(reason)}")
+        {:error, reason}
+
+      _ ->
+        Logger.error("RPC error calling #{node}: #{inspect(kind)} - #{inspect(reason)}")
+        {:error, :rpc_error}
     end
   end
 end

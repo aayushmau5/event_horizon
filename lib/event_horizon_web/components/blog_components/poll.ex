@@ -150,7 +150,11 @@ defmodule EventHorizonWeb.BlogComponents.Poll do
       />
 
       <div class="relative flex items-center justify-between">
-        <span class={["font-medium", @is_selected && "text-[var(--theme-one)]", !@is_selected && "text-white/90"]}>
+        <span class={[
+          "font-medium",
+          @is_selected && "text-[var(--theme-one)]",
+          !@is_selected && "text-white/90"
+        ]}>
           {if @is_selected, do: "✓ ", else: ""}{@option.name}
         </span>
         <span class="text-sm font-bold text-white/80">
