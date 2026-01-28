@@ -48,14 +48,27 @@ defmodule EventHorizon.Latency do
 
   @impl true
   def handle_info(:measure, state) do
-    phx_node = find_node(@phx_prefix)
-    bsh_node = find_node(@bsh_prefix)
+    latencies =
+      try do
+        phx_node = find_node(@phx_prefix)
+        bsh_node = find_node(@bsh_prefix)
 
-    latencies = %{
-      eh_to_phx: measure_rtt(phx_node),
-      eh_to_bsh: measure_rtt(bsh_node),
-      phx_to_bsh: measure_phx_to_bsh(phx_node)
-    }
+        %{
+          eh_to_phx: measure_rtt(phx_node),
+          eh_to_bsh: measure_rtt(bsh_node),
+          phx_to_bsh: measure_phx_to_bsh(phx_node)
+        }
+      rescue
+        e ->
+          require Logger
+          Logger.error("Failed to measure latencies: #{inspect(e)}")
+
+          %{
+            eh_to_phx: {:error, :measurement_failed},
+            eh_to_bsh: {:error, :measurement_failed},
+            phx_to_bsh: {:error, :measurement_failed}
+          }
+      end
 
     Phoenix.PubSub.broadcast(
       EventHorizon.PubSub,
