@@ -33,7 +33,7 @@ defmodule EventHorizon.LatencyTest do
       assert Map.has_key?(latencies, :phx_to_bsh)
 
       # Clean up
-      GenServer.stop(pid)
+      GenServer.stop(pid, :normal, 1000)
     end
 
     test "continues to schedule measurements after errors" do
@@ -46,7 +46,7 @@ defmodule EventHorizon.LatencyTest do
       assert Process.alive?(pid)
 
       # Clean up
-      GenServer.stop(pid)
+      GenServer.stop(pid, :normal, 1000)
     end
 
     test "broadcasts latency updates via PubSub" do
@@ -61,7 +61,7 @@ defmodule EventHorizon.LatencyTest do
       assert is_map(latencies)
 
       # Clean up
-      GenServer.stop(pid)
+      GenServer.stop(pid, :normal, 1000)
     end
   end
 
@@ -77,7 +77,7 @@ defmodule EventHorizon.LatencyTest do
       assert Map.has_key?(latencies, :phx_to_bsh)
 
       # Clean up
-      GenServer.stop(pid)
+      GenServer.stop(pid, :normal, 1000)
     end
   end
 end

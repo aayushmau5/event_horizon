@@ -7,6 +7,7 @@ defmodule EventHorizon.Latency do
   """
 
   use GenServer
+  require Logger
 
   @phx_prefix "phoenix-aayushsahu-com"
   @bsh_prefix "aayush-battleship"
@@ -60,8 +61,7 @@ defmodule EventHorizon.Latency do
         }
       rescue
         e ->
-          require Logger
-          Logger.error("Failed to measure latencies: #{inspect(e)}")
+          Logger.error("Failed to measure latencies: #{inspect(e)}\n#{Exception.format_stacktrace(__STACKTRACE__)}")
 
           %{
             eh_to_phx: {:error, :measurement_failed},
