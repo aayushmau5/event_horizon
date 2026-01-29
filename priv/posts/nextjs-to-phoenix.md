@@ -225,6 +225,8 @@ Had some common mix tasks as part of "setup" process: Creating [RSS feeds](https
 
 I have three elixir apps currently deployed on fly.io. One is this phoenix app, second is another phoenix app that I made that contains a set of personal tools that I use in my day-to-day life, and third is a battleship game that I created during my initial phase of learning elixir & phoenix.
 
+> **UPDATE**: I moved all my apps into one region: Frankfurt. Reason being additional cross-region networking cost. These clustered apps communicate a lot through PubSub, meanwhile the latency between Paris <-> Mumbai & Amsterdam <-> Mumbai was slightly higher. Now they are in ~1ms range. Sweet!
+
 These are deployed in the Amsterdam, Paris & Mumbai regions. One awesome thing about fly.io is that they provide cross-region internal networking across apps in an organisation. As a plan to have some real-time metrics in the website, I clustered this app with the second one. I just went ahead and clustered all these applications. Haven't had any nodes go down on me yet.
 
 There's a [cluster page](https://aayushsahu.com/cluster) where you can see the latency measurement between all three apps, along with your latency with the website. Powered by some `:erpc` calls and PubSub. Neat!

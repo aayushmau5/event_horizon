@@ -87,7 +87,7 @@ defmodule EventHorizonWeb.ClusterLive do
               Website
             </text>
             <text x="200" y="165" text-anchor="middle" fill="#a1a1aa" font-size="10">
-              Amsterdam
+              Frankfurt
             </text>
           </g>
           <%!-- PHX - Bottom Right --%>
@@ -106,7 +106,7 @@ defmodule EventHorizonWeb.ClusterLive do
               Accumulator
             </text>
             <text x="330" y="355" text-anchor="middle" fill="#a1a1aa" font-size="10">
-              Paris
+              Frankfurt
             </text>
           </g>
           <%!-- BSH - Bottom Left --%>
@@ -125,7 +125,7 @@ defmodule EventHorizonWeb.ClusterLive do
               Battleship
             </text>
             <text x="70" y="355" text-anchor="middle" fill="#a1a1aa" font-size="10">
-              Mumbai
+              Frankfurt
             </text>
           </g>
           <%!-- Edges with latency labels --%>
