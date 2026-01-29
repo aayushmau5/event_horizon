@@ -42,13 +42,18 @@ defmodule EventHorizonWeb.BlogLive.Show do
       # Subscribe to presence requests from remote
       PubSubContract.subscribe!(@pubsub, PresenceRequest)
 
-      # Track this viewer
+      # Track this viewer by IP to dedupe multiple tabs
+      user_ip = EventHorizon.ClientIP.get(socket)
+
       Presence.track(self(), presence_topic, socket.id, %{
-        joined_at: System.system_time(:second)
+        joined_at: System.system_time(:second),
+        ip: user_ip
       })
 
-      # Publish visit event to remote node using contract
-      PubSubContract.publish!(@pubsub, BlogVisit.new!(slug: post.slug))
+      # Only publish visit if this is the first tab for this IP
+      if first_visit_for_ip?(presence_topic, user_ip) do
+        PubSubContract.publish!(@pubsub, BlogVisit.new!(slug: post.slug))
+      end
 
       current_viewers = count_presence(presence_topic)
       assign(socket, current_viewers: current_viewers, stats: default_stats())
@@ -153,7 +158,19 @@ defmodule EventHorizonWeb.BlogLive.Show do
   defp normalize_author(_), do: "Anonymous"
 
   defp count_presence(topic) do
-    Presence.list(topic) |> map_size()
+    Presence.list(topic)
+    |> Enum.flat_map(fn {_key, %{metas: metas}} -> Enum.map(metas, & &1.ip) end)
+    |> Enum.uniq()
+    |> length()
+  end
+
+  defp first_visit_for_ip?(topic, ip) do
+    ip_count =
+      Presence.list(topic)
+      |> Enum.flat_map(fn {_key, %{metas: metas}} -> Enum.map(metas, & &1.ip) end)
+      |> Enum.count(&(&1 == ip))
+
+    ip_count == 1
   end
 
   # A placeholder value until we get real data from remote node

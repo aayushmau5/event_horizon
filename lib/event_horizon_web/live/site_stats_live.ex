@@ -34,12 +34,17 @@ defmodule EventHorizonWeb.SiteStatsLive do
       # Subscribe to messages we receive per contract
       PubSubContract.subscribe_all(@pubsub)
 
+      user_ip = EventHorizon.ClientIP.get(socket)
+
       Presence.track(self(), @presence_topic, socket.id, %{
-        joined_at: System.system_time(:second)
+        joined_at: System.system_time(:second),
+        ip: user_ip
       })
 
-      # Publish visit event to remote node using contract
-      PubSubContract.publish!(@pubsub, SiteVisit.new!(%{}))
+      # Only publish visit if this is the first tab for this IP
+      if first_visit_for_ip?(@presence_topic, user_ip) do
+        PubSubContract.publish!(@pubsub, SiteVisit.new!(%{}))
+      end
 
       assign(socket, online_count: count_presence(), total_visits: 0, now_playing: nil)
     else
@@ -91,10 +96,18 @@ defmodule EventHorizonWeb.SiteStatsLive do
   def handle_info(_msg, socket), do: {:noreply, socket}
 
   defp count_presence do
-    # Since, this is an embedded liveview, with id being "site-stats" provided in live_render
-    # All the presence data gets clubbed into one "site-stats" key
-    presence = Presence.list(@presence_topic)
-    presences = Map.get(presence, "site-stats", %{metas: []})
-    length(presences.metas)
+    Presence.list(@presence_topic)
+    |> Enum.flat_map(fn {_key, %{metas: metas}} -> Enum.map(metas, & &1.ip) end)
+    |> Enum.uniq()
+    |> length()
+  end
+
+  defp first_visit_for_ip?(topic, ip) do
+    ip_count =
+      Presence.list(topic)
+      |> Enum.flat_map(fn {_key, %{metas: metas}} -> Enum.map(metas, & &1.ip) end)
+      |> Enum.count(&(&1 == ip))
+
+    ip_count == 1
   end
 end
