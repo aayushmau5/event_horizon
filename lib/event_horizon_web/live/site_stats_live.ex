@@ -12,7 +12,7 @@ defmodule EventHorizonWeb.SiteStatsLive do
 
   alias EventHorizon.Presence
   alias EventHorizon.PubSubContract
-  alias EhaPubsubMessages.Analytics.SiteVisit
+  alias EhaPubsubMessages.Analytics.{SiteVisit, SiteStatRequest}
   alias EhaPubsubMessages.Stats.SiteUpdated
   alias EhaPubsubMessages.Stats.Spotify.NowPlaying
   alias EhaPubsubMessages.Presence.{SitePresence, PresenceRequest}
@@ -44,6 +44,8 @@ defmodule EventHorizonWeb.SiteStatsLive do
       # Only publish visit if this is the first tab for this IP
       if first_visit_for_ip?(@presence_topic, user_ip) do
         PubSubContract.publish!(@pubsub, SiteVisit.new!(%{}))
+      else
+        PubSubContract.publish!(@pubsub, SiteStatRequest.new!(%{}))
       end
 
       assign(socket, online_count: count_presence(), total_visits: 0, now_playing: nil)
@@ -108,6 +110,7 @@ defmodule EventHorizonWeb.SiteStatsLive do
       |> Enum.flat_map(fn {_key, %{metas: metas}} -> Enum.map(metas, & &1.ip) end)
       |> Enum.count(&(&1 == ip))
 
-    ip_count == 1
+    # <= 1 because Presence.track is async and may not be reflected yet
+    ip_count <= 1
   end
 end

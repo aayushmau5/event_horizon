@@ -19,6 +19,8 @@ defmodule EventHorizon.PubSubContract do
   use PubSubContract.Contract
 
   # Messages we send TO Accumulator
+  sends(EhaPubsubMessages.Analytics.SiteStatRequest)
+  sends(EhaPubsubMessages.Analytics.BlogStatRequest)
   sends(EhaPubsubMessages.Analytics.SiteVisit)
   sends(EhaPubsubMessages.Analytics.BlogVisit)
   sends(EhaPubsubMessages.Analytics.BlogLike)

@@ -4,7 +4,7 @@ defmodule EventHorizonWeb.BlogLive.Show do
   alias EventHorizon.Blog.Article
   alias EventHorizon.Presence
   alias EventHorizon.PubSubContract
-  alias EhaPubsubMessages.Analytics.{BlogVisit, BlogLike, BlogComment}
+  alias EhaPubsubMessages.Analytics.{BlogVisit, BlogLike, BlogComment, BlogStatRequest}
   alias EhaPubsubMessages.Stats.BlogUpdated
   alias EhaPubsubMessages.Presence.{BlogPresence, PresenceRequest}
   alias EhaPubsubMessages.Topics
@@ -53,6 +53,8 @@ defmodule EventHorizonWeb.BlogLive.Show do
       # Only publish visit if this is the first tab for this IP
       if first_visit_for_ip?(presence_topic, user_ip) do
         PubSubContract.publish!(@pubsub, BlogVisit.new!(slug: post.slug))
+      else
+        PubSubContract.publish!(@pubsub, BlogStatRequest.new!(slug: post.slug))
       end
 
       current_viewers = count_presence(presence_topic)
