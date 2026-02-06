@@ -43,9 +43,9 @@ defmodule EventHorizonWeb.Layouts do
     <main class="px-4 py-4 sm:px-6 lg:px-8">
       <div class="mx-auto max-w-4xl space-y-4 text-(--text-color) leading-8 text-lg">
         {render_slot(@inner_block)}
-        <.footer socket={@socket} />
       </div>
     </main>
+    <.footer socket={@socket} />
     <.command_bar id="command-bar" />
     """
   end
