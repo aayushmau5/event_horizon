@@ -31,21 +31,23 @@ defmodule EventHorizonWeb.LinksLive.Index do
   def render(assigns) do
     ~H"""
     <Layouts.app current_path={@current_path} socket={@socket}>
-      <h1 class="font-[Handwriting] text-4xl font-bold mb-4">Links</h1>
+      <div class="animate-fadeIn">
+        <h1 class="font-[Handwriting] text-4xl font-bold mb-4">Links</h1>
 
-      <ul class="flex flex-col gap-[7px]">
-        <li :for={link <- @links} class="list-disc ml-4">
-          <%= if String.starts_with?(link.path, "http") do %>
-            <.link href={link.path} target="_blank" rel="noreferrer" class="styledLink">
-              {link.name}
-            </.link>
-          <% else %>
-            <.link navigate={link.path} class="styledLink">
-              {link.name}
-            </.link>
-          <% end %>
-        </li>
-      </ul>
+        <ul class="flex flex-col gap-[7px]">
+          <li :for={link <- @links} class="list-disc ml-4">
+            <%= if String.starts_with?(link.path, "http") do %>
+              <.link href={link.path} target="_blank" rel="noreferrer" class="styledLink">
+                {link.name}
+              </.link>
+            <% else %>
+              <.link navigate={link.path} class="styledLink">
+                {link.name}
+              </.link>
+            <% end %>
+          </li>
+        </ul>
+      </div>
     </Layouts.app>
     """
   end

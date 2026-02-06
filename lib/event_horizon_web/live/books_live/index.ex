@@ -137,48 +137,50 @@ defmodule EventHorizonWeb.BooksLive.Index do
   def render(assigns) do
     ~H"""
     <Layouts.app current_path={@current_path} socket={@socket}>
-      <h1 class="font-[Handwriting] text-4xl font-bold mb-4">Books</h1>
+      <div class="animate-fadeIn">
+        <h1 class="font-[Handwriting] text-4xl font-bold mb-4">Books</h1>
 
-      <%!-- <div style={{ width: "60%", height: "auto", margin: "1rem auto" }}>
+        <%!-- <div style={{ width: "60%", height: "auto", margin: "1rem auto" }}>
         <Image src={bookCover} alt="The Three Body Problem book cover" />
       </div> --%>
 
-      <p class="text-(--books-paragraph)">
-        List of books I have read. I'm not an avid book reader but I like to read books from time to time.
-      </p>
+        <p class="text-(--books-paragraph)">
+          List of books I have read. I'm not an avid book reader but I like to read books from time to time.
+        </p>
 
-      <h3 class="font-bold text-xl m-0">Tech</h3>
-      <p class="text-(--books-paragraph)">Tech related books.</p>
-      <ul>
-        <li :for={book <- @tech_books} class="list-disc ml-4">
-          <p class="text-lg">{book.name} by {book.author}</p>
-          <p :if={book.remark} class="text-(--books-paragraph)">
-            {book.remark}
-          </p>
-        </li>
-      </ul>
+        <h3 class="font-bold text-xl m-0">Tech</h3>
+        <p class="text-(--books-paragraph)">Tech related books.</p>
+        <ul>
+          <li :for={book <- @tech_books} class="list-disc ml-4">
+            <p class="text-lg">{book.name} by {book.author}</p>
+            <p :if={book.remark} class="text-(--books-paragraph)">
+              {book.remark}
+            </p>
+          </li>
+        </ul>
 
-      <h3 class="font-bold text-xl m-0">Fiction</h3>
-      <p class="text-(--books-paragraph)">Fiction, Sci-Fi, etc.</p>
-      <ul>
-        <li :for={book <- @fiction_books} class="list-disc ml-4">
-          <p class="text-lg">{book.name} by {book.author}</p>
-          <ul :if={Map.get(book, :child)}>
-            <li :for={book <- book.child} class="list-disc ml-8">
-              {book}
-            </li>
-          </ul>
-          <p :if={book.remark} class="text-(--books-paragraph)">
-            {book.remark}
-          </p>
-        </li>
-      </ul>
+        <h3 class="font-bold text-xl m-0">Fiction</h3>
+        <p class="text-(--books-paragraph)">Fiction, Sci-Fi, etc.</p>
+        <ul>
+          <li :for={book <- @fiction_books} class="list-disc ml-4">
+            <p class="text-lg">{book.name} by {book.author}</p>
+            <ul :if={Map.get(book, :child)}>
+              <li :for={book <- book.child} class="list-disc ml-8">
+                {book}
+              </li>
+            </ul>
+            <p :if={book.remark} class="text-(--books-paragraph)">
+              {book.remark}
+            </p>
+          </li>
+        </ul>
 
-      <h3 class="font-bold text-xl m-0">Shorts</h3>
-      <p class="text-(--books-paragraph)">Some of my favorite short stories.</p>
-      <ul>
-        <li :for={short <- @shorts} class="list-disc ml-4">{short.name} by {short.author}</li>
-      </ul>
+        <h3 class="font-bold text-xl m-0">Shorts</h3>
+        <p class="text-(--books-paragraph)">Some of my favorite short stories.</p>
+        <ul>
+          <li :for={short <- @shorts} class="list-disc ml-4">{short.name} by {short.author}</li>
+        </ul>
+      </div>
     </Layouts.app>
     """
   end
