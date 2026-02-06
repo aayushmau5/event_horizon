@@ -18,11 +18,12 @@ defmodule EventHorizonWeb.PageComponents do
             />
           </div>
         <% end %>
-        <div class="navbarLinksContainer">
+        <div class="navbarLinksContainer" id="navbar-links" phx-hook=".NavHover">
+          <div class="navHoverPill"></div>
           <.link
             navigate="/"
             class={[
-              "styledLink",
+              "navLink",
               if(@current_path == "/", do: "navActive", else: "navShadow")
             ]}
           >
@@ -31,7 +32,7 @@ defmodule EventHorizonWeb.PageComponents do
           <.link
             navigate="/blog"
             class={[
-              "styledLink",
+              "navLink",
               if(@current_path == "/blog", do: "navActive", else: "navShadow")
             ]}
           >
@@ -40,7 +41,7 @@ defmodule EventHorizonWeb.PageComponents do
           <.link
             navigate="/projects"
             class={[
-              "styledLink",
+              "navLink",
               if(@current_path == "/projects", do: "navActive", else: "navShadow")
             ]}
           >
@@ -49,7 +50,7 @@ defmodule EventHorizonWeb.PageComponents do
           <.link
             navigate="/about"
             class={[
-              "styledLink",
+              "navLink",
               if(@current_path == "/about", do: "navActive", else: "navShadow")
             ]}
           >
@@ -67,6 +68,43 @@ defmodule EventHorizonWeb.PageComponents do
         </div>
       </div>
     </nav>
+    <script :type={Phoenix.LiveView.ColocatedHook} name=".NavHover">
+      export default {
+        mounted() {
+          this.pill = this.el.querySelector('.navHoverPill');
+          this.links = this.el.querySelectorAll('.navLink');
+          this.enabled = false;
+
+          this.links.forEach(link => {
+            link.addEventListener('mouseenter', () => {
+              if (this.enabled) this.movePill(link);
+            });
+          });
+
+          this.el.addEventListener('mousemove', () => {
+            this.enabled = true;
+          }, { once: true });
+
+          this.el.addEventListener('mouseleave', () => this.hidePill());
+        },
+
+        movePill(link) {
+          const containerRect = this.el.getBoundingClientRect();
+          const linkRect = link.getBoundingClientRect();
+          const padding = 8;
+
+          this.pill.style.opacity = '1';
+          this.pill.style.width = `${linkRect.width + padding * 2}px`;
+          this.pill.style.height = `${linkRect.height + padding}px`;
+          this.pill.style.left = `${linkRect.left - containerRect.left - padding}px`;
+          this.pill.style.top = `${linkRect.top - containerRect.top - padding / 2}px`;
+        },
+
+        hidePill() {
+          this.pill.style.opacity = '0';
+        }
+      }
+    </script>
     """
   end
 
@@ -74,44 +112,47 @@ defmodule EventHorizonWeb.PageComponents do
 
   def footer(assigns) do
     ~H"""
-    <div class="footerContainer">
-      <%= if @socket do %>
-        <div class="site-stats-container">
-          {live_render(@socket, EventHorizonWeb.SiteStatsLive, id: "site-stats", sticky: true)}
-        </div>
-      <% end %>
-      <div class="footerTop">
-        <.theme_switcher />
-      </div>
-      <div class="footerOthers">
-        <div class="footerLinks">
-          <div class="footerLinksColumn">
-            <.link class="footerLink" navigate="/">
-              Home
-            </.link>
-            <.link class="footerLink" navigate="/blog">
-              Blog
-            </.link>
-            <.link class="footerLink" navigate="/about">
-              About
-            </.link>
-            <.link class="footerLink" navigate="/links">
-              Links
-            </.link>
+    <div class="footerContainer overflow-hidden pt-[15rem]">
+      <div class="footerDotPattern" id="footer-waves" phx-hook="FooterWaves" phx-update="ignore"></div>
+      <div>
+        <%= if @socket do %>
+          <div class="site-stats-container">
+            {live_render(@socket, EventHorizonWeb.SiteStatsLive, id: "site-stats", sticky: true)}
           </div>
-          <div class="footerLinksColumn">
-            <.link class="footerLink" navigate="/cluster">
-              Cluster
-            </.link>
-            <.link class="footerLink" navigate="/contact">
-              Contact
-            </.link>
-            <.link class="footerLink" navigate="/links">
-              Links
-            </.link>
-            <.link class="footerLink" navigate="/resume">
-              Resume
-            </.link>
+        <% end %>
+        <div class="footerTop">
+          <.theme_switcher />
+        </div>
+        <div class="footerOthers">
+          <div class="footerLinks">
+            <div class="footerLinksColumn">
+              <.link class="footerLink" navigate="/">
+                Home
+              </.link>
+              <.link class="footerLink" navigate="/blog">
+                Blog
+              </.link>
+              <.link class="footerLink" navigate="/about">
+                About
+              </.link>
+              <.link class="footerLink" navigate="/links">
+                Links
+              </.link>
+            </div>
+            <div class="footerLinksColumn">
+              <.link class="footerLink" navigate="/cluster">
+                Cluster
+              </.link>
+              <.link class="footerLink" navigate="/contact">
+                Contact
+              </.link>
+              <.link class="footerLink" navigate="/links">
+                Links
+              </.link>
+              <.link class="footerLink" navigate="/resume">
+                Resume
+              </.link>
+            </div>
           </div>
         </div>
       </div>
@@ -132,6 +173,34 @@ defmodule EventHorizonWeb.PageComponents do
     >
       {render_slot(@inner_block)}
     </a>
+    """
+  end
+
+  attr :id, :string, required: true
+  attr :slug, :string, required: true
+  attr :title, :string, required: true
+  attr :date, :string, required: true
+  attr :description, :string, default: nil
+  attr :read_time, :string, default: nil
+  attr :class, :string, default: ""
+
+  def blog_card(assigns) do
+    ~H"""
+    <.link
+      id={@id}
+      navigate={"/blog/#{@slug}"}
+      class={["blogCard", @class]}
+      phx-hook="Tilt"
+    >
+      <p class="blogCardDate">{@date}</p>
+      <h3>{@title}</h3>
+      <%= if @description do %>
+        <p class="blogCardDescription">{@description}</p>
+      <% end %>
+      <%= if @read_time do %>
+        <p class="blogCardReadTime">{@read_time} min read</p>
+      <% end %>
+    </.link>
     """
   end
 end
