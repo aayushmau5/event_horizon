@@ -8,7 +8,7 @@ defmodule EventHorizonWeb.Themes do
     %{
       id: "default-dark",
       name: "Default",
-      background: "#101114",
+      background: "#0f0f10",
       accents: ["#21daa2", "#43dce5", "#36c3ef", "#4a5ae9"]
     },
     %{
