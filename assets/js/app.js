@@ -24,6 +24,8 @@ import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import { hooks as colocatedHooks } from "phoenix-colocated/event_horizon";
 import topbar from "../vendor/topbar";
+import { Tilt } from "./hooks/tilt";
+import { FooterWaves } from "./hooks/footer_waves";
 
 const ResetForm = {
   mounted() {
@@ -41,7 +43,7 @@ const csrfToken = document
 const liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
   params: { _csrf_token: csrfToken },
-  hooks: { ...colocatedHooks, ResetForm },
+  hooks: { ...colocatedHooks, ResetForm, Tilt, FooterWaves },
 });
 
 // Show progress bar on live navigation and form submits

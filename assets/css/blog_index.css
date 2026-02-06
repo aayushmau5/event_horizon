@@ -193,462 +193,413 @@
     flex-flow: row wrap;
     align-items: flex-start;
     justify-content: center;
-}
-
-.blogIndexLink {
-    display: inline-block;
-    padding: 1rem;
-    border-radius: 0.75rem;
-    word-wrap: break-word;
-    transition: transform linear 0.1s;
-    width: 50%;
-    opacity: 0;
-    animation: load-slide-up 0.3s ease-in forwards;
-}
-
-.blogIndexLink:hover {
-    background-color: var(--blog-container-hover);
-}
-
-.blogIndexLink:active {
-    transform: scale(0.98);
-}
-
-.blogIndexLink:focus {
-    outline: 2px solid var(--blog-container-focus);
-}
-
-.blogIndexDate {
-    font-size: 0.9rem;
-    opacity: 0.5;
-}
-
-.blogIndexReadTime {
-    color: var(--blog-reading-time);
-    font-size: 0.9rem;
-    font-weight: bold;
+    overflow-anchor: none;
 }
 
 @media (max-width: 768px) {
     .blogIndexBlogsContainer {
         flex-direction: column;
     }
-
-    .blogIndexLink {
-        width: 100%;
-    }
-}
-
-@keyframes load-slide-up {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 /* Animation Delays */
 
-.blogIndexLink:nth-child(1) {
+.blogCard:nth-child(1) {
     animation-delay: 0.1s;
 }
 
-.blogIndexLink:nth-child(2) {
+.blogCard:nth-child(2) {
     animation-delay: 0.2s;
 }
 
-.blogIndexLink:nth-child(3) {
+.blogCard:nth-child(3) {
     animation-delay: 0.3s;
 }
 
-.blogIndexLink:nth-child(4) {
+.blogCard:nth-child(4) {
     animation-delay: 0.4s;
 }
 
-.blogIndexLink:nth-child(5) {
+.blogCard:nth-child(5) {
     animation-delay: 0.5s;
 }
 
-.blogIndexLink:nth-child(6) {
+.blogCard:nth-child(6) {
     animation-delay: 0.6s;
 }
 
-.blogIndexLink:nth-child(7) {
+.blogCard:nth-child(7) {
     animation-delay: 0.7s;
 }
 
-.blogIndexLink:nth-child(8) {
+.blogCard:nth-child(8) {
     animation-delay: 0.8s;
 }
 
-.blogIndexLink:nth-child(9) {
+.blogCard:nth-child(9) {
     animation-delay: 0.9s;
 }
 
-.blogIndexLink:nth-child(10) {
+.blogCard:nth-child(10) {
     animation-delay: 1s;
 }
 
-.blogIndexLink:nth-child(11) {
+.blogCard:nth-child(11) {
     animation-delay: 1.1s;
 }
 
-.blogIndexLink:nth-child(12) {
+.blogCard:nth-child(12) {
     animation-delay: 1.2s;
 }
 
-.blogIndexLink:nth-child(13) {
+.blogCard:nth-child(13) {
     animation-delay: 1.3s;
 }
 
-.blogIndexLink:nth-child(14) {
+.blogCard:nth-child(14) {
     animation-delay: 1.4s;
 }
 
-.blogIndexLink:nth-child(15) {
+.blogCard:nth-child(15) {
     animation-delay: 1.5s;
 }
 
-.blogIndexLink:nth-child(16) {
+.blogCard:nth-child(16) {
     animation-delay: 1.6s;
 }
 
-.blogIndexLink:nth-child(17) {
+.blogCard:nth-child(17) {
     animation-delay: 1.7s;
 }
 
-.blogIndexLink:nth-child(18) {
+.blogCard:nth-child(18) {
     animation-delay: 1.8s;
 }
 
-.blogIndexLink:nth-child(19) {
+.blogCard:nth-child(19) {
     animation-delay: 1.9s;
 }
 
-.blogIndexLink:nth-child(20) {
+.blogCard:nth-child(20) {
     animation-delay: 2s;
 }
 
-.blogIndexLink:nth-child(21) {
+.blogCard:nth-child(21) {
     animation-delay: 2.1s;
 }
 
-.blogIndexLink:nth-child(22) {
+.blogCard:nth-child(22) {
     animation-delay: 2.2s;
 }
 
-.blogIndexLink:nth-child(23) {
+.blogCard:nth-child(23) {
     animation-delay: 2.3s;
 }
 
-.blogIndexLink:nth-child(24) {
+.blogCard:nth-child(24) {
     animation-delay: 2.4s;
 }
 
-.blogIndexLink:nth-child(25) {
+.blogCard:nth-child(25) {
     animation-delay: 2.5s;
 }
 
-.blogIndexLink:nth-child(26) {
+.blogCard:nth-child(26) {
     animation-delay: 2.6s;
 }
 
-.blogIndexLink:nth-child(27) {
+.blogCard:nth-child(27) {
     animation-delay: 2.7s;
 }
 
-.blogIndexLink:nth-child(28) {
+.blogCard:nth-child(28) {
     animation-delay: 2.8s;
 }
 
-.blogIndexLink:nth-child(29) {
+.blogCard:nth-child(29) {
     animation-delay: 2.9s;
 }
 
-.blogIndexLink:nth-child(30) {
+.blogCard:nth-child(30) {
     animation-delay: 3s;
 }
 
-.blogIndexLink:nth-child(31) {
+.blogCard:nth-child(31) {
     animation-delay: 3.1s;
 }
 
-.blogIndexLink:nth-child(32) {
+.blogCard:nth-child(32) {
     animation-delay: 3.2s;
 }
 
-.blogIndexLink:nth-child(33) {
+.blogCard:nth-child(33) {
     animation-delay: 3.3s;
 }
 
-.blogIndexLink:nth-child(34) {
+.blogCard:nth-child(34) {
     animation-delay: 3.4s;
 }
 
-.blogIndexLink:nth-child(35) {
+.blogCard:nth-child(35) {
     animation-delay: 3.5s;
 }
 
-.blogIndexLink:nth-child(36) {
+.blogCard:nth-child(36) {
     animation-delay: 3.6s;
 }
 
-.blogIndexLink:nth-child(37) {
+.blogCard:nth-child(37) {
     animation-delay: 3.7s;
 }
 
-.blogIndexLink:nth-child(38) {
+.blogCard:nth-child(38) {
     animation-delay: 3.8s;
 }
 
-.blogIndexLink:nth-child(39) {
+.blogCard:nth-child(39) {
     animation-delay: 3.9s;
 }
 
-.blogIndexLink:nth-child(40) {
+.blogCard:nth-child(40) {
     animation-delay: 4s;
 }
 
-.blogIndexLink:nth-child(41) {
+.blogCard:nth-child(41) {
     animation-delay: 4.1s;
 }
 
-.blogIndexLink:nth-child(42) {
+.blogCard:nth-child(42) {
     animation-delay: 4.2s;
 }
 
-.blogIndexLink:nth-child(43) {
+.blogCard:nth-child(43) {
     animation-delay: 4.3s;
 }
 
-.blogIndexLink:nth-child(44) {
+.blogCard:nth-child(44) {
     animation-delay: 4.4s;
 }
 
-.blogIndexLink:nth-child(45) {
+.blogCard:nth-child(45) {
     animation-delay: 4.5s;
 }
 
-.blogIndexLink:nth-child(46) {
+.blogCard:nth-child(46) {
     animation-delay: 4.6s;
 }
 
-.blogIndexLink:nth-child(47) {
+.blogCard:nth-child(47) {
     animation-delay: 4.7s;
 }
 
-.blogIndexLink:nth-child(48) {
+.blogCard:nth-child(48) {
     animation-delay: 4.8s;
 }
 
-.blogIndexLink:nth-child(49) {
+.blogCard:nth-child(49) {
     animation-delay: 4.9s;
 }
 
-.blogIndexLink:nth-child(50) {
+.blogCard:nth-child(50) {
     animation-delay: 5s;
 }
 
-.blogIndexLink:nth-child(51) {
+.blogCard:nth-child(51) {
     animation-delay: 5.1s;
 }
 
-.blogIndexLink:nth-child(52) {
+.blogCard:nth-child(52) {
     animation-delay: 5.2s;
 }
 
-.blogIndexLink:nth-child(53) {
+.blogCard:nth-child(53) {
     animation-delay: 5.3s;
 }
 
-.blogIndexLink:nth-child(54) {
+.blogCard:nth-child(54) {
     animation-delay: 5.4s;
 }
 
-.blogIndexLink:nth-child(55) {
+.blogCard:nth-child(55) {
     animation-delay: 5.5s;
 }
 
-.blogIndexLink:nth-child(56) {
+.blogCard:nth-child(56) {
     animation-delay: 5.6s;
 }
 
-.blogIndexLink:nth-child(57) {
+.blogCard:nth-child(57) {
     animation-delay: 5.7s;
 }
 
-.blogIndexLink:nth-child(58) {
+.blogCard:nth-child(58) {
     animation-delay: 5.8s;
 }
 
-.blogIndexLink:nth-child(59) {
+.blogCard:nth-child(59) {
     animation-delay: 5.9s;
 }
 
-.blogIndexLink:nth-child(60) {
+.blogCard:nth-child(60) {
     animation-delay: 6s;
 }
 
-.blogIndexLink:nth-child(61) {
+.blogCard:nth-child(61) {
     animation-delay: 6.1s;
 }
 
-.blogIndexLink:nth-child(62) {
+.blogCard:nth-child(62) {
     animation-delay: 6.2s;
 }
 
-.blogIndexLink:nth-child(63) {
+.blogCard:nth-child(63) {
     animation-delay: 6.3s;
 }
 
-.blogIndexLink:nth-child(64) {
+.blogCard:nth-child(64) {
     animation-delay: 6.4s;
 }
 
-.blogIndexLink:nth-child(65) {
+.blogCard:nth-child(65) {
     animation-delay: 6.5s;
 }
 
-.blogIndexLink:nth-child(66) {
+.blogCard:nth-child(66) {
     animation-delay: 6.6s;
 }
 
-.blogIndexLink:nth-child(67) {
+.blogCard:nth-child(67) {
     animation-delay: 6.7s;
 }
 
-.blogIndexLink:nth-child(68) {
+.blogCard:nth-child(68) {
     animation-delay: 6.8s;
 }
 
-.blogIndexLink:nth-child(69) {
+.blogCard:nth-child(69) {
     animation-delay: 6.9s;
 }
 
-.blogIndexLink:nth-child(70) {
+.blogCard:nth-child(70) {
     animation-delay: 7s;
 }
 
-.blogIndexLink:nth-child(71) {
+.blogCard:nth-child(71) {
     animation-delay: 7.1s;
 }
 
-.blogIndexLink:nth-child(72) {
+.blogCard:nth-child(72) {
     animation-delay: 7.2s;
 }
 
-.blogIndexLink:nth-child(73) {
+.blogCard:nth-child(73) {
     animation-delay: 7.3s;
 }
 
-.blogIndexLink:nth-child(74) {
+.blogCard:nth-child(74) {
     animation-delay: 7.4s;
 }
 
-.blogIndexLink:nth-child(75) {
+.blogCard:nth-child(75) {
     animation-delay: 7.5s;
 }
 
-.blogIndexLink:nth-child(76) {
+.blogCard:nth-child(76) {
     animation-delay: 7.6s;
 }
 
-.blogIndexLink:nth-child(77) {
+.blogCard:nth-child(77) {
     animation-delay: 7.7s;
 }
 
-.blogIndexLink:nth-child(78) {
+.blogCard:nth-child(78) {
     animation-delay: 7.8s;
 }
 
-.blogIndexLink:nth-child(79) {
+.blogCard:nth-child(79) {
     animation-delay: 7.9s;
 }
 
-.blogIndexLink:nth-child(80) {
+.blogCard:nth-child(80) {
     animation-delay: 8s;
 }
 
-.blogIndexLink:nth-child(81) {
+.blogCard:nth-child(81) {
     animation-delay: 8.1s;
 }
 
-.blogIndexLink:nth-child(82) {
+.blogCard:nth-child(82) {
     animation-delay: 8.2s;
 }
 
-.blogIndexLink:nth-child(83) {
+.blogCard:nth-child(83) {
     animation-delay: 8.3s;
 }
 
-.blogIndexLink:nth-child(84) {
+.blogCard:nth-child(84) {
     animation-delay: 8.4s;
 }
 
-.blogIndexLink:nth-child(85) {
+.blogCard:nth-child(85) {
     animation-delay: 8.5s;
 }
 
-.blogIndexLink:nth-child(86) {
+.blogCard:nth-child(86) {
     animation-delay: 8.6s;
 }
 
-.blogIndexLink:nth-child(87) {
+.blogCard:nth-child(87) {
     animation-delay: 8.7s;
 }
 
-.blogIndexLink:nth-child(88) {
+.blogCard:nth-child(88) {
     animation-delay: 8.8s;
 }
 
-.blogIndexLink:nth-child(89) {
+.blogCard:nth-child(89) {
     animation-delay: 8.9s;
 }
 
-.blogIndexLink:nth-child(90) {
+.blogCard:nth-child(90) {
     animation-delay: 9s;
 }
 
-.blogIndexLink:nth-child(91) {
+.blogCard:nth-child(91) {
     animation-delay: 9.1s;
 }
 
-.blogIndexLink:nth-child(92) {
+.blogCard:nth-child(92) {
     animation-delay: 9.2s;
 }
 
-.blogIndexLink:nth-child(93) {
+.blogCard:nth-child(93) {
     animation-delay: 9.3s;
 }
 
-.blogIndexLink:nth-child(94) {
+.blogCard:nth-child(94) {
     animation-delay: 9.4s;
 }
 
-.blogIndexLink:nth-child(95) {
+.blogCard:nth-child(95) {
     animation-delay: 9.5s;
 }
 
-.blogIndexLink:nth-child(96) {
+.blogCard:nth-child(96) {
     animation-delay: 9.6s;
 }
 
-.blogIndexLink:nth-child(97) {
+.blogCard:nth-child(97) {
     animation-delay: 9.7s;
 }
 
-.blogIndexLink:nth-child(98) {
+.blogCard:nth-child(98) {
     animation-delay: 9.8s;
 }
 
-.blogIndexLink:nth-child(99) {
+.blogCard:nth-child(99) {
     animation-delay: 9.9s;
 }
 
-.blogIndexLink:nth-child(100) {
+.blogCard:nth-child(100) {
     animation-delay: 10s;
 }

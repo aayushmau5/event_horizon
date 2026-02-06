@@ -55,16 +55,14 @@
         </.link>
       </div>
       <div class="homeBlogsContainer">
-        <%= for post <- @recent_posts do %>
-          <.link navigate={~p"/blog/#{post.slug}"} class="homeBlogContainer">
-            <h3>{post.title}</h3>
-            <p class="homeBlogDate" style="margin: 5px 0;">
-              {post.description}
-            </p>
-            <p class="homeBlogDate">
-              {post.formatted_date}
-            </p>
-          </.link>
+        <%= for {post, index} <- Enum.with_index(@recent_posts) do %>
+          <.blog_card
+            id={"home-blog-#{index}"}
+            slug={post.slug}
+            title={post.title}
+            date={post.formatted_date}
+            description={post.description}
+          />
         <% end %>
       </div>
     </div>

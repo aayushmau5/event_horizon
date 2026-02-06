@@ -37,18 +37,14 @@
     <% end %>
 
     <div id="blogs-list" class="blogIndexBlogsContainer" phx-update="stream">
-      <.link
+      <.blog_card
         :for={{dom_id, blog} <- @streams.blogs}
         id={dom_id}
-        class="blogIndexLink"
-        navigate={"/blog/#{blog.slug}"}
-      >
-        <p class="blogIndexDate">
-          {blog.formatted_date}
-        </p>
-        <h3>{blog.title}</h3>
-        <p class="blogIndexReadTime">{blog.read_minutes} min read</p>
-      </.link>
+        slug={blog.slug}
+        title={blog.title}
+        date={blog.formatted_date}
+        read_time={blog.read_minutes}
+      />
     </div>
   </div>
 </Layouts.app>
