@@ -30,7 +30,7 @@ const CODE_SNIPPETS = [
   "crossover",
   "mutation",
   "evolve",
-  "fitness",
+  "fitness_function",
   "Path.wildcard",
   "Jason.encode!",
   "Mix.install",
@@ -156,102 +156,124 @@ const CODE_SNIPPETS = [
   "how do you do?",
   "my name is jeff",
   "meow meow meow",
+  "We are in the matrix",
+  "Just have fun",
+  "Listen to Animals by Pink Floyd",
+  "megatron",
+  "meowli",
 ];
+
+const COLORS = ["--theme-one", "--theme-two", "--theme-three", "--theme-four"];
+const MAX_SNIPPETS = 25;
+const SPAWN_INTERVAL = 400;
+
+function getGlobalState() {
+  if (!window.__footerWaves) {
+    window.__footerWaves = {
+      snippets: [],
+      interval: null,
+      paused: false,
+      visibilityHandler: null,
+      container: null,
+    };
+  }
+  return window.__footerWaves;
+}
+
+function createSnippet(state) {
+  if (!state.container) return;
+
+  const text = CODE_SNIPPETS[Math.floor(Math.random() * CODE_SNIPPETS.length)];
+  const el = document.createElement("div");
+  el.className = "codeSnippet";
+  el.textContent = text;
+
+  const x = 5 + Math.random() * 90;
+  const startY = 100 + Math.random() * 20;
+  const duration = 8 + Math.random() * 12;
+  const delay = Math.random() * 2;
+  const size = 0.7 + Math.random() * 0.5;
+  const opacity = 0.15 + Math.random() * 0.35;
+  const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+
+  el.style.cssText = `
+    left: ${x}%;
+    top: ${startY}%;
+    font-size: ${size}rem;
+    --snippet-opacity: ${opacity};
+    --snippet-color: var(${color});
+    animation: floatUp ${duration}s linear ${delay}s forwards;
+  `;
+
+  state.container.appendChild(el);
+
+  const snippet = { el, timeout: null };
+  state.snippets.push(snippet);
+
+  snippet.timeout = setTimeout(
+    () => {
+      el.remove();
+      state.snippets = state.snippets.filter((s) => s !== snippet);
+    },
+    (duration + delay) * 1000 + 100,
+  );
+}
+
+function startSpawning(state) {
+  if (state.interval) return;
+  state.interval = setInterval(() => {
+    if (!state.paused && state.snippets.length < MAX_SNIPPETS) {
+      createSnippet(state);
+    }
+  }, SPAWN_INTERVAL);
+}
+
+function stopSpawning(state) {
+  if (state.interval) {
+    clearInterval(state.interval);
+    state.interval = null;
+  }
+}
 
 export const FooterWaves = {
   mounted() {
-    this.snippets = [];
-    this.maxSnippets = 25;
-    this.paused = false;
+    const state = getGlobalState();
+    const wasActive = state.container !== null;
 
-    // Pause when tab is hidden to prevent burst on return
-    this.handleVisibility = () => {
-      if (document.hidden) {
-        this.paused = true;
-        if (this.interval) {
-          clearInterval(this.interval);
-          this.interval = null;
+    state.snippets.forEach((s) => {
+      clearTimeout(s.timeout);
+      s.el.remove();
+    });
+    state.snippets = [];
+
+    state.container = this.el;
+
+    if (!state.visibilityHandler) {
+      state.visibilityHandler = () => {
+        if (document.hidden) {
+          state.paused = true;
+          stopSpawning(state);
+        } else {
+          state.paused = false;
+          startSpawning(state);
         }
-      } else {
-        this.paused = false;
-        this.startSpawning();
-      }
-    };
-    document.addEventListener("visibilitychange", this.handleVisibility);
-
-    // Create initial batch
-    for (let i = 0; i < 8; i++) {
-      setTimeout(() => {
-        if (!this.paused) this.createSnippet();
-      }, i * 200);
+      };
+      document.addEventListener("visibilitychange", state.visibilityHandler);
     }
 
-    this.startSpawning();
-  },
+    const batchSize = wasActive ? 12 : 8;
+    const stagger = wasActive ? 50 : 200;
+    for (let i = 0; i < batchSize; i++) {
+      setTimeout(() => {
+        if (!state.paused) createSnippet(state);
+      }, i * stagger);
+    }
 
-  startSpawning() {
-    if (this.interval) return;
-    this.interval = setInterval(() => {
-      if (!this.paused && this.snippets.length < this.maxSnippets) {
-        this.createSnippet();
-      }
-    }, 400);
+    startSpawning(state);
   },
 
   destroyed() {
-    if (this.interval) clearInterval(this.interval);
-    document.removeEventListener("visibilitychange", this.handleVisibility);
-    this.snippets.forEach((s) => s.el.remove());
-  },
-
-  createSnippet() {
-    const text =
-      CODE_SNIPPETS[Math.floor(Math.random() * CODE_SNIPPETS.length)];
-    const el = document.createElement("div");
-    el.className = "codeSnippet";
-    el.textContent = text;
-
-    // Random horizontal position
-    const x = 5 + Math.random() * 90;
-    // Start from bottom
-    const startY = 100 + Math.random() * 20;
-
-    // Random properties
-    const duration = 8 + Math.random() * 12;
-    const delay = Math.random() * 2;
-    const size = 0.7 + Math.random() * 0.5;
-    const opacity = 0.15 + Math.random() * 0.35;
-
-    // Pick a theme color
-    const colors = [
-      "--theme-one",
-      "--theme-two",
-      "--theme-three",
-      "--theme-four",
-    ];
-    const color = colors[Math.floor(Math.random() * colors.length)];
-
-    el.style.cssText = `
-      left: ${x}%;
-      top: ${startY}%;
-      font-size: ${size}rem;
-      --snippet-opacity: ${opacity};
-      --snippet-color: var(${color});
-      animation: floatUp ${duration}s linear ${delay}s forwards;
-    `;
-
-    this.el.appendChild(el);
-
-    const snippet = { el, timeout: null };
-    this.snippets.push(snippet);
-
-    // Clean up after animation
-    snippet.timeout = setTimeout(
-      () => {
-        el.remove();
-        this.snippets = this.snippets.filter((s) => s !== snippet);
-      },
-      (duration + delay) * 1000 + 100,
-    );
+    const state = getGlobalState();
+    stopSpawning(state);
   },
 };
