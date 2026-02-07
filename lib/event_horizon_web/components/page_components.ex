@@ -156,6 +156,16 @@ defmodule EventHorizonWeb.PageComponents do
             </div>
           </div>
         </div>
+
+        <div class="footerBadges">
+          <img src="/images/badges/elixir.svg" alt="Powered by Elixir" width="88" height="31" />
+          <img src="/images/badges/liveview.svg" alt="Phoenix LiveView" width="88" height="31" />
+          <img src="/images/badges/dark-mode.gif" alt="Dark mode" width="88" height="31" />
+          <img src="/images/badges/besteyes.gif" alt="Best eyes" width="88" height="31" />
+          <img src="/images/badges/theoldnet_but.gif" alt="The Old Net" width="88" height="31" />
+          <img src="/images/badges/button-devils.gif" alt="Devils" width="88" height="31" />
+          <img src="/images/badges/built_with_love.svg" alt="Built with love" width="88" height="31" />
+        </div>
       </div>
     </div>
     """

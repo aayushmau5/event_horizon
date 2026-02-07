@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="88" height="31">
+  <rect width="88" height="31" fill="#E65100"/>
+  <rect x="1" y="1" width="86" height="29" fill="#E65100" stroke="#FF9800" stroke-width="1"/>
+  <rect x="2" y="2" width="84" height="27" fill="none" stroke="#BF360C" stroke-width="1"/>
+  <text x="44" y="13" font-family="monospace" font-size="8" font-weight="bold" fill="#FFF3E0" text-anchor="middle">&#9889; PHOENIX</text>
+  <text x="44" y="24" font-family="monospace" font-size="10" font-weight="bold" fill="#FFE0B2" text-anchor="middle">LIVEVIEW</text>
+</svg>

@@ -61,6 +61,20 @@
     justify-content: center;
 }
 
+.footerBadges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    padding: 1rem 0.5rem;
+    image-rendering: pixelated;
+}
+
+.footerBadges img {
+    image-rendering: pixelated;
+}
+
 .footerOthers {
     margin-top: 2rem;
     display: flex;

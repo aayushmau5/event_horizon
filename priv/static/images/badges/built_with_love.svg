@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="88" height="31">
+  <rect width="88" height="31" fill="#1a1a2e"/>
+  <rect x="1" y="1" width="86" height="29" fill="#1a1a2e" stroke="#e94560" stroke-width="1"/>
+  <rect x="2" y="2" width="84" height="27" fill="none" stroke="#0f0f1a" stroke-width="1"/>
+  <text x="44" y="13" font-family="monospace" font-size="8" font-weight="bold" fill="#e94560" text-anchor="middle">BUILT WITH</text>
+  <text x="44" y="24" font-family="monospace" font-size="11" font-weight="bold" fill="#e94560" text-anchor="middle">&#x2764; LOVE</text>
+</svg>
