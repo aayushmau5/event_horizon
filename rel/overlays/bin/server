@@ -2,4 +2,5 @@
 set -eu
 
 cd -P -- "$(dirname -- "$0")"
+./event_horizon eval "EventHorizon.Release.migrate()"
 PHX_SERVER=true exec ./event_horizon start
