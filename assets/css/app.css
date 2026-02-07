@@ -43,6 +43,12 @@
     font-display: swap;
 }
 
+@font-face {
+    font-family: "Departure Mono";
+    src: url("/fonts/DepartureMono-Regular.otf") format("opentype");
+    font-display: swap;
+}
+
 html {
     scroll-behavior: smooth;
 }

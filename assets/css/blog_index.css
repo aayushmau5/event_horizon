@@ -165,6 +165,7 @@
     line-height: normal;
     border: none;
     transition: filter 0.2s ease;
+    font-family: "Departure Mono", monospace;
 }
 
 .blogTag:hover {

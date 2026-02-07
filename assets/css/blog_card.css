@@ -25,6 +25,7 @@
 .blogCardDate {
     font-size: 0.9rem;
     opacity: 0.5;
+    font-family: "Departure Mono", monospace;
 }
 
 .blogCardDescription {
@@ -37,6 +38,7 @@
     color: var(--blog-reading-time);
     font-size: 0.9rem;
     font-weight: bold;
+    font-family: "Departure Mono", monospace;
 }
 
 @media (max-width: 768px) {

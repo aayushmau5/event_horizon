@@ -88,6 +88,7 @@
     background-color: #2a2a2a;
     color: #888;
     font-weight: 600;
+    font-family: "Departure Mono", monospace;
 }
 
 .commandBarResult {
@@ -138,6 +139,7 @@
     font-size: 12px;
     cursor: pointer;
     transition: all 0.2s ease;
+    font-family: "Departure Mono", monospace;
 }
 
 .kbarClick:hover {

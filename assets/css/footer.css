@@ -29,7 +29,7 @@
 /* Floating code snippets */
 .codeSnippet {
     position: absolute;
-    font-family: "Berkeley Mono", "JetBrains Mono", "Fira Code", monospace;
+    font-family: "Departure Mono", monospace;
     color: var(--snippet-color, var(--theme-two));
     opacity: 0;
     pointer-events: none;
@@ -119,6 +119,7 @@
     gap: 0.5rem;
     font-size: 0.875rem;
     color: var(--footer-color);
+    font-family: "Departure Mono", monospace;
 }
 
 .site-stats-item {

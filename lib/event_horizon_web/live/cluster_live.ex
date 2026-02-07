@@ -67,7 +67,15 @@ defmodule EventHorizonWeb.ClusterLive do
               stroke="#6366f1"
               stroke-width="2"
             />
-            <text x="200" y="40" text-anchor="middle" fill="#fafafa" font-size="14" font-weight="600">
+            <text
+              x="200"
+              y="40"
+              text-anchor="middle"
+              fill="#fafafa"
+              font-size="14"
+              font-weight="600"
+              font-family="'Departure Mono', monospace"
+            >
               You
             </text>
           </g>
@@ -83,29 +91,59 @@ defmodule EventHorizonWeb.ClusterLive do
               stroke="#3f3f46"
               stroke-width="2"
             />
-            <text x="200" y="145" text-anchor="middle" fill="#fafafa" font-size="14" font-weight="600">
+            <text
+              x="200"
+              y="145"
+              text-anchor="middle"
+              fill="#fafafa"
+              font-size="14"
+              font-weight="600"
+              font-family="'Departure Mono', monospace"
+            >
               Website
             </text>
-            <text x="200" y="165" text-anchor="middle" fill="#a1a1aa" font-size="10">
+            <text
+              x="200"
+              y="165"
+              text-anchor="middle"
+              fill="#a1a1aa"
+              font-size="10"
+              font-family="'Departure Mono', monospace"
+            >
               Frankfurt
             </text>
           </g>
           <%!-- PHX - Bottom Right --%>
           <g>
             <rect
-              x="280"
+              x="265"
               y="310"
-              width="100"
+              width="130"
               height="60"
               rx="12"
               fill="#18181b"
               stroke="#3f3f46"
               stroke-width="2"
             />
-            <text x="330" y="335" text-anchor="middle" fill="#fafafa" font-size="14" font-weight="600">
+            <text
+              x="330"
+              y="335"
+              text-anchor="middle"
+              fill="#fafafa"
+              font-size="14"
+              font-weight="600"
+              font-family="'Departure Mono', monospace"
+            >
               Accumulator
             </text>
-            <text x="330" y="355" text-anchor="middle" fill="#a1a1aa" font-size="10">
+            <text
+              x="330"
+              y="355"
+              text-anchor="middle"
+              fill="#a1a1aa"
+              font-size="10"
+              font-family="'Departure Mono', monospace"
+            >
               Frankfurt
             </text>
           </g>
@@ -121,10 +159,25 @@ defmodule EventHorizonWeb.ClusterLive do
               stroke="#3f3f46"
               stroke-width="2"
             />
-            <text x="70" y="335" text-anchor="middle" fill="#fafafa" font-size="14" font-weight="600">
+            <text
+              x="70"
+              y="335"
+              text-anchor="middle"
+              fill="#fafafa"
+              font-size="14"
+              font-weight="600"
+              font-family="'Departure Mono', monospace"
+            >
               Battleship
             </text>
-            <text x="70" y="355" text-anchor="middle" fill="#a1a1aa" font-size="10">
+            <text
+              x="70"
+              y="355"
+              text-anchor="middle"
+              fill="#a1a1aa"
+              font-size="10"
+              font-family="'Departure Mono', monospace"
+            >
               Frankfurt
             </text>
           </g>
@@ -147,6 +200,7 @@ defmodule EventHorizonWeb.ClusterLive do
               text-anchor="start"
               fill="#71717a"
               font-size="12"
+              font-family="'Departure Mono', monospace"
             >
               —
             </text>
@@ -167,6 +221,7 @@ defmodule EventHorizonWeb.ClusterLive do
             text-anchor="middle"
             fill={latency_color(@latencies.eh_to_phx)}
             font-size="12"
+            font-family="'Departure Mono', monospace"
           >
             {format_latency(@latencies.eh_to_phx)}
           </text>
@@ -186,12 +241,13 @@ defmodule EventHorizonWeb.ClusterLive do
             text-anchor="middle"
             fill={latency_color(@latencies.eh_to_bsh)}
             font-size="12"
+            font-family="'Departure Mono', monospace"
           >
             {format_latency(@latencies.eh_to_bsh)}
           </text>
           <%!-- PHX → BSH --%>
           <line
-            x1="280"
+            x1="265"
             y1="340"
             x2="120"
             y2="340"
@@ -205,6 +261,7 @@ defmodule EventHorizonWeb.ClusterLive do
             text-anchor="middle"
             fill={latency_color(@latencies.phx_to_bsh)}
             font-size="12"
+            font-family="'Departure Mono', monospace"
           >
             {format_latency(@latencies.phx_to_bsh)}
           </text>
