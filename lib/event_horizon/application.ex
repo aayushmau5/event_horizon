@@ -7,17 +7,24 @@ defmodule EventHorizon.Application do
 
   @impl true
   def start(_type, _args) do
-    children = [
-      EventHorizonWeb.Telemetry,
-      {DNSCluster, query: Application.get_env(:event_horizon, :dns_cluster_query) || :ignore},
-      {Phoenix.PubSub, name: EventHorizon.PubSub, adapter: Phoenix.PubSub.PG2},
-      EventHorizon.Presence,
-      EventHorizon.Latency,
-      # Start a worker by calling: EventHorizon.Worker.start_link(arg)
-      # {EventHorizon.Worker, arg},
-      # Start to serve requests, typically the last entry
-      EventHorizonWeb.Endpoint
-    ]
+    children =
+      [
+        EventHorizonWeb.Telemetry,
+        {DNSCluster, query: Application.get_env(:event_horizon, :dns_cluster_query) || :ignore},
+        {Phoenix.PubSub, name: EventHorizon.PubSub, adapter: Phoenix.PubSub.PG2},
+        EventHorizon.Presence,
+        EventHorizon.Latency,
+        # Start to serve requests, typically the last entry
+        EventHorizonWeb.Endpoint
+      ]
+
+    children =
+      if Application.get_env(:event_horizon, :ecto_enabled, true) do
+        # Add repo before Endpoint
+        List.insert_at(children, -2, EventHorizon.Repo)
+      else
+        children
+      end
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options

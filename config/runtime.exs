@@ -25,7 +25,29 @@ config :event_horizon, EventHorizonWeb.Endpoint,
 
 config :event_horizon, :remote_node_prefix, System.get_env("REMOTE_NODE_PREFIX")
 
+# Set ECTO_ENABLED=false to disable database connection in dev/test.
+# In production, the database is always enabled.
+if config_env() in [:dev, :test] do
+  enable_ecto? = System.get_env("ECTO_ENABLED", "true") != "false"
+  ecto_enabled = enable_ecto? and false
+  config :event_horizon, ecto_enabled: ecto_enabled
+end
+
 if config_env() == :prod do
+  database_url =
+    System.get_env("DATABASE_URL") ||
+      raise """
+      environment variable DATABASE_URL is missing.
+      For example: ecto://USER:PASS@HOST/DATABASE
+      """
+
+  maybe_ipv6 = if System.get_env("ECTO_IPV6") in ~w(true 1), do: [:inet6], else: []
+
+  config :event_horizon, EventHorizon.Repo,
+    url: database_url,
+    pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
+    socket_options: maybe_ipv6
+
   # The secret key base is used to sign/encrypt cookies and other secrets.
   # A default value is used in config/dev.exs and config/test.exs but you
   # want to use a different value for prod and you most likely don't want

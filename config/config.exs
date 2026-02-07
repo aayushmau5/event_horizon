@@ -8,6 +8,7 @@
 import Config
 
 config :event_horizon,
+  ecto_repos: [EventHorizon.Repo],
   generators: [timestamp_type: :utc_datetime]
 
 # Configure the endpoint

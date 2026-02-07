@@ -31,7 +31,11 @@ defmodule EventHorizonWeb.ConnCase do
     end
   end
 
-  setup _tags do
+  setup tags do
+    if Application.get_env(:event_horizon, :ecto_enabled, true) do
+      EventHorizon.DataCase.setup_sandbox(tags)
+    end
+
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end

@@ -1,5 +1,15 @@
 import Config
 
+# Configure your database
+config :event_horizon, EventHorizon.Repo,
+  username: "username",
+  password: "password",
+  hostname: "localhost",
+  database: "event_horizon_dev",
+  stacktrace: true,
+  show_sensitive_data_on_connection_error: true,
+  pool_size: 10
+
 # For development, we disable any cache and enable
 # debugging and code reloading.
 #
@@ -9,7 +19,7 @@ import Config
 config :event_horizon, EventHorizonWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-  http: [ip: {127, 0, 0, 1}],
+  http: [ip: {0, 0, 0, 0}],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
