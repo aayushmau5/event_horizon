@@ -148,7 +148,7 @@ defmodule EventHorizonWeb.BooksLive.Index do
           List of books I have read. I'm not an avid book reader but I like to read books from time to time.
         </p>
 
-        <h3 class="font-bold text-xl m-0">Tech</h3>
+        <h3 class="font-bold text-xl m-0 mt-4">Tech</h3>
         <p class="text-(--books-paragraph)">Tech related books.</p>
         <ul>
           <li :for={book <- @tech_books} class="list-disc ml-4">
@@ -159,7 +159,7 @@ defmodule EventHorizonWeb.BooksLive.Index do
           </li>
         </ul>
 
-        <h3 class="font-bold text-xl m-0">Fiction</h3>
+        <h3 class="font-bold text-xl m-0 mt-4">Fiction</h3>
         <p class="text-(--books-paragraph)">Fiction, Sci-Fi, etc.</p>
         <ul>
           <li :for={book <- @fiction_books} class="list-disc ml-4">
@@ -175,7 +175,7 @@ defmodule EventHorizonWeb.BooksLive.Index do
           </li>
         </ul>
 
-        <h3 class="font-bold text-xl m-0">Shorts</h3>
+        <h3 class="font-bold text-xl m-0 mt-4">Shorts</h3>
         <p class="text-(--books-paragraph)">Some of my favorite short stories.</p>
         <ul>
           <li :for={short <- @shorts} class="list-disc ml-4">{short.name} by {short.author}</li>
