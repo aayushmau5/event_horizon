@@ -29,7 +29,7 @@ config :event_horizon, :remote_node_prefix, System.get_env("REMOTE_NODE_PREFIX")
 # In production, the database is always enabled.
 if config_env() in [:dev, :test] do
   enable_ecto? = System.get_env("ECTO_ENABLED", "true") != "false"
-  ecto_enabled = enable_ecto? and false
+  ecto_enabled = enable_ecto?
   config :event_horizon, ecto_enabled: ecto_enabled
 end
 

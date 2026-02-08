@@ -86,8 +86,6 @@ defmodule EventHorizonWeb do
       import Phoenix.HTML
       # Core UI components
       import EventHorizonWeb.CoreComponents
-      # Blog components
-      import EventHorizonWeb.BlogComponents
       # Page components
       import EventHorizonWeb.PageComponents
       # Theme switcher component

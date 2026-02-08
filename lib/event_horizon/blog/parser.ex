@@ -32,19 +32,7 @@ defmodule EventHorizon.Blog.Parser do
 
   defp convert_body!(body, true = _dynamic?) do
     html_body = markdown_to_html!(body)
-
-    ast =
-      EEx.compile_string(html_body,
-        engine: Phoenix.LiveView.TagEngine,
-        file: __ENV__.file,
-        line: __ENV__.line + 1,
-        caller: __ENV__,
-        indentation: 0,
-        source: html_body,
-        tag_handler: Phoenix.LiveView.HTMLEngine
-      )
-
-    {:dynamic, ast}
+    {:dynamic, html_body}
   end
 
   defp convert_body!(body, false = _dynamic?) do

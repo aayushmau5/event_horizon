@@ -112,4 +112,30 @@ defmodule EventHorizon.Polls do
     |> PollResponse.changeset(attrs, poll)
     |> Repo.update()
   end
+
+  @doc """
+  Gets an existing response for a poll (by slug) and respondent.
+  Returns `nil` if no response found.
+  """
+  def get_response_by_poll_slug_and_respondent(poll_slug, respondent_id) do
+    PollResponse
+    |> join(:inner, [r], p in Poll, on: r.poll_id == p.id)
+    |> where([r, p], p.slug == ^poll_slug and r.respondent_id == ^respondent_id)
+    |> preload([_r, p], poll: p)
+    |> Repo.one()
+  end
+
+  @doc """
+  Finds a poll by slug, or creates it with the given attributes.
+  Used when polls are defined inline in blog markdown.
+  """
+  def find_or_create_poll(slug, attrs) do
+    case get_poll_by_slug(slug) do
+      nil ->
+        create_poll(Map.put(attrs, :slug, slug))
+
+      poll ->
+        {:ok, poll}
+    end
+  end
 end

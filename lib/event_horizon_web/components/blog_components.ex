@@ -2,7 +2,6 @@ defmodule EventHorizonWeb.BlogComponents do
   defmacro __using__(_opts) do
     quote do
       import EventHorizonWeb.BlogComponents
-      alias EventHorizonWeb.BlogComponents.Counter
     end
   end
 
@@ -10,7 +9,6 @@ defmodule EventHorizonWeb.BlogComponents do
   import EventHorizonWeb.CoreComponents
 
   alias Phoenix.LiveView.JS
-  alias EventHorizonWeb.BlogComponents.Counter
 
   # ============================================================================
   # Helper Functions
@@ -156,7 +154,26 @@ defmodule EventHorizonWeb.BlogComponents do
 
   def counter(assigns) do
     ~H"""
-    <.live_component module={Counter} id={@id} {@rest} />
+    <.live_component module={EventHorizonWeb.BlogComponents.Counter} id={@id} {@rest} />
+    """
+  end
+
+  attr :id, :string, required: true
+  attr :type, :string, required: true
+  attr :question, :string, required: true
+  attr :options, :list, default: []
+  attr :blog_slug, :string, default: nil
+
+  def poll(assigns) do
+    ~H"""
+    <.live_component
+      module={EventHorizonWeb.BlogComponents.PollComponent}
+      id={@id}
+      type={@type}
+      question={@question}
+      options={@options}
+      blog_slug={@blog_slug}
+    />
     """
   end
 

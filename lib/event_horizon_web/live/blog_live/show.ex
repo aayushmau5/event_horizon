@@ -1,5 +1,6 @@
 defmodule EventHorizonWeb.BlogLive.Show do
   use EventHorizonWeb, :live_view
+  import EventHorizonWeb.BlogComponents
 
   alias EventHorizon.Blog.Article
   alias EventHorizon.Presence

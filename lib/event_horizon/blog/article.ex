@@ -14,7 +14,7 @@ defmodule EventHorizon.Blog.Article do
           caption: String.t()
         }
 
-  @type body :: {:dynamic, Macro.t()} | {:static, String.t()}
+  @type body :: {:dynamic, String.t()} | {:static, String.t()}
 
   @type toc_entry :: %{
           level: integer(),
@@ -89,10 +89,8 @@ defmodule EventHorizon.Blog.Article do
     end)
   end
 
-  defp extract_toc({:dynamic, ast}) do
-    {rendered, _} = Code.eval_quoted(ast, [assigns: %{}], __ENV__)
-    html = Enum.join(rendered.static, "")
-    extract_toc({:static, html})
+  defp extract_toc({:dynamic, html_body}) do
+    extract_toc({:static, html_body})
   end
 
   defp decode_html_entities(text) do
@@ -112,13 +110,8 @@ defmodule EventHorizon.Blog.Article do
     |> calculate_minutes()
   end
 
-  defp compute_read_minutes({:dynamic, ast}) do
-    render({:dynamic, ast}, %{})
-    |> then(&Enum.join(&1.static, " "))
-    |> Floki.parse_fragment!()
-    |> Floki.text()
-    |> count_words()
-    |> calculate_minutes()
+  defp compute_read_minutes({:dynamic, html_body}) do
+    compute_read_minutes({:static, html_body})
   end
 
   defp count_words(text) do
@@ -132,12 +125,37 @@ defmodule EventHorizon.Blog.Article do
   end
 
   @spec render(body(), map()) :: Phoenix.LiveView.Rendered.t() | Phoenix.HTML.safe()
-  def render({:dynamic, ast}, assigns) do
+  def render({:dynamic, html_body}, assigns) do
+    ast = compile_heex(html_body)
     {rendered, _} = Code.eval_quoted(ast, [assigns: assigns], __ENV__)
     rendered
   end
 
   def render({:static, html}, _assigns) do
     Phoenix.HTML.raw(html)
+  end
+
+  defp compile_heex(html_body) do
+    cache_key = {__MODULE__, :heex_cache, :erlang.phash2(html_body)}
+
+    case :persistent_term.get(cache_key, nil) do
+      nil ->
+        ast =
+          EEx.compile_string(html_body,
+            engine: Phoenix.LiveView.TagEngine,
+            file: __ENV__.file,
+            line: __ENV__.line + 1,
+            caller: __ENV__,
+            indentation: 0,
+            source: html_body,
+            tag_handler: Phoenix.LiveView.HTMLEngine
+          )
+
+        :persistent_term.put(cache_key, ast)
+        ast
+
+      ast ->
+        ast
+    end
   end
 end

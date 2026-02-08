@@ -1,5 +1,6 @@
 defmodule EventHorizonWeb.BlogLive.Index do
   use EventHorizonWeb, :live_view
+  import EventHorizonWeb.BlogComponents
 
   alias EventHorizon.Blog
 
