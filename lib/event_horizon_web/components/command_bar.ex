@@ -35,6 +35,54 @@ defmodule EventHorizonWeb.CommandBar do
           data-search-input
         />
         <div class="commandBarResultsContainer" id={"#{@id}-results"}>
+          <div class="commandBarSection" data-section="actions">Actions</div>
+          <.command_result
+            id="cmd-go-back"
+            icon="hero-arrow-left"
+            title="Go Back"
+            subtitle="Navigate to previous page"
+            action="go-back"
+            shortcut="b"
+          />
+          <.command_result
+            id="cmd-go-forward"
+            icon="hero-arrow-right"
+            title="Go Forward"
+            subtitle="Navigate to next page"
+            action="go-forward"
+            shortcut="f"
+          />
+          <.command_result
+            id="cmd-scroll-top"
+            icon="hero-arrow-up"
+            title="Scroll to Top"
+            subtitle="Jump to top of page"
+            action="scroll-top"
+            shortcut="t"
+          />
+          <.command_result
+            id="cmd-scroll-bottom"
+            icon="hero-arrow-down"
+            title="Scroll to Bottom"
+            subtitle="Jump to bottom of page"
+            action="scroll-bottom"
+            shortcut="d"
+          />
+          <.command_result
+            id="cmd-copy-url"
+            icon="hero-clipboard-document"
+            title="Copy URL"
+            subtitle="Copy current page URL"
+            action="copy-url"
+          />
+          <.command_result
+            id="cmd-reload"
+            icon="hero-arrow-path"
+            title="Reload Page"
+            subtitle="Refresh the current page"
+            action="reload"
+          />
+
           <div class="commandBarSection" data-section="navigation">Navigation</div>
           <.command_result
             id="cmd-home"
@@ -91,15 +139,6 @@ defmodule EventHorizonWeb.CommandBar do
             title="Contact"
             subtitle="Get in touch"
             href="/contact"
-          />
-
-          <div class="commandBarSection" data-section="actions">Actions</div>
-          <.command_result
-            id="cmd-copy-url"
-            icon="hero-clipboard-document"
-            title="Copy URL"
-            subtitle="Copy current page URL"
-            action="copy-url"
           />
         </div>
       </div>
@@ -202,26 +241,28 @@ defmodule EventHorizonWeb.CommandBar do
         },
 
         filterResults(query) {
-          const lowerQuery = query.toLowerCase();
+          const lowerQuery = query.toLowerCase().trim();
           const sections = this.el.querySelectorAll(".commandBarSection");
           const sectionVisibility = new Map();
 
           sections.forEach(section => sectionVisibility.set(section, false));
 
+          let shortcutMatchIndex = -1;
+
           this.allResults.forEach((result) => {
             const title = result.dataset.title.toLowerCase();
             const subtitle = result.dataset.subtitle?.toLowerCase() || "";
-            const matches = title.includes(lowerQuery) || subtitle.includes(lowerQuery);
+            const shortcut = result.dataset.shortcut?.toLowerCase();
+            const hasShortcutMatch = lowerQuery && shortcut === lowerQuery;
+            const hasTextMatch = title.includes(lowerQuery) || subtitle.includes(lowerQuery);
 
-            if (matches) {
+            if (hasShortcutMatch || hasTextMatch) {
               result.style.display = "flex";
               let prevSibling = result.previousElementSibling;
               while (prevSibling && !prevSibling.classList.contains("commandBarSection")) {
                 prevSibling = prevSibling.previousElementSibling;
               }
-              if (prevSibling) {
-                sectionVisibility.set(prevSibling, true);
-              }
+              if (prevSibling) sectionVisibility.set(prevSibling, true);
             } else {
               result.style.display = "none";
             }
@@ -231,12 +272,21 @@ defmodule EventHorizonWeb.CommandBar do
             section.style.display = sectionVisibility.get(section) ? "block" : "none";
           });
 
-          this.selectedIndex = 0;
+          if (lowerQuery) {
+            const visibleResults = this.getVisibleResults();
+            shortcutMatchIndex = visibleResults.findIndex(r => r.dataset.shortcut?.toLowerCase() === lowerQuery);
+          }
+
+          this.selectedIndex = shortcutMatchIndex >= 0 ? shortcutMatchIndex : 0;
           this.updateSelection();
         },
 
+        getVisibleResults() {
+          return this.allResults.filter(r => r.style.display !== "none");
+        },
+
         handleKeydown(e) {
-          const visibleResults = this.allResults.filter(r => r.style.display !== "none");
+          const visibleResults = this.getVisibleResults();
 
           if (e.key === "ArrowDown") {
             e.preventDefault();
@@ -256,7 +306,7 @@ defmodule EventHorizonWeb.CommandBar do
         },
 
         updateSelection() {
-          const visibleResults = this.allResults.filter(r => r.style.display !== "none");
+          const visibleResults = this.getVisibleResults();
           visibleResults.forEach((result, index) => {
             if (index === this.selectedIndex) {
               result.style.background = "var(--command-bar-result-hover, #3a3a3a)";
@@ -284,6 +334,21 @@ defmodule EventHorizonWeb.CommandBar do
           } else if (action === "copy-url") {
             this.hide();
             navigator.clipboard.writeText(window.location.href);
+          } else if (action === "go-back") {
+            this.hide();
+            window.history.back();
+          } else if (action === "go-forward") {
+            this.hide();
+            window.history.forward();
+          } else if (action === "scroll-top") {
+            this.hide();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          } else if (action === "scroll-bottom") {
+            this.hide();
+            window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+          } else if (action === "reload") {
+            this.hide();
+            window.location.reload();
           }
         }
       }
@@ -298,6 +363,7 @@ defmodule EventHorizonWeb.CommandBar do
   attr :href, :string, default: nil
   attr :action, :string, default: nil
   attr :external, :boolean, default: false
+  attr :shortcut, :string, default: nil
 
   defp command_result(assigns) do
     ~H"""
@@ -310,6 +376,7 @@ defmodule EventHorizonWeb.CommandBar do
       data-href={@href}
       data-action={@action}
       data-external={to_string(@external)}
+      data-shortcut={@shortcut}
     >
       <div class="commandBarResultItems">
         <span class="commandBarResultIcon">
@@ -320,6 +387,7 @@ defmodule EventHorizonWeb.CommandBar do
           <div class="commandBarResultSubtitle">{@subtitle}</div>
         </div>
       </div>
+      <kbd :if={@shortcut} class="commandBarShortcut">{@shortcut}</kbd>
     </div>
     """
   end
