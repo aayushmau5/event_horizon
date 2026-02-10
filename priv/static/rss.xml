@@ -5,7 +5,7 @@
         <title>Aayush Kumar Sahu - Developer and Explorer</title>
         <link>https://aayushsahu.com</link>
         <description>Welcome to aayush&apos;s digital garden!</description>
-        <lastBuildDate>Mon, 19 Jan 2026 15:12:14 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 10 Feb 2026 04:26:05 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>EventHorizon RSS Generator</generator>
         <language>en</language>
@@ -18,6 +18,13 @@
         </image>
         <copyright>CC 2026, Aayush Kumar Sahu</copyright>
         <category>Programming</category>
+        <item>
+            <title><![CDATA[Moving my website from NextJS to Phoenix]]></title>
+            <link>https://aayushsahu.com/blog/nextjs-to-phoenix</link>
+            <guid>https://aayushsahu.com/blog/nextjs-to-phoenix</guid>
+            <pubDate>Tue, 27 Jan 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[My journey of moving from NextJS to Phoenix]]></description>
+        </item>
         <item>
             <title><![CDATA[2025 Logs: AI Insights]]></title>
             <link>https://aayushsahu.com/blog/2025-logs-ai-insight</link>
