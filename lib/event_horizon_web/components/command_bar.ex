@@ -335,10 +335,12 @@ defmodule EventHorizonWeb.CommandBar do
             this.hide();
             navigator.clipboard.writeText(window.location.href);
           } else if (action === "go-back") {
-            this.hide();
+            this._isOpen = false;
+            this.el.style.display = "none";
             window.history.back();
           } else if (action === "go-forward") {
-            this.hide();
+            this._isOpen = false;
+            this.el.style.display = "none";
             window.history.forward();
           } else if (action === "scroll-top") {
             this.hide();
