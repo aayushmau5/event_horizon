@@ -43,6 +43,18 @@
             document.documentElement.style.setProperty(key, value);
           }
         }
+
+        // Pre-generate random background values so they stay consistent
+        // across LiveView mount/navigations (only change on full page refresh)
+        window.__bgRandom = {
+          skewX: -30 + Math.floor(Math.random() * 60),
+          skewY: -20 + Math.floor(Math.random() * 40),
+          scale: 0.8 + Math.random() * 0.4,
+          rotation: Math.floor(Math.random() * 360),
+          posX: 20 + Math.floor(Math.random() * 60),
+          posY: 20 + Math.floor(Math.random() * 60),
+          accentIndex: Math.floor(Math.random() * 4),
+        };
       })();
     </script>
   </head>

@@ -21,7 +21,6 @@ defmodule EventHorizonWeb.Background do
         mounted() {
           this.applyBackgrounds();
 
-          // Listen for theme changes
           this.themeHandler = () => this.applyBackgrounds();
           window.addEventListener('theme-changed', this.themeHandler);
         },
@@ -30,21 +29,6 @@ defmodule EventHorizonWeb.Background do
           if (this.themeHandler) {
             window.removeEventListener('theme-changed', this.themeHandler);
           }
-        },
-
-        randomTransform() {
-          const skewX = -30 + Math.floor(Math.random() * 60);
-          const skewY = -20 + Math.floor(Math.random() * 40);
-          const scale = 0.8 + Math.random() * 0.4;
-          const rotation = Math.floor(Math.random() * 360);
-
-          return `skew(${skewX}deg, ${skewY}deg) scale(${scale}) rotate(${rotation}deg)`;
-        },
-
-        getRandomPosition() {
-          const posX = 20 + Math.floor(Math.random() * 60);
-          const posY = 20 + Math.floor(Math.random() * 60);
-          return [posX, posY];
         },
 
         addTransparency(hex, alpha) {
@@ -65,6 +49,10 @@ defmodule EventHorizonWeb.Background do
         },
 
         applyBackgrounds() {
+          const bg = window.__bgRandom || {
+            posX: 50, posY: 50, accentIndex: 0,
+          };
+
           const style = window.getComputedStyle(document.documentElement);
           const accentColor1 = style.getPropertyValue('--theme-one').trim();
           const accentColor2 = style.getPropertyValue('--theme-two').trim();
@@ -78,20 +66,18 @@ defmodule EventHorizonWeb.Background do
             this.addTransparency(accentColor4, 0.3),
           ];
 
-          const accentIndex = Math.floor(Math.random() * accentColors.length);
-          const accentColor = accentColors[accentIndex];
+          const accentColor = accentColors[bg.accentIndex];
           document.documentElement.style.setProperty('--accent-color', accentColor);
 
           const abstractBgsElements = this.el.querySelectorAll('.abstract-bg');
 
           if (abstractBgsElements.length >= 2) {
             const firstEl = abstractBgsElements[0];
-            const [posX, posY] = this.getRandomPosition();
-            firstEl.style.background = `radial-gradient(ellipse 80% 80% at ${posX}% ${posY}%, var(--accent-color) 0%, transparent 70%)`;
+            firstEl.style.background = `radial-gradient(ellipse 80% 80% at ${bg.posX}% ${bg.posY}%, var(--accent-color) 0%, transparent 70%)`;
 
             const secondEl = abstractBgsElements[1];
             secondEl.style.opacity = '0.6';
-            secondEl.style.background = `radial-gradient(ellipse 80% 80% at ${100 - posX}% ${100 - posY}%, var(--accent-color) 0%, transparent 70%)`;
+            secondEl.style.background = `radial-gradient(ellipse 80% 80% at ${100 - bg.posX}% ${100 - bg.posY}%, var(--accent-color) 0%, transparent 70%)`;
           }
         }
       }
