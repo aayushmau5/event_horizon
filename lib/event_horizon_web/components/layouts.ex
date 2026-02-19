@@ -46,6 +46,9 @@ defmodule EventHorizonWeb.Layouts do
       </div>
     </main>
     <.footer socket={@socket} />
+    <%= if @socket do %>
+      {live_render(@socket, EventHorizonWeb.ChatLive, id: "chat-overlay", sticky: true)}
+    <% end %>
     <.command_bar id="command-bar" />
     """
   end

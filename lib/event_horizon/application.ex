@@ -13,6 +13,7 @@ defmodule EventHorizon.Application do
         {DNSCluster, query: Application.get_env(:event_horizon, :dns_cluster_query) || :ignore},
         {Phoenix.PubSub, name: EventHorizon.PubSub, adapter: Phoenix.PubSub.PG2},
         EventHorizon.Presence,
+        EventHorizon.ChatBuffer,
         EventHorizon.Latency,
         # Start to serve requests, typically the last entry
         EventHorizonWeb.Endpoint

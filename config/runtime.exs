@@ -24,6 +24,7 @@ config :event_horizon, EventHorizonWeb.Endpoint,
   http: [port: String.to_integer(System.get_env("PORT", "4000"))]
 
 config :event_horizon, :remote_node_prefix, System.get_env("REMOTE_NODE_PREFIX")
+config :event_horizon, :chat_admin_password, System.get_env("CHAT_ADMIN_PASSWORD")
 
 # Set ECTO_ENABLED=false to disable database connection in dev/test.
 # In production, the database is always enabled.
