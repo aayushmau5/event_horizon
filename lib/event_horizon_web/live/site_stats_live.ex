@@ -41,9 +41,11 @@ defmodule EventHorizonWeb.SiteStatsLive do
         ip: user_ip
       })
 
+      user_agent = Phoenix.LiveView.get_connect_info(socket, :user_agent)
+
       # Only publish visit if this is the first tab for this IP
       if first_visit_for_ip?(@presence_topic, user_ip) do
-        PubSubContract.publish!(@pubsub, SiteVisit.new!(%{}))
+        PubSubContract.publish!(@pubsub, SiteVisit.new!(user_agent: user_agent))
       else
         PubSubContract.publish!(@pubsub, SiteStatRequest.new!(%{}))
       end
