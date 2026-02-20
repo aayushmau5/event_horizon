@@ -164,8 +164,8 @@ const CODE_SNIPPETS = [
 ];
 
 const COLORS = ["--theme-one", "--theme-two", "--theme-three", "--theme-four"];
-const MAX_SNIPPETS = 25;
-const SPAWN_INTERVAL = 400;
+const MAX_SNIPPETS = 10;
+const SPAWN_INTERVAL = 600;
 
 function getGlobalState() {
   if (!window.__footerWaves) {
