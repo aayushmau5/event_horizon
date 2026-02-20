@@ -211,7 +211,7 @@
     padding: 10px 14px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
     min-height: 200px;
     max-height: 300px;
     scrollbar-width: thin;
@@ -231,7 +231,7 @@
 .chat-message {
     display: inline-flex;
     flex-direction: column;
-    gap: 1px;
+    gap: 3px;
     max-width: 85%;
     width: fit-content;
 }
@@ -242,6 +242,12 @@
 
 .chat-message-self {
     align-self: flex-end;
+    margin-left: auto;
+    align-items: flex-end;
+}
+
+.chat-message-continuation {
+    margin-top: -6px;
 }
 
 .chat-message-username {

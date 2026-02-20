@@ -3,11 +3,11 @@ defmodule EventHorizon.Polls.PollResponse do
   import Ecto.Changeset
 
   schema "poll_responses" do
-    field :respondent_id, :string
-    field :choice, :string
-    field :body, :string
+    field(:respondent_id, :string)
+    field(:choice, :string)
+    field(:body, :string)
 
-    belongs_to :poll, EventHorizon.Polls.Poll
+    belongs_to(:poll, EventHorizon.Polls.Poll)
 
     timestamps(type: :utc_datetime)
   end

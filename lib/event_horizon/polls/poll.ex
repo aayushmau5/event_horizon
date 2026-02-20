@@ -5,13 +5,13 @@ defmodule EventHorizon.Polls.Poll do
   @types ~w(yes_no multiple_choice open_ended)
 
   schema "polls" do
-    field :slug, :string
-    field :type, :string
-    field :question, :string
-    field :options, {:array, :string}, default: []
-    field :blog_slug, :string
+    field(:slug, :string)
+    field(:type, :string)
+    field(:question, :string)
+    field(:options, {:array, :string}, default: [])
+    field(:blog_slug, :string)
 
-    has_many :responses, EventHorizon.Polls.PollResponse
+    has_many(:responses, EventHorizon.Polls.PollResponse)
 
     timestamps(type: :utc_datetime)
   end
