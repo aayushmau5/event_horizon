@@ -12,11 +12,10 @@ defmodule EventHorizonWeb.ThemeSwitcher do
   """
   def theme_switcher(assigns) do
     themes = Themes.list_themes()
-    themes_with_vars = Themes.themes_with_variables()
-    assigns = assign(assigns, themes: themes, themes_json: Jason.encode!(themes_with_vars))
+    assigns = assign(assigns, themes: themes)
 
     ~H"""
-    <div id="theme-switcher" phx-hook=".ThemeSwitcher" phx-update="ignore" data-themes={@themes_json}>
+    <div id="theme-switcher" phx-hook=".ThemeSwitcher" phx-update="ignore">
       <p class="theme-label">Theme:</p>
       <div class="theme-grid" role="radiogroup" aria-label="Theme selection">
         <button
@@ -47,7 +46,7 @@ defmodule EventHorizonWeb.ThemeSwitcher do
     <script :type={Phoenix.LiveView.ColocatedHook} name=".ThemeSwitcher">
       export default {
         mounted() {
-          this.themes = JSON.parse(this.el.dataset.themes);
+          this.themes = window.__themes;
           this.swatches = this.el.querySelectorAll('.theme-swatch');
 
           // Load saved theme or default

@@ -4,7 +4,7 @@
 #
 
 app = 'aayush-event-horizon'
-primary_region = 'ams'
+primary_region = 'fra'
 kill_signal = 'SIGTERM'
 
 [build]
