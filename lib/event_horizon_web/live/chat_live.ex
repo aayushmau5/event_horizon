@@ -243,7 +243,7 @@ defmodule EventHorizonWeb.ChatLive do
 
           this._onClickOutside = (e) => {
             const panel = this.el.querySelector('#chat-panel');
-            if (panel && !this.el.contains(e.target)) {
+            if (panel && panel.style.display !== 'none' && !this.el.contains(e.target)) {
               this.pushEvent("close_chat", {});
             }
           };

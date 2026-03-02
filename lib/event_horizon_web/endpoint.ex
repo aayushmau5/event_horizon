@@ -15,6 +15,9 @@ defmodule EventHorizonWeb.Endpoint do
     websocket: [connect_info: [:x_headers, :peer_data, :user_agent, session: @session_options]],
     longpoll: [connect_info: [:x_headers, :peer_data, :user_agent, session: @session_options]]
 
+  # Allow cross-origin access to the RSS feed
+  plug :cors_for_rss
+
   # Serve at "/" the static files from "priv/static" directory.
   #
   # When code reloading is disabled (e.g., in production),
@@ -56,4 +59,10 @@ defmodule EventHorizonWeb.Endpoint do
   plug Plug.Head
   plug Plug.Session, @session_options
   plug EventHorizonWeb.Plugs.RedirectNotFound
+
+  defp cors_for_rss(%{request_path: "/rss.xml"} = conn, _opts) do
+    Plug.Conn.put_resp_header(conn, "access-control-allow-origin", "*")
+  end
+
+  defp cors_for_rss(conn, _opts), do: conn
 end
