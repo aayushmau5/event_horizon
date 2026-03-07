@@ -10,7 +10,12 @@
     flex-direction: column;
     align-items: center;
     opacity: 0;
-    animation: stampAppear 0.5s ease-out forwards;
+    will-change: transform, opacity;
+}
+
+/* Animation only fires once JS marks the wrapper as in-viewport */
+.stamp-wrapper.stamp-visible {
+    animation: stampAppear 0.5s ease-out var(--stamp-delay, 0s) forwards;
 }
 
 @keyframes stampAppear {
@@ -24,28 +29,40 @@
     }
 }
 
-.stamp-wrapper:nth-child(odd)  { --stamp-tilt: -1.8deg; }
-.stamp-wrapper:nth-child(even) { --stamp-tilt:  1.4deg; }
-.stamp-wrapper:nth-child(3n)   { --stamp-tilt:  0.6deg; }
-.stamp-wrapper:nth-child(5n)   { --stamp-tilt: -1.0deg; }
+.stamp-wrapper:nth-child(odd) {
+    --stamp-tilt: -1.8deg;
+}
+.stamp-wrapper:nth-child(even) {
+    --stamp-tilt: 1.4deg;
+}
+.stamp-wrapper:nth-child(3n) {
+    --stamp-tilt: 0.6deg;
+}
+.stamp-wrapper:nth-child(5n) {
+    --stamp-tilt: -1deg;
+}
 
 .stamp-svg {
     cursor: pointer;
     transform: rotate(var(--stamp-tilt, 0deg));
-    transition: transform 0.28s ease, filter 0.28s ease;
-    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.38)) drop-shadow(0 1px 3px rgba(0,0,0,0.2));
+    transition:
+        transform 0.28s ease,
+        box-shadow 0.28s ease;
+    will-change: transform, box-shadow;
+    /* Use box-shadow on the SVG element instead of expensive drop-shadow filters */
+    border-radius: 2px;
     overflow: visible;
 }
 
 .stamp-svg:hover {
     transform: rotate(0deg) scale(1.08) translateY(-5px);
-    filter: drop-shadow(0 12px 28px rgba(0,0,0,0.5)) drop-shadow(0 2px 6px rgba(0,0,0,0.28));
 }
 
+/* Ground shadow beneath each stamp — cheap blurred div, no GPU filter */
 .stamp-shadow {
     width: 65%;
     height: 7px;
-    background: rgba(0,0,0,0.18);
+    background: rgba(0, 0, 0, 0.18);
     border-radius: 50%;
     filter: blur(6px);
     margin-top: 2px;
@@ -55,4 +72,147 @@
 
 .stamp-svg:hover ~ .stamp-shadow {
     transform: rotate(0deg) scaleX(1.12);
+}
+
+/* SVG drop-shadow replacement: a single lightweight shadow on the wrapper */
+.stamp-wrapper.stamp-visible .stamp-svg {
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.38));
+}
+
+.stamp-wrapper.stamp-visible .stamp-svg:hover {
+    filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.45));
+}
+
+/* ── Detail overlay ── */
+
+.stamp-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    animation: overlayIn 0.25s ease-out;
+}
+
+@keyframes overlayIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.stamp-detail {
+    position: relative;
+    width: max(480px, 35vw);
+    max-width: 90vw;
+    background: var(--background);
+    border: 1.5px solid rgba(0, 0, 0, 0.12);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow:
+        0 0 0 1px rgba(255, 238, 218, 0.2),
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        0 0 80px rgba(255, 220, 170, 0.08);
+    animation: detailIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: center center;
+    will-change: transform, opacity;
+}
+
+@keyframes detailIn {
+    from {
+        opacity: 0;
+        transform: scale(0.4) translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.stamp-detail-image {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    animation: imageReveal 0.35s ease-out 0.2s both;
+}
+
+@keyframes imageReveal {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.stamp-detail-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.stamp-detail-divider {
+    height: 1.5px;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(0, 0, 0, 0.15) 20%,
+        rgba(0, 0, 0, 0.15) 80%,
+        transparent 100%
+    );
+    animation: dividerDraw 0.3s ease-out 0.3s both;
+}
+
+@keyframes dividerDraw {
+    from {
+        transform: scaleX(0);
+    }
+    to {
+        transform: scaleX(1);
+    }
+}
+
+.stamp-detail-info {
+    padding: 20px 24px 24px;
+    animation: infoSlide 0.3s ease-out 0.35s both;
+}
+
+@keyframes infoSlide {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.stamp-detail-label {
+    font-family: "Handwriting", cursive;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin: 0 0 4px;
+    line-height: 1.2;
+}
+
+.stamp-detail-year {
+    font-family: "Departure Mono", monospace;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.5px;
+}
+
+.stamp-detail-message {
+    margin-top: 12px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--blog-text-color);
 }
