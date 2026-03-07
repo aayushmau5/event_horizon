@@ -1,0 +1,58 @@
+.stamps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 2.5rem 1.5rem;
+    place-items: center;
+}
+
+.stamp-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+    animation: stampAppear 0.5s ease-out forwards;
+}
+
+@keyframes stampAppear {
+    from {
+        opacity: 0;
+        transform: translateY(12px) rotate(var(--stamp-tilt, 0deg));
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) rotate(var(--stamp-tilt, 0deg));
+    }
+}
+
+.stamp-wrapper:nth-child(odd)  { --stamp-tilt: -1.8deg; }
+.stamp-wrapper:nth-child(even) { --stamp-tilt:  1.4deg; }
+.stamp-wrapper:nth-child(3n)   { --stamp-tilt:  0.6deg; }
+.stamp-wrapper:nth-child(5n)   { --stamp-tilt: -1.0deg; }
+
+.stamp-svg {
+    cursor: pointer;
+    transform: rotate(var(--stamp-tilt, 0deg));
+    transition: transform 0.28s ease, filter 0.28s ease;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.38)) drop-shadow(0 1px 3px rgba(0,0,0,0.2));
+    overflow: visible;
+}
+
+.stamp-svg:hover {
+    transform: rotate(0deg) scale(1.08) translateY(-5px);
+    filter: drop-shadow(0 12px 28px rgba(0,0,0,0.5)) drop-shadow(0 2px 6px rgba(0,0,0,0.28));
+}
+
+.stamp-shadow {
+    width: 65%;
+    height: 7px;
+    background: rgba(0,0,0,0.18);
+    border-radius: 50%;
+    filter: blur(6px);
+    margin-top: 2px;
+    transform: rotate(var(--stamp-tilt, 0deg));
+    transition: transform 0.28s ease;
+}
+
+.stamp-svg:hover ~ .stamp-shadow {
+    transform: rotate(0deg) scaleX(1.12);
+}
