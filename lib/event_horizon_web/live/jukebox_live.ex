@@ -234,13 +234,13 @@ defmodule EventHorizonWeb.JukeboxLive do
                 <span class="jukebox-eq-bar"></span>
               </span>
             <% else %>
-              <span class="jukebox-play-icon">▶</span>
+              <span class="jukebox-play-icon"></span>
             <% end %>
           </button>
         </div>
 
         <%!-- Volume control --%>
-        <.form for={%{}} id="jukebox-volume-form" phx-change="set_volume" class="jukebox-volume">
+        <div class="jukebox-volume">
           <span class="jukebox-volume-icon">VOL</span>
           <input
             id="jukebox-volume-slider"
@@ -252,7 +252,7 @@ defmodule EventHorizonWeb.JukeboxLive do
             name="volume"
             style={"--vol: #{@volume}%"}
           />
-        </.form>
+        </div>
 
         <%!-- Category tabs at the bottom --%>
         <div class="jukebox-tabs">
@@ -285,15 +285,17 @@ defmodule EventHorizonWeb.JukeboxLive do
             e.stopPropagation();
           });
 
-          this.handleEvent("jukebox:play", ({id, url, volume, loop}) => {
+          this.handleEvent("jukebox:play", ({id, url, loop}) => {
             if (this._audios[id]) {
               this._audios[id].pause();
               delete this._audios[id];
             }
+            const slider = this.el.querySelector('#jukebox-volume-slider');
+            const vol = slider ? parseInt(slider.value, 10) / 100 : 0.7;
             const audio = new Audio(url);
             audio.preload = "metadata";
             audio.loop = !!loop;
-            audio.volume = volume / 100;
+            audio.volume = vol;
             if (!loop) {
               audio.addEventListener("ended", () => {
                 delete this._audios[id];
@@ -318,10 +320,14 @@ defmodule EventHorizonWeb.JukeboxLive do
             });
           });
 
-          this.handleEvent("jukebox:volume", ({volume}) => {
-            const vol = volume / 100;
-            Object.values(this._audios).forEach(a => a.volume = vol);
-          });
+          const slider = this.el.querySelector('#jukebox-volume-slider');
+          if (slider) {
+            slider.addEventListener("input", (e) => {
+              const vol = parseInt(e.target.value, 10) / 100;
+              e.target.style.setProperty("--vol", (vol * 100) + "%");
+              Object.values(this._audios).forEach(a => a.volume = vol);
+            });
+          }
         },
         updated() {
           this._wasHidden = this.el.style.display === 'none';
@@ -385,7 +391,6 @@ defmodule EventHorizonWeb.JukeboxLive do
             |> push_event("jukebox:play", %{
               id: track_id,
               url: track.url,
-              volume: socket.assigns.volume,
               loop: true
             })
             |> assign(playing: MapSet.put(playing, track_id))
@@ -417,12 +422,6 @@ defmodule EventHorizonWeb.JukeboxLive do
 
       {:noreply, socket}
     end
-  end
-
-  def handle_event("set_volume", %{"volume" => volume}, socket) do
-    volume = String.to_integer(volume)
-    socket = push_event(socket, "jukebox:volume", %{volume: volume})
-    {:noreply, assign(socket, volume: volume)}
   end
 
   @impl true
@@ -476,7 +475,6 @@ defmodule EventHorizonWeb.JukeboxLive do
     |> push_event("jukebox:play", %{
       id: track_id,
       url: track.url,
-      volume: socket.assigns.volume,
       loop: false
     })
     |> assign(playing: new_playing)

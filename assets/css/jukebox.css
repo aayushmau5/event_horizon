@@ -403,14 +403,18 @@
 }
 
 .jukebox-play-icon {
-    font-size: 10px;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 5px 0 5px 8px;
+    border-color: transparent transparent transparent #c8a882;
     opacity: 0.4;
-    color: #c8a882;
 }
 
 .jukebox-track:hover .jukebox-play-icon {
     opacity: 0.8;
-    color: #ffb347;
+    border-color: transparent transparent transparent #ffb347;
 }
 
 /* ── Equalizer animation ── */
