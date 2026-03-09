@@ -322,11 +322,13 @@ defmodule EventHorizonWeb.JukeboxLive do
 
           const slider = this.el.querySelector('#jukebox-volume-slider');
           if (slider) {
-            slider.addEventListener("input", (e) => {
+            const onVolume = (e) => {
               const vol = parseInt(e.target.value, 10) / 100;
               e.target.style.setProperty("--vol", (vol * 100) + "%");
               Object.values(this._audios).forEach(a => a.volume = vol);
-            });
+            };
+            slider.addEventListener("input", onVolume);
+            slider.addEventListener("change", onVolume);
           }
         },
         updated() {
