@@ -1,0 +1,635 @@
+/* ── Jukebox overlay ── */
+.jukebox-overlay {
+    position: fixed;
+    bottom: 50px;
+    right: 9px;
+    z-index: 999;
+    font-family: var(--global-font);
+}
+
+/* ── Bubble button ── */
+.jukebox-bubble-btn {
+    background: var(--card-background);
+    border: 1px solid var(--card-border);
+    color: var(--text-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    position: relative;
+    transition:
+        border-color 0.2s ease,
+        transform 0.15s ease;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+.jukebox-bubble-btn:hover {
+    border-color: #ffb347;
+    transform: translateY(-1px);
+}
+
+.jukebox-bubble-btn:active {
+    transform: translateY(0);
+}
+
+.jukebox-bubble-icon {
+    font-size: 14px;
+    color: #ffb347;
+}
+
+.jukebox-bubble-text {
+    font-family: "Departure Mono", "Fira Code", monospace;
+    font-size: 13px;
+    color: #ffb347;
+}
+
+.jukebox-eq-sm {
+    height: 12px;
+}
+
+.jukebox-eq-sm .jukebox-eq-bar {
+    width: 2px;
+}
+
+/* ── Panel ── */
+.jukebox-panel {
+    width: 300px;
+    background: linear-gradient(
+        180deg,
+        #6b4226 0%,
+        #5c3a1e 6%,
+        #4a2e14 40%,
+        #3d250f 80%,
+        #2e1b0a 100%
+    );
+    border: 2px solid #a0713c;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 200, 100, 0.1),
+        inset 0 -2px 8px rgba(0, 0, 0, 0.3);
+    animation: jukebox-slide-up 0.25s ease-out;
+    position: relative;
+}
+
+@keyframes jukebox-slide-up {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ── Wood texture overlay ── */
+.jukebox-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 12px,
+        rgba(0, 0, 0, 0.04) 12px,
+        rgba(0, 0, 0, 0.04) 14px
+    );
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ── Header ── */
+.jukebox-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    background: linear-gradient(180deg, #7a4f2b 0%, #5c3a1e 100%);
+    border-bottom: 2px solid #3d250f;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 2;
+}
+
+.jukebox-header-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: "Departure Mono", "Fira Code", monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffe8c8;
+    letter-spacing: 3px;
+    text-shadow: 0 0 10px rgba(255, 179, 71, 0.5);
+}
+
+.jukebox-neon {
+    font-size: 18px;
+    color: #ffb347;
+    text-shadow:
+        0 0 6px rgba(255, 179, 71, 0.8),
+        0 0 14px rgba(255, 179, 71, 0.4);
+    animation: jukebox-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes jukebox-glow {
+    from {
+        text-shadow:
+            0 0 6px rgba(255, 179, 71, 0.6),
+            0 0 14px rgba(255, 179, 71, 0.3);
+    }
+    to {
+        text-shadow:
+            0 0 10px rgba(255, 179, 71, 1),
+            0 0 24px rgba(255, 179, 71, 0.6);
+    }
+}
+
+.jukebox-listener-badge {
+    font-family: "Departure Mono", monospace;
+    font-size: 9px;
+    color: #a0713c;
+    background: rgba(160, 113, 60, 0.12);
+    border: 1px solid rgba(160, 113, 60, 0.25);
+    border-radius: 8px;
+    padding: 2px 7px;
+    letter-spacing: 0.5px;
+}
+
+.jukebox-close-btn {
+    background: none;
+    border: none;
+    color: #c8a882;
+    cursor: pointer;
+    opacity: 0.5;
+    padding: 4px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.15s ease;
+}
+
+.jukebox-close-btn:hover {
+    opacity: 1;
+    color: #ffe8c8;
+}
+
+/* ── Vinyl stage ── */
+.jukebox-vinyl-stage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 14px 16px;
+    position: relative;
+    z-index: 2;
+    background: radial-gradient(
+        ellipse at center,
+        rgba(0, 0, 0, 0.25) 0%,
+        transparent 70%
+    );
+}
+
+/* ── Vinyl record ── */
+.jukebox-vinyl {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background:
+        radial-gradient(
+            circle at center,
+            #1a1a1a 0%,
+            #1a1a1a 18%,
+            transparent 18.5%
+        ),
+        repeating-radial-gradient(
+            circle at center,
+            transparent 0px,
+            transparent 3px,
+            rgba(40, 40, 40, 0.6) 3px,
+            rgba(40, 40, 40, 0.6) 4px
+        ),
+        radial-gradient(
+            circle at center,
+            #111 0%,
+            #222 40%,
+            #111 60%,
+            #1a1a1a 100%
+        );
+    box-shadow:
+        0 2px 16px rgba(0, 0, 0, 0.6),
+        inset 0 0 2px rgba(255, 255, 255, 0.05);
+    position: relative;
+    animation: jukebox-spin 3s linear infinite;
+    animation-play-state: paused;
+}
+
+.jukebox-vinyl-spinning {
+    animation-play-state: running;
+}
+
+@keyframes jukebox-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ── Vinyl label (center circle) ── */
+.jukebox-vinyl-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle at 40% 35%,
+        #d4853a 0%,
+        #b5692a 50%,
+        #8b5020 100%
+    );
+    box-shadow: inset 0 1px 2px rgba(255, 200, 100, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.jukebox-vinyl-label::after {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #1a1a1a;
+    position: absolute;
+}
+
+.jukebox-vinyl-label-text {
+    font-size: 14px;
+    color: #ffe8c8;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    position: relative;
+    z-index: 1;
+}
+
+/* ── Tonearm ── */
+.jukebox-tonearm {
+    position: absolute;
+    top: 16px;
+    right: 105px;
+    width: 4px;
+    height: 55px;
+    background: linear-gradient(180deg, #c0c0c0, #888);
+    border-radius: 2px;
+    transform-origin: top center;
+    transform: rotate(-25deg);
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 3;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.jukebox-tonearm::before {
+    content: "";
+    position: absolute;
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #ddd, #999);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.jukebox-tonearm-head {
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 6px;
+    background: #999;
+    border-radius: 0 0 3px 3px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.jukebox-tonearm-playing {
+    transform: rotate(5deg);
+}
+
+/* ── Track list ── */
+.jukebox-tracks {
+    display: flex;
+    flex-direction: column;
+    padding: 6px 8px;
+    gap: 4px;
+    max-height: 180px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(160, 113, 60, 0.3) transparent;
+    position: relative;
+    z-index: 2;
+}
+
+.jukebox-track {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto;
+    align-items: center;
+    gap: 0 10px;
+    padding: 9px 12px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(160, 113, 60, 0.15);
+    border-radius: 10px;
+    cursor: pointer;
+    color: #ddc5a4;
+    transition: all 0.15s ease;
+    font-family: var(--global-font);
+    font-size: 13px;
+    text-align: left;
+}
+
+.jukebox-track:hover {
+    background: rgba(255, 179, 71, 0.08);
+    border-color: rgba(160, 113, 60, 0.35);
+    transform: translateX(2px);
+}
+
+.jukebox-track-active {
+    background: rgba(255, 179, 71, 0.12);
+    border-color: #a0713c;
+    color: #ffe8c8;
+    box-shadow: inset 0 0 12px rgba(255, 179, 71, 0.08);
+}
+
+.jukebox-track-label {
+    font-family: "Departure Mono", monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: #a0713c;
+    background: rgba(160, 113, 60, 0.12);
+    border: 1px solid rgba(160, 113, 60, 0.25);
+    border-radius: 4px;
+    padding: 2px 6px;
+    flex-shrink: 0;
+    letter-spacing: 1px;
+}
+
+.jukebox-track-active .jukebox-track-label {
+    color: #ffb347;
+    border-color: rgba(255, 179, 71, 0.4);
+    background: rgba(255, 179, 71, 0.15);
+}
+
+.jukebox-track-title-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.jukebox-track-title {
+    display: block;
+}
+
+.jukebox-play-icon {
+    font-size: 10px;
+    opacity: 0.4;
+    color: #c8a882;
+}
+
+.jukebox-track:hover .jukebox-play-icon {
+    opacity: 0.8;
+    color: #ffb347;
+}
+
+/* ── Equalizer animation ── */
+.jukebox-eq {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 14px;
+}
+
+.jukebox-eq-bar {
+    width: 3px;
+    background: #ffb347;
+    border-radius: 1px;
+    animation: jukebox-eq-bounce 0.8s ease-in-out infinite;
+    box-shadow: 0 0 4px rgba(255, 179, 71, 0.4);
+}
+
+.jukebox-eq-bar:nth-child(1) {
+    height: 6px;
+    animation-delay: 0s;
+}
+
+.jukebox-eq-bar:nth-child(2) {
+    height: 10px;
+    animation-delay: 0.2s;
+}
+
+.jukebox-eq-bar:nth-child(3) {
+    height: 4px;
+    animation-delay: 0.4s;
+}
+
+@keyframes jukebox-eq-bounce {
+    0%,
+    100% {
+        transform: scaleY(0.4);
+    }
+    50% {
+        transform: scaleY(1);
+    }
+}
+
+/* ── Volume ── */
+.jukebox-volume {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    border-top: 1px solid rgba(160, 113, 60, 0.2);
+    position: relative;
+    z-index: 2;
+}
+
+.jukebox-volume-icon {
+    font-family: "Departure Mono", monospace;
+    font-size: 10px;
+    font-weight: 700;
+    color: #a0713c;
+    letter-spacing: 1px;
+    flex-shrink: 0;
+}
+
+.jukebox-volume-slider {
+    flex: 1;
+    height: 20px;
+    appearance: none;
+    background: transparent;
+    outline: none;
+    cursor: pointer;
+}
+
+.jukebox-volume-slider::-webkit-slider-runnable-track {
+    height: 4px;
+    background: linear-gradient(
+        to right,
+        #ffb347 0%,
+        #ffb347 var(--vol),
+        rgba(160, 113, 60, 0.3) var(--vol),
+        rgba(160, 113, 60, 0.3) 100%
+    );
+    border-radius: 2px;
+}
+
+.jukebox-volume-slider::-moz-range-track {
+    height: 4px;
+    background: linear-gradient(
+        to right,
+        #ffb347 0%,
+        #ffb347 var(--vol),
+        rgba(160, 113, 60, 0.3) var(--vol),
+        rgba(160, 113, 60, 0.3) 100%
+    );
+    border-radius: 2px;
+    border: none;
+}
+
+.jukebox-volume-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #ffb347;
+    cursor: pointer;
+    box-shadow: 0 0 6px rgba(255, 179, 71, 0.5);
+    transition: box-shadow 0.15s ease;
+    margin-top: -5px;
+}
+
+.jukebox-volume-slider::-webkit-slider-thumb:hover {
+    box-shadow: 0 0 12px rgba(255, 179, 71, 0.8);
+}
+
+.jukebox-volume-slider::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #ffb347;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 0 6px rgba(255, 179, 71, 0.5);
+}
+
+/* ── Category tabs (bottom) ── */
+.jukebox-tabs {
+    display: flex;
+    gap: 0;
+    padding: 0;
+    border-top: 1px solid rgba(160, 113, 60, 0.3);
+    background: linear-gradient(
+        180deg,
+        transparent 0%,
+        rgba(0, 0, 0, 0.15) 100%
+    );
+    position: relative;
+    z-index: 2;
+}
+
+.jukebox-tab {
+    flex: 1;
+    padding: 10px 10px;
+    background: transparent;
+    border: none;
+    color: #c8a882;
+    font-size: 12px;
+    font-family: "Departure Mono", monospace;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    border-top: 2px solid transparent;
+}
+
+.jukebox-tab:first-child {
+    border-radius: 0 0 0 14px;
+}
+
+.jukebox-tab:last-child {
+    border-radius: 0 0 14px 0;
+}
+
+.jukebox-tab:hover {
+    color: #ffe8c8;
+    background: rgba(255, 179, 71, 0.06);
+}
+
+.jukebox-tab-active {
+    color: #ffb347;
+    border-top-color: #ffb347;
+    background: rgba(255, 179, 71, 0.08);
+    text-shadow: 0 0 8px rgba(255, 179, 71, 0.3);
+}
+
+/* ── Track credit (inline, second line inside the button) ── */
+.jukebox-track-credit-link {
+    font-family: "Departure Mono", monospace;
+    font-size: 10px;
+    color: #a0713c;
+    text-decoration: none;
+    letter-spacing: 0.3px;
+    transition: color 0.15s ease;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    animation: jukebox-credit-fade-in 0.2s ease-out;
+}
+
+.jukebox-track-credit-link:hover {
+    color: #ffb347;
+    text-decoration: underline;
+}
+
+@keyframes jukebox-credit-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(-3px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ── Responsive ── */
+@media (max-width: 890px) {
+    .jukebox-overlay {
+        bottom: 50px;
+        right: 9px;
+    }
+
+    .jukebox-bubble-text {
+        display: none;
+    }
+
+    .jukebox-bubble-btn:has(.jukebox-eq-sm) .jukebox-bubble-icon {
+        display: none;
+    }
+
+    .jukebox-bubble-btn {
+        padding: 8px 10px;
+    }
+
+}

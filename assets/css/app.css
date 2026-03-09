@@ -17,6 +17,7 @@
 @import "./theme_switcher.css";
 @import "./background.css";
 @import "./chat.css";
+@import "./jukebox.css";
 @import "./stamps.css";
 
 /* A Tailwind plugin that makes "hero-#{ICON}" classes available.
