@@ -278,45 +278,64 @@ defmodule EventHorizonWeb.JukeboxLive do
     <script :type={Phoenix.LiveView.ColocatedHook} name=".JukeboxPanel">
       export default {
         mounted() {
-          this._audios = {};
+          this._tracks = {};
+          this._ctx = null;
           this._wasHidden = this.el.style.display === 'none';
 
           this.el.addEventListener("jukebox:credit_click", e => {
             e.stopPropagation();
           });
 
-          this.handleEvent("jukebox:play", ({id, url, loop}) => {
-            if (this._audios[id]) {
-              this._audios[id].pause();
-              delete this._audios[id];
-            }
+          const getCtx = () => {
+            if (!this._ctx) this._ctx = new (window.AudioContext || window.webkitAudioContext)();
+            return this._ctx;
+          };
+
+          const getVolume = () => {
             const slider = this.el.querySelector('#jukebox-volume-slider');
-            const vol = slider ? parseInt(slider.value, 10) / 100 : 0.7;
+            return slider ? parseInt(slider.value, 10) / 100 : 0.7;
+          };
+
+          this.handleEvent("jukebox:play", ({id, url, loop}) => {
+            if (this._tracks[id]) {
+              this._tracks[id].audio.pause();
+              this._tracks[id].source.disconnect();
+              delete this._tracks[id];
+            }
+            const ctx = getCtx();
             const audio = new Audio(url);
+            audio.crossOrigin = "anonymous";
             audio.preload = "metadata";
             audio.loop = !!loop;
-            audio.volume = vol;
+            const source = ctx.createMediaElementSource(audio);
+            const gain = ctx.createGain();
+            gain.gain.value = getVolume();
+            source.connect(gain);
+            gain.connect(ctx.destination);
             if (!loop) {
               audio.addEventListener("ended", () => {
-                delete this._audios[id];
+                source.disconnect();
+                delete this._tracks[id];
                 this.pushEvent("track_ended", {id: id});
               });
             }
             audio.play().catch(() => {});
-            this._audios[id] = audio;
+            this._tracks[id] = {audio, source, gain};
           });
 
           this.handleEvent("jukebox:stop", ({id}) => {
-            if (this._audios[id]) {
-              this._audios[id].pause();
-              delete this._audios[id];
+            if (this._tracks[id]) {
+              this._tracks[id].audio.pause();
+              this._tracks[id].source.disconnect();
+              delete this._tracks[id];
             }
           });
 
           this.handleEvent("jukebox:stop_all", () => {
-            Object.keys(this._audios).forEach(id => {
-              this._audios[id].pause();
-              delete this._audios[id];
+            Object.keys(this._tracks).forEach(id => {
+              this._tracks[id].audio.pause();
+              this._tracks[id].source.disconnect();
+              delete this._tracks[id];
             });
           });
 
@@ -325,7 +344,7 @@ defmodule EventHorizonWeb.JukeboxLive do
             const onVolume = () => {
               const vol = parseInt(slider.value, 10) / 100;
               slider.style.setProperty("--vol", (vol * 100) + "%");
-              Object.values(this._audios).forEach(a => a.volume = vol);
+              Object.values(this._tracks).forEach(t => t.gain.gain.value = vol);
               this.pushEvent("set_volume", {volume: parseInt(slider.value, 10)});
             };
             slider.addEventListener("input", onVolume);
@@ -337,8 +356,12 @@ defmodule EventHorizonWeb.JukeboxLive do
           this._wasHidden = this.el.style.display === 'none';
         },
         destroyed() {
-          Object.values(this._audios).forEach(a => a.pause());
-          this._audios = {};
+          Object.values(this._tracks).forEach(t => {
+            t.audio.pause();
+            if (t.source) t.source.disconnect();
+          });
+          this._tracks = {};
+          if (this._ctx) this._ctx.close();
         }
       }
     </script>
