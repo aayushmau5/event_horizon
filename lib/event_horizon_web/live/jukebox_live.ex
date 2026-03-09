@@ -322,13 +322,15 @@ defmodule EventHorizonWeb.JukeboxLive do
 
           const slider = this.el.querySelector('#jukebox-volume-slider');
           if (slider) {
-            const onVolume = (e) => {
-              const vol = parseInt(e.target.value, 10) / 100;
-              e.target.style.setProperty("--vol", (vol * 100) + "%");
+            const onVolume = () => {
+              const vol = parseInt(slider.value, 10) / 100;
+              slider.style.setProperty("--vol", (vol * 100) + "%");
               Object.values(this._audios).forEach(a => a.volume = vol);
+              this.pushEvent("set_volume", {volume: parseInt(slider.value, 10)});
             };
             slider.addEventListener("input", onVolume);
             slider.addEventListener("change", onVolume);
+            slider.addEventListener("touchmove", onVolume);
           }
         },
         updated() {
@@ -366,6 +368,10 @@ defmodule EventHorizonWeb.JukeboxLive do
 
   def handle_event("close_jukebox", _params, socket) do
     {:noreply, assign(socket, open: false)}
+  end
+
+  def handle_event("set_volume", %{"volume" => vol}, socket) do
+    {:noreply, assign(socket, volume: vol)}
   end
 
   def handle_event("set_category", %{"cat" => cat}, socket) do
