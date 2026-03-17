@@ -46,55 +46,113 @@
         </div>
       </div>
 
-      <div style="margin-top: 3rem;">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-          <div style="font-size: 1.5rem; font-weight: bold; font-family: Handwriting;">
-            Recent Posts
+      <div class="bento-grid" style="margin-top: 3rem;">
+        <%!-- Latest post — hero card --%>
+        <% [latest | rest] = @recent_posts %>
+        <.link navigate={"/blog/#{latest.slug}"} class="bento-box bento-hero">
+          <div class="bento-content">
+            <span class="bento-overline">Latest post</span>
+            <span class="bento-label">{latest.title}</span>
+            <span class="bento-meta">{latest.formatted_date}</span>
+            <span class="bento-desc">{latest.description}</span>
           </div>
-          <.link navigate="/blog" class="homeViewAll">
-            View all
-          </.link>
-        </div>
-        <div class="homeBlogsContainer">
-          <%= for {post, index} <- Enum.with_index(@recent_posts) do %>
-            <.blog_card
-              id={"home-blog-#{index}"}
-              slug={post.slug}
-              title={post.title}
-              date={post.formatted_date}
-              description={post.description}
-            />
-          <% end %>
-        </div>
-      </div>
+        </.link>
 
-      <div class="homeNextStepsContainer">
-        <div class="homeNextSteps">
-          <p>While you are here, feel free to:</p>
-          <.link navigate="/blog" class="styledLink">
-            <span style="display: inline-block; vertical-align: middle; margin-right: 5px;">
-              <.icon name="hero-chevron-right" />
-            </span>
-            Checkout my blogs
-          </.link>
-          <.link navigate="/projects" class="styledLink">
-            <span style="display: inline-block; vertical-align: middle; margin-right: 5px;">
-              <.icon name="hero-chevron-right" />
-            </span>
-            Checkout my projects
-          </.link>
-          <.link navigate="/about" class="styledLink">
-            <span style="display: inline-block; vertical-align: middle; margin-right: 5px;">
-              <.icon name="hero-chevron-right" /> Know more about me
-            </span>
-          </.link>
-          <.link navigate="/resume" target="_blank" rel="noreferrer" class="styledLink">
-            <span style="display: inline-block; vertical-align: middle; margin-right: 5px;">
-              <.icon name="hero-chevron-right" />
-            </span>
-            See my resume
-          </.link>
+        <%!-- Recent posts --%>
+        <div class="bento-box bento-recent">
+          <div class="bento-backdrop">
+            <img src="/images/dawn.jpg" alt="" class="backdrop-img" />
+          </div>
+          <div class="bento-content">
+            <span class="bento-icon"><.icon name="hero-pencil-square" class="w-5 h-5" /></span>
+            <span class="bento-label">Recent</span>
+          </div>
+          <div class="bento-post-list">
+            <%= for post <- rest do %>
+              <.link navigate={"/blog/#{post.slug}"} class="bento-post-item">
+                {post.title}
+              </.link>
+            <% end %>
+          </div>
         </div>
+
+        <%!-- Navigation cards — row 1: All posts + Projects --%>
+        <.link navigate="/blog" class="bento-box bento-half">
+          <div class="bento-backdrop">
+            <img src="/images/blog-page.png" alt="" class="backdrop-img" />
+          </div>
+          <div class="bento-content">
+            <span class="bento-icon"><.icon name="hero-newspaper" class="w-5 h-5" /></span>
+            <span class="bento-label">All posts</span>
+            <span class="bento-meta">{@blog_count} Articles</span>
+          </div>
+        </.link>
+        <.link navigate="/projects" class="bento-box bento-half">
+          <div class="bento-backdrop">
+            <img src="/images/projects/aayushsahu.png" alt="" class="backdrop-img" />
+          </div>
+          <div class="bento-content">
+            <span class="bento-icon"><.icon name="hero-code-bracket" class="w-5 h-5" /></span>
+            <span class="bento-label">Projects</span>
+            <span class="bento-meta">Things I've built</span>
+          </div>
+        </.link>
+
+        <%!-- Navigation cards — row 2: About me + Uses --%>
+        <.link navigate="/about" class="bento-box bento-half">
+          <div class="bento-backdrop">
+            <img src="/images/megu.jpeg" alt="" class="backdrop-img" />
+          </div>
+          <div class="bento-content">
+            <span class="bento-icon"><.icon name="hero-user" class="w-5 h-5" /></span>
+            <span class="bento-label">About me</span>
+            <span class="bento-meta">The human and the cat</span>
+          </div>
+        </.link>
+        <.link navigate="/uses" class="bento-box bento-half">
+          <div class="bento-backdrop">
+            <img src="/images/desk.webp" alt="" class="backdrop-img" />
+          </div>
+          <div class="bento-content">
+            <span class="bento-icon">
+              <.icon name="hero-wrench-screwdriver" class="w-5 h-5" />
+            </span>
+            <span class="bento-label">Uses</span>
+            <span class="bento-meta">My stack & tools</span>
+          </div>
+        </.link>
+        <.link navigate="/books" class="bento-box">
+          <div class="bento-backdrop">
+            <img src="/images/book.webp" alt="" class="backdrop-img" />
+          </div>
+          <div class="bento-content">
+            <span class="bento-icon"><.icon name="hero-book-open" class="w-5 h-5" /></span>
+            <span class="bento-label">Bookshelf</span>
+            <span class="bento-meta">What I'm reading</span>
+          </div>
+        </.link>
+        <.link navigate="/contact" class="bento-box">
+          <div class="bento-content">
+            <span class="bento-icon">
+              <.icon name="hero-chat-bubble-left-right" class="w-5 h-5" />
+            </span>
+            <span class="bento-label">Contact</span>
+            <span class="bento-meta">Say hello</span>
+          </div>
+        </.link>
+        <.link navigate="/cluster" class="bento-box">
+          <div class="bento-content">
+            <span class="bento-icon"><.icon name="hero-circle-stack" class="w-5 h-5" /></span>
+            <span class="bento-label">Cluster</span>
+            <span class="bento-meta">BEAM nodes</span>
+          </div>
+        </.link>
+        <.link navigate="/resume" target="_blank" rel="noreferrer" class="bento-box">
+          <div class="bento-content">
+            <span class="bento-icon"><.icon name="hero-document-text" class="w-5 h-5" /></span>
+            <span class="bento-label">Resume</span>
+          </div>
+        </.link>
       </div>
     </div>
   </div>

@@ -10,6 +10,7 @@ defmodule EventHorizonWeb.HomeLive.Index do
     {:ok,
      socket
      |> assign(recent_posts: recent_posts)
+     |> assign(blog_count: length(Blog.all_articles()))
      |> assign(page_title: "Aayush Kumar Sahu - Developer and Explorer")}
   end
 end
