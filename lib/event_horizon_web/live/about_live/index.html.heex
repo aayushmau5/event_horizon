@@ -1,6 +1,25 @@
 <Layouts.app current_path={@current_path} socket={@socket}>
   <div class="animate-fadeIn">
     <h1 class="font-[Handwriting] text-4xl font-bold mb-4">About</h1>
+    <div class="mt-16 sm:mt-10 mb-4">
+      <div class="relative inline-block">
+        <div class="megu-thought" id="megu-thought">
+          <span class="megu-dot megu-dot-1"></span>
+          <span class="megu-dot megu-dot-2"></span>
+          <span class="megu-balloon">{Enum.random(["Meow!", "zzz!", "purrr!"])}</span>
+        </div>
+        <video
+          id="megu-video"
+          src="/megu-sleeping.mp4"
+          autoplay
+          loop
+          muted
+          playsinline
+          class="w-56 h-56 sm:w-64 sm:h-64 rounded-full object-cover border-2 border-[#ffffe1]"
+        >
+        </video>
+      </div>
+    </div>
     <p class="mb-4">
       Welcome to my smol corner on the internet where I write blogs, and
       showoff my projects :)
