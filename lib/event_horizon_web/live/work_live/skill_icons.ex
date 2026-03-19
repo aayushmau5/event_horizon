@@ -1,4 +1,4 @@
-defmodule EventHorizonWeb.ProjectsLive.SkillIcons do
+defmodule EventHorizonWeb.WorkLive.SkillIcons do
   use Phoenix.Component
 
   attr :icon, :string, required: true

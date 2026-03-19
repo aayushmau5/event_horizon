@@ -1,11 +1,11 @@
-defmodule EventHorizonWeb.ProjectsLive.Index do
+defmodule EventHorizonWeb.WorkLive.Index do
   use EventHorizonWeb, :live_view
 
-  import EventHorizonWeb.ProjectsLive.SkillIcons
+  import EventHorizonWeb.WorkLive.SkillIcons
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Projects | Aayush Sahu")}
+    {:ok, assign(socket, page_title: "Work | Aayush Sahu")}
   end
 
   attr :name, :string, required: true
@@ -16,7 +16,7 @@ defmodule EventHorizonWeb.ProjectsLive.Index do
 
   def project_box(assigns) do
     ~H"""
-    <div class="project-box-container mt-8 bg-gradient-to-r from-(--theme-one) via-(--theme-two) to-(--theme-four) p-[3px] rounded-xl break-words drop-shadow-lg animate-projectLoad">
+    <div class="project-box-container mt-8 bg-gradient-to-r from-(--theme-one) via-(--theme-two) to-(--theme-four) p-[3px] rounded-xl break-words drop-shadow-lg">
       <div class="bg-(--project-box-background) rounded-xl p-4 flex flex-col lg:flex-row">
         <div class="lg:w-[60%] lg:mr-4">
           <img src={@image} alt={@name} class="rounded-lg w-full" />

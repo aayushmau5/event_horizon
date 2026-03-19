@@ -10,7 +10,7 @@ defmodule EventHorizon.Sitemap do
   @static_pages [
     %{loc: "/", priority: "1.0", changefreq: "weekly"},
     %{loc: "/blog", priority: "0.9", changefreq: "daily"},
-    %{loc: "/projects", priority: "0.8", changefreq: "monthly"},
+    %{loc: "/work", priority: "0.8", changefreq: "monthly"},
     %{loc: "/about", priority: "0.7", changefreq: "monthly"},
     %{loc: "/books", priority: "0.6", changefreq: "monthly"},
     %{loc: "/uses", priority: "0.6", changefreq: "monthly"},

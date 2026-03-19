@@ -99,11 +99,11 @@ defmodule EventHorizonWeb.CommandBar do
             href="/blog"
           />
           <.command_result
-            id="cmd-projects"
+            id="cmd-work"
             icon="hero-code-bracket"
-            title="Projects"
-            subtitle="View projects"
-            href="/projects"
+            title="Work"
+            subtitle="View my work"
+            href="/work"
           />
           <.command_result
             id="cmd-about"

@@ -39,13 +39,13 @@ defmodule EventHorizonWeb.PageComponents do
             Blog
           </.link>
           <.link
-            navigate="/projects"
+            navigate="/work"
             class={[
               "navLink",
-              if(@current_path == "/projects", do: "navActive", else: "navShadow")
+              if(@current_path == "/work", do: "navActive", else: "navShadow")
             ]}
           >
-            Projects
+            Work
           </.link>
           <.link
             navigate="/about"
