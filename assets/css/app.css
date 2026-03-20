@@ -20,6 +20,7 @@
 @import "./jukebox.css";
 @import "./stamps.css";
 @import "./megu_video.css";
+@import "./work.css";
 
 /* A Tailwind plugin that makes "hero-#{ICON}" classes available.
    The heroicons installation itself is managed by your mix.exs */

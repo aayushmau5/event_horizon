@@ -16,42 +16,20 @@ defmodule EventHorizonWeb.WorkLive.Index do
 
   def project_box(assigns) do
     ~H"""
-    <div class="project-box-container mt-8 bg-gradient-to-r from-(--theme-one) via-(--theme-two) to-(--theme-four) p-[3px] rounded-xl break-words drop-shadow-lg">
-      <div class="bg-(--project-box-background) rounded-xl p-4 flex flex-col lg:flex-row">
-        <div class="lg:w-[60%] lg:mr-4">
-          <img src={@image} alt={@name} class="rounded-lg w-full" />
-        </div>
-        <div class="lg:w-full">
-          <h3 class="text-xl font-bold m-0">{@name}</h3>
-          <p class="text-(--projects-paragraph)">{@description}</p>
-          <a
-            href={@demo_link}
-            class="styledLink mb-2.5 flex items-center gap-1"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <.icon name="hero-arrow-right" class="w-5 h-5" /> Demo
+    <div class="project-card animate-projectLoad project-box-container">
+      <img src={@image} alt={@name} class="project-card-image" />
+      <div class="project-card-body">
+        <span class="project-card-title">{@name}</span>
+        <span class="project-card-desc">{@description}</span>
+        <div class="project-card-links">
+          <a href={@demo_link} target="_blank" rel="noreferrer" class="project-card-link">
+            <.icon name="hero-arrow-top-right-on-square" class="w-3 h-3" /> Demo
           </a>
-          <a
-            href={@source_link}
-            class="styledLink flex items-center gap-1"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <.icon name="hero-arrow-right" class="w-5 h-5" /> Source
+          <a href={@source_link} target="_blank" rel="noreferrer" class="project-card-link">
+            <.icon name="hero-code-bracket" class="w-3 h-3" /> Source
           </a>
         </div>
       </div>
-    </div>
-    """
-  end
-
-  slot :inner_block, required: true
-
-  def skills_container(assigns) do
-    ~H"""
-    <div class="flex flex-wrap">
-      {render_slot(@inner_block)}
     </div>
     """
   end
@@ -61,11 +39,11 @@ defmodule EventHorizonWeb.WorkLive.Index do
 
   def skill_box(assigns) do
     ~H"""
-    <div class="text-center p-2 text-xs lg:text-base leading-8 w-max">
-      <div class="mx-auto h-[50px] w-[50px] lg:h-[90px] lg:w-[90px]">
+    <div class="skill-card">
+      <div class="skill-card-icon">
         <.skill_icon icon={@icon} />
       </div>
-      {@name}
+      <span class="skill-card-name">{@name}</span>
     </div>
     """
   end
