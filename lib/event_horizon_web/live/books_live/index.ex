@@ -115,7 +115,12 @@ defmodule EventHorizonWeb.BooksLive.Index do
         name: "Before the Coffee Gets Cold",
         author: "Toshikazu Kawaguchi",
         remark:
-          "I am peculiarly drawn towards stories of grief, regret, & love.I must read the rest of the series."
+          "I am peculiarly drawn towards stories of grief, regret, & love. I must read the rest of the series."
+      },
+      %{
+        name: "A Very Easy Death",
+        author: "Simone de Beauvoir",
+        remark: ~s("if you love life, immortality is no consolation for death")
       }
     ]
 
@@ -152,24 +157,24 @@ defmodule EventHorizonWeb.BooksLive.Index do
         <p class="text-(--books-paragraph)">Tech related books.</p>
         <ul>
           <li :for={book <- @tech_books} class="list-disc ml-4">
-            <p class="text-lg">{book.name} by {book.author}</p>
-            <p :if={book.remark} class="text-(--books-paragraph)">
+            <p class="text-lg">{book.name} <span class="opacity-60">by</span> {book.author}</p>
+            <p :if={book.remark} class="text-(--books-paragraph) italic">
               {book.remark}
             </p>
           </li>
         </ul>
 
-        <h3 class="font-bold text-xl m-0 mt-4">Fiction</h3>
-        <p class="text-(--books-paragraph)">Fiction, Sci-Fi, etc.</p>
+        <h3 class="font-bold text-xl m-0 mt-4">Fiction/Non-fiction</h3>
+        <p class="text-(--books-paragraph)">Fiction, Sci-Fi, Philosophical, etc.</p>
         <ul>
           <li :for={book <- @fiction_books} class="list-disc ml-4">
-            <p class="text-lg">{book.name} by {book.author}</p>
+            <p class="text-lg">{book.name} <span class="opacity-60">by</span> {book.author}</p>
             <ul :if={Map.get(book, :child)}>
               <li :for={book <- book.child} class="list-disc ml-8">
                 {book}
               </li>
             </ul>
-            <p :if={book.remark} class="text-(--books-paragraph)">
+            <p :if={book.remark} class="text-(--books-paragraph) italic">
               {book.remark}
             </p>
           </li>
@@ -178,7 +183,9 @@ defmodule EventHorizonWeb.BooksLive.Index do
         <h3 class="font-bold text-xl m-0 mt-4">Shorts</h3>
         <p class="text-(--books-paragraph)">Some of my favorite short stories.</p>
         <ul>
-          <li :for={short <- @shorts} class="list-disc ml-4">{short.name} by {short.author}</li>
+          <li :for={short <- @shorts} class="list-disc ml-4">
+            {short.name} <span class="opacity-60">by</span> {short.author}
+          </li>
         </ul>
       </div>
     </Layouts.app>
