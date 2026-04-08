@@ -121,6 +121,12 @@ defmodule EventHorizonWeb.BooksLive.Index do
         name: "A Very Easy Death",
         author: "Simone de Beauvoir",
         remark: ~s("if you love life, immortality is no consolation for death")
+      },
+      %{
+        name: "Crime and Punishment",
+        author: "Fyodor Dostoevsky",
+        remark:
+          ~s(Quite different themes in here. The psychology of the character, the ideas of being another "napoleon", the place, moral dilemmas. A lot of food for thought!)
       }
     ]
 
