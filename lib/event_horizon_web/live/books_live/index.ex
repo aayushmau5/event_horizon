@@ -127,6 +127,12 @@ defmodule EventHorizonWeb.BooksLive.Index do
         author: "Fyodor Dostoevsky",
         remark:
           ~s(Quite different themes in here. The psychology of the character, the ideas of being another "napoleon", the place, moral dilemmas. A lot of food for thought!)
+      },
+      %{
+        name: "Sati Savitri",
+        author: "Devdutt Pattanaik",
+        remark:
+          "This was an eye opener. The retelling of Hindu Mythologics, that's way different from the things we were taught. Honestly, this is how it should've been taught."
       }
     ]
 
