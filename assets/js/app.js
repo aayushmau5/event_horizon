@@ -26,6 +26,7 @@ import { hooks as colocatedHooks } from "phoenix-colocated/event_horizon";
 import topbar from "../vendor/topbar";
 import { Tilt } from "./hooks/tilt";
 import { FooterWaves } from "./hooks/footer_waves";
+import "../vendor/neko.js";
 
 const ResetForm = {
   mounted() {
@@ -69,6 +70,32 @@ window.addEventListener("theme-changed", () => {
 
 // connect if there are any LiveViews on the page
 liveSocket.connect();
+
+// Initialize the neko cat companion
+if (window.createNeko) {
+  const isBlogPost = () => /^\/blog\/.+/.test(window.location.pathname);
+
+  // Create cat once — it persists across LiveView navigations
+  window.neko = window.createNeko({ speed: 16, idleThreshold: 48 });
+
+  // On load: wake immediately if not a blog post, else stay sleeping
+  if (!isBlogPost()) {
+    window.neko.wakeUp();
+  }
+
+  window.addEventListener("theme-changed", () => {
+    if (window.neko) window.neko.applyThemeColor();
+  });
+
+  // On LiveView navigation, adjust awake/sleep state based on destination
+  window.addEventListener("phx:page-loading-stop", () => {
+    if (isBlogPost()) {
+      window.neko.goToSleep();
+    } else {
+      window.neko.wakeUp();
+    }
+  });
+}
 
 // expose liveSocket on window for web console debug logs and latency simulation:
 // >> liveSocket.enableDebug()
