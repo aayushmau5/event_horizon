@@ -1,7 +1,7 @@
 defmodule EventHorizonWeb.ResumeController do
   use EventHorizonWeb, :controller
 
-  @filename "Aayush-Kumar-Sahu-Resume-2025.pdf"
+  @filename "Aayush-Kumar-Sahu-Resume-2026.pdf"
 
   def show(conn, _params) do
     resume_path = Application.app_dir(:event_horizon, "priv/static/resume/#{@filename}")
