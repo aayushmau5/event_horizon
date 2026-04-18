@@ -27,11 +27,11 @@ defmodule EventHorizonWeb.BlogComponents do
 
     cond do
       diff_seconds < 60 -> "just now"
-      diff_seconds < 3600 -> "#{div(diff_seconds, 60)} min ago"
-      diff_seconds < 86400 -> "#{div(diff_seconds, 3600)} hours ago"
-      diff_seconds < 2_592_000 -> "#{div(diff_seconds, 86400)} days ago"
-      diff_seconds < 31_536_000 -> "#{div(diff_seconds, 2_592_000)} months ago"
-      true -> "#{div(diff_seconds, 31_536_000)} years ago"
+      diff_seconds < 3600 -> pluralize(div(diff_seconds, 60), "min")
+      diff_seconds < 86400 -> pluralize(div(diff_seconds, 3600), "hour")
+      diff_seconds < 2_592_000 -> pluralize(div(diff_seconds, 86400), "day")
+      diff_seconds < 31_536_000 -> pluralize(div(diff_seconds, 2_592_000), "month")
+      true -> pluralize(div(diff_seconds, 31_536_000), "year")
     end
   end
 
@@ -42,6 +42,9 @@ defmodule EventHorizonWeb.BlogComponents do
   end
 
   defp format_relative_time(_), do: ""
+
+  defp pluralize(1, unit), do: "1 #{unit} ago"
+  defp pluralize(n, unit), do: "#{n} #{unit}s ago"
 
   # ============================================================================
   # Blog Index Components
