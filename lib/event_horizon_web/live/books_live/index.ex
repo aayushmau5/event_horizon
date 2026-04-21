@@ -133,6 +133,11 @@ defmodule EventHorizonWeb.BooksLive.Index do
         author: "Devdutt Pattanaik",
         remark:
           "This was an eye opener. The retelling of Hindu Mythologics, that's way different from the things we were taught. Honestly, this is how it should've been taught."
+      },
+      %{
+        name: "The Time Machine",
+        author: "H. G. Wells",
+        remark: "Things aren't that good in the future as well, eh?"
       }
     ]
 
