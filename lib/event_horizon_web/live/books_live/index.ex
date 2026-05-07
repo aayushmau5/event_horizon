@@ -138,6 +138,11 @@ defmodule EventHorizonWeb.BooksLive.Index do
         name: "The Time Machine",
         author: "H. G. Wells",
         remark: "Things aren't that good in the future as well, eh?"
+      },
+      %{
+        name: "Mother Mary Comes To Me",
+        author: "Arundhati Roy",
+        remark: "This will stay with me until the end."
       }
     ]
 
