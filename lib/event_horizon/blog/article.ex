@@ -61,7 +61,7 @@ defmodule EventHorizon.Blog.Article do
     read_minutes = compute_read_minutes(body)
     {:ok, date_time, _} = DateTime.from_iso8601(Map.fetch!(attrs, :date))
     date = DateTime.to_date(date_time)
-    formatted_date = Calendar.strftime(date, "%B %d, %Y")
+    formatted_date = Calendar.strftime(date, "%d %b, %Y")
     toc = if Map.get(attrs, :showToc, false), do: extract_toc(body), else: []
 
     struct!(

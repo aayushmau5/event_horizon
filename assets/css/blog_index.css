@@ -189,20 +189,6 @@
     opacity: 0.7;
 }
 
-.blogIndexBlogsContainer {
-    display: flex;
-    flex-flow: row wrap;
-    align-items: flex-start;
-    justify-content: center;
-    overflow-anchor: none;
-}
-
-@media (max-width: 768px) {
-    .blogIndexBlogsContainer {
-        flex-direction: column;
-    }
-}
-
 /* Animation Delays */
 
 .blogCard:nth-child(1) {

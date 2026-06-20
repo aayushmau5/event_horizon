@@ -2,33 +2,24 @@
   <div class="blogIndexContainer animate-fadeIn">
     <h1 class="font-bold font-[Handwriting] mb-4 text-[2.5rem]">Blog</h1>
     <p class="blogIndexInfo">
-      I write about something cool I have learned recently, or some cool
-      technologies, or just about life in general.
-    </p>
-    <p class="blogIndexInfo">
-      So far, I have written
-      <span class="font-['Departure_Mono',monospace]">{@total_articles}</span>
-      blogs.
+      I write about something cool I have learned recently, some cool
+      technologies, or just some personal opinions.
     </p>
 
     <.blog_search_bar query={@search_query} />
 
-    <.blog_category_toggle active_category={@selected_category} />
-
-    <%= if @selected_category == "tech" do %>
-      <.blog_tags_container>
+    <.blog_tags_container>
+      <.blog_tag
+        value="All"
+        is_selected={@selected_tag == ""}
+      />
+      <%= for tag <- @all_tags do %>
         <.blog_tag
-          value="All"
-          is_selected={@selected_tag == ""}
+          value={tag}
+          is_selected={@selected_tag == tag}
         />
-        <%= for tag <- @all_tags do %>
-          <.blog_tag
-            value={tag}
-            is_selected={@selected_tag == tag}
-          />
-        <% end %>
-      </.blog_tags_container>
-    <% end %>
+      <% end %>
+    </.blog_tags_container>
 
     <%= if @search_query != "" do %>
       <h3 class="blogIndexSearchHeader">Search result</h3>
@@ -38,7 +29,7 @@
       <h3 class="blogIndexNoBlogs">No blogs found</h3>
     <% end %>
 
-    <div id="blogs-list" class="blogIndexBlogsContainer" phx-update="stream">
+    <div id="blogs-list" phx-update="stream">
       <.blog_card
         :for={{dom_id, blog} <- @streams.blogs}
         id={dom_id}
@@ -46,6 +37,8 @@
         title={blog.title}
         date={blog.formatted_date}
         read_time={blog.read_minutes}
+        description={blog.description}
+        tags={blog.tags}
       />
     </div>
   </div>

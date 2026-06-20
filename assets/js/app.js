@@ -72,7 +72,7 @@ window.addEventListener("theme-changed", () => {
 liveSocket.connect();
 
 // Initialize the neko cat companion
-if (window.createNeko) {
+if (window.createNeko && window.innerWidth > 700) {
   const isBlogPost = () => /^\/blog\/.+/.test(window.location.pathname);
 
   // Create cat once — it persists across LiveView navigations

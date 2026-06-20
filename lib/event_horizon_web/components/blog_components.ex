@@ -841,7 +841,7 @@ defmodule EventHorizonWeb.BlogComponents do
       )
 
     ~H"""
-    <div class="text-base flex flex-col bg-white/[0.02] py-2.5 px-4 rounded-xl border-l-[3px] border-l-[var(--theme-one)]">
+    <div class="text-base flex flex-col bg-white/[0.02] py-2.5 px-4 rounded-xl">
       <div class="flex items-center gap-3 mb-2.5 max-md:flex-col max-md:items-start max-md:gap-1.5">
         <span class="opacity-90 font-bold text-sm text-[var(--theme-two)]">
           {@comment.author}
@@ -911,7 +911,7 @@ defmodule EventHorizonWeb.BlogComponents do
 
   def reply_item(assigns) do
     ~H"""
-    <div class="bg-white/[0.03] p-3 rounded-lg border-l-2 border-l-[var(--theme-three)] mt-2 first:mt-0">
+    <div class="bg-white/[0.03] p-3 rounded-lg mt-2 first:mt-0">
       <div class="flex items-center gap-3 mb-1.5 max-md:flex-col max-md:items-start max-md:gap-1">
         <span class="opacity-90 font-bold text-sm text-[var(--theme-two)]">
           {@reply.author}

@@ -193,6 +193,7 @@ defmodule EventHorizonWeb.PageComponents do
   attr :date, :string, required: true
   attr :description, :string, default: nil
   attr :read_time, :string, default: nil
+  attr :tags, :list, default: []
   attr :class, :string, default: ""
 
   def blog_card(assigns) do
@@ -201,16 +202,34 @@ defmodule EventHorizonWeb.PageComponents do
       id={@id}
       navigate={"/blog/#{@slug}"}
       class={["blogCard", @class]}
-      phx-hook="Tilt"
     >
-      <p class="blogCardDate">{@date}</p>
+      <div class="flex gap-4">
+        <p class="blogCardDate">
+          <span class={["hero-calendar", "w-4 h-4"]} />
+          {@date}
+        </p>
+        <%= if @read_time do %>
+          <p class="blogCardReadTime">
+            <span class={["hero-clock", "w-4 h-4"]} />
+            {@read_time} min read
+          </p>
+        <% end %>
+      </div>
       <h3>{@title}</h3>
       <%= if @description do %>
         <p class="blogCardDescription">{@description}</p>
       <% end %>
-      <%= if @read_time do %>
-        <p class="blogCardReadTime">{@read_time} min read</p>
-      <% end %>
+      <div :if={length(@tags) !== 0}>
+        <span
+          :for={tag <- @tags}
+          class={[
+            "blogTags",
+            "text-xs opacity-50 mr-2 inline-flex items-center rounded-full px-2.5 py-0.5"
+          ]}
+        >
+          {tag}
+        </span>
+      </div>
     </.link>
     """
   end

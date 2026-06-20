@@ -1,21 +1,21 @@
 .blogCard {
-    display: inline-block;
-    padding: 1rem;
-    border-radius: 0.75rem;
+    margin-top: 1.2rem;
+    display: block;
     word-wrap: break-word;
-    transition: transform 0.15s ease;
-    width: 50%;
     opacity: 0;
     animation: blogCardSlideUp 0.3s ease-in forwards;
-    transform-style: preserve-3d;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    border: 2px solid color-mix(in srgb, var(--blog-container-hover) 95%, white);
+    background-color: color-mix(
+        in srgb,
+        var(--blog-container-hover) 50%,
+        transparent
+    );
 }
 
 .blogCard:hover {
     background-color: var(--blog-container-hover);
-}
-
-.blogCard:active {
-    transform: scale(0.98);
 }
 
 .blogCard:focus {
@@ -23,22 +23,36 @@
 }
 
 .blogCardDate {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     opacity: 0.5;
     font-family: "Departure Mono", monospace;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .blogCardDescription {
     font-size: 0.9rem;
     opacity: 0.5;
-    margin: 5px 0;
+}
+
+.blogTags {
+    font-family: "Departure Mono", monospace;
+    text-transform: uppercase;
+    background-color: color-mix(
+        in srgb,
+        var(--blog-container-hover) 90%,
+        white
+    );
 }
 
 .blogCardReadTime {
-    color: var(--blog-reading-time);
-    font-size: 0.9rem;
-    font-weight: bold;
+    font-size: 0.8rem;
+    opacity: 0.5;
     font-family: "Departure Mono", monospace;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 @media (max-width: 768px) {
