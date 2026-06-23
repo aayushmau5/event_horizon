@@ -267,11 +267,13 @@ defmodule EventHorizonWeb.BlogComponents do
 
   attr :src, :string, required: true
   attr :alt, :string, default: ""
+  attr :caption, :string, default: ""
 
   def image(assigns) do
     ~H"""
-    <figure class="my-6 flex justify-center">
+    <figure class="my-6 flex flex-col items-center">
       <img src={@src} alt={@alt} class="rounded-lg" />
+      <figcaption :if={@caption != ""} class="blogCaption">{@caption}</figcaption>
     </figure>
     """
   end

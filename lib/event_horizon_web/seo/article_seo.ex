@@ -9,7 +9,7 @@ defimpl SEO.OpenGraph.Build, for: EventHorizon.Blog.Article do
       type: :article,
       image:
         SEO.OpenGraph.Image.build(
-          url: banner_image_url(article.slug),
+          url: og_image_url(article),
           alt: article.title
         ),
       detail:
@@ -20,8 +20,12 @@ defimpl SEO.OpenGraph.Build, for: EventHorizon.Blog.Article do
     )
   end
 
-  defp banner_image_url(slug) do
-    EventHorizonWeb.SEO.site_url() <> "/images/banners/#{slug}.webp"
+  defp og_image_url(%{cover: %{image: image}} = _article) when image != "" do
+    EventHorizonWeb.SEO.site_url() <> image
+  end
+
+  defp og_image_url(article) do
+    EventHorizonWeb.SEO.site_url() <> "/images/banners/#{article.slug}.webp"
   end
 end
 
@@ -43,12 +47,16 @@ defimpl SEO.Twitter.Build, for: EventHorizon.Blog.Article do
       title: article.title,
       description: article.description,
       card: :summary_large_image,
-      image: banner_image_url(article.slug)
+      image: og_image_url(article)
     )
   end
 
-  defp banner_image_url(slug) do
-    EventHorizonWeb.SEO.site_url() <> "/images/banners/#{slug}.webp"
+  defp og_image_url(%{cover: %{image: image}} = _article) when image != "" do
+    EventHorizonWeb.SEO.site_url() <> image
+  end
+
+  defp og_image_url(article) do
+    EventHorizonWeb.SEO.site_url() <> "/images/banners/#{article.slug}.webp"
   end
 end
 

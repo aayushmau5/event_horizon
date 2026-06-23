@@ -131,6 +131,10 @@ code {
     color: var(--blog-headers);
 }
 
+#blog_body_container > p {
+    margin-bottom: 1rem;
+}
+
 .headerSvg path {
     stroke: var(--header-separator-color);
     stroke-dasharray: 1000;
