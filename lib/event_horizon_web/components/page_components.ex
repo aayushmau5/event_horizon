@@ -147,8 +147,8 @@ defmodule EventHorizonWeb.PageComponents do
               <.link class="footerLink" navigate="/contact">
                 Contact
               </.link>
-              <.link class="footerLink" navigate="/books">
-                Books
+              <.link class="footerLink" navigate="/rss.xml">
+                RSS
               </.link>
               <.link class="footerLink" navigate="/resume">
                 Resume
