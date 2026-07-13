@@ -712,6 +712,7 @@
 
         let awake = false;
         let returning = false;
+        let userWantsSleep = false;
 
         // Place cat at sleep position immediately
         neko.setState(NekoState.SLEEP);
@@ -734,7 +735,7 @@
         neko.chaseMouse = sleepingChaseMouse;
 
         const wakeUp = () => {
-            if (awake || returning) return;
+            if (awake || returning || userWantsSleep) return;
             awake = true;
             neko.chaseMouse = Neko.prototype.chaseMouse;
             neko.behaviorMode = BehaviorMode.CHASE_MOUSE;
@@ -760,8 +761,10 @@
         neko.element.addEventListener("mousedown", (e) => {
             e.stopPropagation();
             if (awake) {
+                userWantsSleep = true;
                 goToSleep();
             } else {
+                userWantsSleep = false;
                 returning = false;
                 wakeUp();
             }
