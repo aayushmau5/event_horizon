@@ -18,7 +18,7 @@ defmodule EventHorizonWeb do
   """
 
   def static_paths,
-    do: ~w(assets fonts images)
+    do: ~w(assets fonts images videos)
 
   def static_paths_matching,
     do:

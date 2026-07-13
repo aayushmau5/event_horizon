@@ -24,7 +24,7 @@ defmodule EventHorizonWeb.BlogLive.Show do
 
         {:ok,
          socket
-         |> assign(post: post, adjacent_posts: adjacent_posts)
+         |> assign(post: post, adjacent_posts: adjacent_posts, page_title: post.title)
          |> SEO.assign(post)}
     end
   end
