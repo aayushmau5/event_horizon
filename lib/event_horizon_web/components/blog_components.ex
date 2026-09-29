@@ -272,7 +272,11 @@ defmodule EventHorizonWeb.BlogComponents do
   def image(assigns) do
     ~H"""
     <figure class="my-6 flex flex-col items-center">
-      <img src={@src} alt={@alt} class="rounded-lg" />
+      <img
+        src={@src}
+        alt={@alt}
+        class="max-h-[80vh] w-auto max-w-full rounded-lg object-contain"
+      />
       <figcaption :if={@caption != ""} class="blogCaption">{@caption}</figcaption>
     </figure>
     """

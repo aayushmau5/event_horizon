@@ -3,7 +3,7 @@ title: "IndiaFOSS 2026"
 description: "My experience at IndiaFOSS 2026"
 date: 2026-09-28T08:05:46.685244Z
 tags: ["open source"]
-draft: false
+draft: true
 showToc: false
 dynamic: false
 ---

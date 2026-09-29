@@ -1,14 +1,20 @@
 ---
 title: "Unemployment log 002"
-description: "Life update"
-date: 2026-09-17T18:41:37.110440Z
-tags: ["life"]
+description: "Yet another unemployment log"
+date: 2026-09-29T00:41:37.110440Z
+tags: ["life", "elixir"]
+cover:
+  image: "/images/blog/unemployment-log-002/trees.jpg"
+  alt: "Life in motion"
+  caption: "Life in motion"
 draft: false
 showToc: false
 dynamic: false
 ---
 
-Hello World! It's [been a while](/blog/unemployment-log-1).
+> (info) Written on 17th September. Published later.
+
+Hello World! It's [been a while](https://www.youtube.com/watch?v=ZEvi_wY53Zo).
 
 Welcome to yet another unemployment log. Well, I got a job, but I will wait a while before making an announcement. The reason you will read now...
 
@@ -39,7 +45,7 @@ The reason I'm not saying that I'm employed yet is because I am on a paid work t
 
 # Some fun
 
-Well, ever since I started working, I haven't had much time to work on [Eva](/blog/eva-harness). But I do want to share some things I worked on during the past few weeks.
+Well, ever since I started working, I haven't had much time to work on [Eva](https://github.com/aayushmau5/eva). But I do want to share some things I worked on during the past few weeks.
 
 ## Eva Extensions
 
@@ -57,6 +63,8 @@ So far, Eva has the following extensions, most of which I vibe-coded using Codex
 
 The fun part is that these extensions don't have to live on the same machine as Eva. I use distributed Erlang nodes over Tailscale, with Eva acting as the hub and extension nodes connecting as spokes. An extension can run pretty much anywhere. Right now, I have an OCI instance, my MacBook, and an old Dell Inspiron laptop all running Eva extensions and talking to each other. My own tiny distributed system hehe.
 
+![Eva Extensions](/images/blog/unemployment-log-002/eva-arch.png)
+
 I'll deep dive into the whole thing in a technical post someday.
 
 ## Bnana
@@ -71,13 +79,23 @@ The app describes itself as:
 
 > a small place for you :)
 
+![Home](/images/blog/unemployment-log-002/bnana_home.png)
+
 That is pretty much what it is.
 
+PS: The UI looks like its vibe coded, but it's everchanging. I constantly tweak around with new interfaces. 
+
 ### Writing on the go
+
+![Blog posts](/images/blog/unemployment-log-002/bnana_blogs.png)
+
+![Blog editor](/images/blog/unemployment-log-002/bnana_blog.png)
 
 The first feature was a blog editor. I wanted to write drafts whenever an idea came to me instead of waiting until I was back at my laptop. In fact, parts of this very blog were written inside Bnana.
 
 It also connects to this website through a Phoenix Channel. I can look at analytics, read comments and contact messages, manage notes, and access some other small tools from my phone. There is an iOS widget sitting on my home screen that shows how many visits my website has had that day.
+
+![Analytics](/images/blog/unemployment-log-002/bnana_analytics.png)
 
 Do I need live website analytics on my home screen? Probably not. Is it cool? Yes.
 
@@ -89,11 +107,15 @@ It is not meant to be a serious journaling system. I usually add small logs like
 
 Then there is "Last time". It keeps track of regular things that I somehow forget the last occurrence of. When did I last water my plants? When did I last go on a date? Things like that. It also has a widget, so I can mark something as done without opening the app.
 
+![Last Time](/images/blog/unemployment-log-002/bnana_last_time.png)
+
 ### Saved links + Eva
 
 The saved-links feature has been particularly useful. I added a "Save to Bnana" shortcut on iOS, so whenever I find an article I want to read, I can send it straight to the app.
 
 My problem is that I like reading articles, but I lose the trail after a while. I save them and then forget why I was interested in them in the first place.
+
+![Links](/images/blog/unemployment-log-002/bnana_saved_links.png)
 
 I also don't like AI summaries of articles. A summary tries to replace the original. I want something that makes me want to read the original.
 
@@ -103,11 +125,15 @@ Not a summary. Just: "Here is why this may be worth your time."
 
 I love that Bnana and Eva work together like this. It is exactly the kind of weirdly specific personal software I wanted to make.
 
+![Last Time](/images/blog/unemployment-log-002/bnana_incentives.png)
+
 ### Elixir on iOS
 
 Mob is still in its early days, but it is quite promising. I love the fact that most of the app is written in Elixir. Some iOS-specific things still need Swift, Objective-C or C, and frankly I didn't understand those parts at all. I let an agent handle them.
 
 There are also some gaps right now, like proper access to secure storage. But I have the app installed on my phone, I actually use it, and it has native widgets. That is pretty cool for something that started with "Can I make an iOS app in Elixir?"
+
+![Widgets](/images/blog/unemployment-log-002/bnana_widget.png)
 
 I know what I wrote earlier about AI making engineering frustrating. So what's different here?
 
