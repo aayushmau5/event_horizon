@@ -1,8 +1,3 @@
-Immediate:
-- refactor code
-    - right now, it's a mess of css & tailwind.
-        - consider moving quite a lot of it to tailwind
-
 Future:
 - HTML view of the resume(with download button to download)
 
