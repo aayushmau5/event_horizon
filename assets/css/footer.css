@@ -1,5 +1,6 @@
 .footerContainer {
     position: relative;
+    isolation: isolate;
     color: var(--footer-color);
     margin: 0 auto;
     font-size: 1rem;
@@ -54,8 +55,9 @@
     }
 }
 
-.footerDotPattern[data-animation="dvd"] .codeSnippet,
-.footerDotPattern[data-animation="code"] .footerDvdX {
+.footerDotPattern:not([data-animation="code"]) .codeSnippet,
+.footerDotPattern:not([data-animation="dvd"]) .footerDvdX,
+.footerDotPattern:not([data-animation="nyan"]) .footerNyanScene {
     display: none;
 }
 
@@ -109,6 +111,85 @@
     }
 }
 
+.footerNyanScene {
+    position: absolute;
+    inset: 0;
+    opacity: 0.24;
+}
+
+.footerDotPattern[data-animation="nyan"] + .footerContent {
+    --footer-color: var(--footer-color-hover);
+    color: var(--footer-color);
+}
+
+.footerNyanCat,
+.footerNyanRainbow {
+    --cat-width: clamp(180px, 38cqw, 360px);
+    position: absolute;
+    top: 58%;
+    transform: translateY(-50%);
+}
+
+.footerNyanCat {
+    right: 12%;
+    width: var(--cat-width);
+}
+
+.footerNyanSprite {
+    display: block;
+    width: 100%;
+    overflow: visible;
+    animation: nyanBob 0.7s steps(2, end) infinite alternate;
+    animation-play-state: paused;
+}
+
+.footerNyanPaws,
+.footerNyanTail {
+    animation: nyanRun 0.35s steps(2, end) infinite alternate;
+    animation-play-state: paused;
+}
+
+.footerNyanTail {
+    animation-direction: alternate-reverse;
+}
+
+.footerNyanRainbow {
+    left: 0;
+    width: calc(88cqw - var(--cat-width) * 0.74);
+    height: calc(var(--cat-width) * 18 / 34);
+    margin-top: calc(var(--cat-width) * -1.5 / 34);
+    overflow: hidden;
+}
+
+.footerNyanRainbowTrack {
+    position: absolute;
+    inset: 0 -64px;
+    background: url("/images/nyan-rainbow.svg") repeat-x;
+    background-size: 64px 100%;
+    animation: nyanTrail 0.7s steps(6, end) infinite;
+    animation-play-state: paused;
+}
+
+.footerDotPattern[data-animation="nyan"][data-animated] :is(.footerNyanSprite, .footerNyanPaws, .footerNyanTail, .footerNyanRainbowTrack) {
+    animation-play-state: running;
+    will-change: transform;
+}
+
+@keyframes nyanBob {
+    from { transform: translateY(-3px); }
+    to { transform: translateY(3px); }
+}
+
+@keyframes nyanRun {
+    from { transform: translateX(-1px); }
+    to { transform: translateX(1px); }
+}
+
+@keyframes nyanTrail {
+    from { transform: translateX(0); }
+    to { transform: translateX(-64px); }
+}
+
 .footerAnimationControls {
     display: flex;
     flex-wrap: wrap;
@@ -144,6 +225,11 @@
 }
 
 @media (max-width: 700px) {
+    .footerAnimationControls > span {
+        flex-basis: 100%;
+        text-align: center;
+    }
+
     .codeSnippet:nth-child(n + 7 of .codeSnippet) {
         display: none;
     }

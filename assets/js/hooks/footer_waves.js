@@ -166,6 +166,7 @@ const CODE_SNIPPETS = [
 const COLORS = ["--theme-one", "--theme-two", "--theme-three", "--theme-four"];
 const MAX_SNIPPETS = 10;
 const ANIMATION_STORAGE_KEY = "footer-animation";
+const ANIMATIONS = ["code", "dvd", "nyan"];
 
 function createSnippets(container) {
   const fragment = document.createDocumentFragment();
@@ -215,7 +216,7 @@ export const FooterWaves = {
     try {
       savedAnimation = window.localStorage.getItem(ANIMATION_STORAGE_KEY);
     } catch {}
-    this.selectAnimation(savedAnimation === "dvd" ? "dvd" : "code");
+    this.selectAnimation(savedAnimation);
 
     this.selectHandler = (event) => {
       const button = event.target.closest("[data-footer-animation]");
@@ -250,7 +251,7 @@ export const FooterWaves = {
   },
 
   selectAnimation(animation) {
-    this.animation = animation === "dvd" ? "dvd" : "code";
+    this.animation = ANIMATIONS.includes(animation) ? animation : "code";
     this.el.dataset.animation = this.animation;
     this.controls.querySelectorAll("[data-footer-animation]").forEach((button) => {
       button.setAttribute("aria-pressed", button.dataset.footerAnimation === this.animation);

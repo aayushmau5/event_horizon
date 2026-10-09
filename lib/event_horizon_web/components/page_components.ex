@@ -135,8 +135,55 @@ defmodule EventHorizonWeb.PageComponents do
             </svg>
           </div>
         </div>
+        <div id="footer-nyan-scene" class="footerNyanScene" aria-hidden="true">
+          <div class="footerNyanRainbow">
+            <div class="footerNyanRainbowTrack"></div>
+          </div>
+          <div class="footerNyanCat">
+            <%!-- Geometry adapted from cristurm/nyan-cat; see assets/vendor/nyan-cat.LICENSE. --%>
+            <svg
+              class="footerNyanSprite"
+              viewBox="0 0 34 22"
+              shape-rendering="crispEdges"
+              focusable="false"
+            >
+              <g class="footerNyanPaws">
+                <path
+                  fill="#000"
+                  d="M5 16h4v4H7v1H4v-3h1zm5 0h4v5h-3v-1h-1zm10 0h4v5h-3v-1h-1zm6 0h4v5h-3v-1h-1z"
+                />
+                <path fill="#999" d="M5 18h3v2H5zm6 0h2v2h-2zm10 0h2v2h-2zm6 0h2v2h-2z" />
+              </g>
+              <g class="footerNyanTail">
+                <path fill="#000" d="M1 7h3v1h1v1h1v1h3v4H6v-1H4v-1H3v-1H2V9H1z" />
+                <path fill="#999" d="M2 8h1v1h1v1h1v1h3v2H6v-1H4v-1H3v-1H2z" />
+              </g>
+              <path fill="#000" d="M10 1h16v1h1v1h1v13h-1v1h-1v1H10v-1H9v-1H8V3h1V2h1z" />
+              <path fill="#fc9" d="M10 2h16v1h1v13h-1v1H10v-1H9V3h1z" />
+              <path fill="#f9f" d="M11 3h14v1h1v11h-1v1H11v-1h-1V4h1z" />
+              <path
+                fill="#f39"
+                d="M12 5h1v1h-1zm5-1h1v1h-1zm3 0h1v1h-1zm-4 4h1v1h-1zm8-2h1v1h-1zm-11 4h1v1h-1zm4 1h1v1h-1zm-6 1h1v1h-1zm4 2h1v1h-1z"
+              />
+              <path
+                fill="#000"
+                d="M19 5h2v1h1v1h1v1h4V7h1V6h1V5h2v1h1v5h1v6h-1v1h-1v1H21v-1h-1v-1h-1v-1h-1v-6h1z"
+              />
+              <path
+                fill="#999"
+                d="M20 6h1v1h1v1h1v1h5V8h1V7h1V6h1v6h1v4h-1v1h-1v1h-9v-1h-1v-1h-1v-5h1z"
+              />
+              <path fill="#f99" d="M20 14h2v2h-2zm10 0h2v2h-2z" />
+              <path
+                fill="#000"
+                d="M22 11h2v2h-2zm7 0h2v2h-2zm-3 2h1v1h-1zm-3 2h1v1h2v-1h1v1h2v-1h1v2h-7z"
+              />
+              <path fill="#fff" d="M22 11h1v1h-1zm7 0h1v1h-1z" />
+            </svg>
+          </div>
+        </div>
       </div>
-      <div>
+      <div class="footerContent">
         <%= if @socket do %>
           <div class="site-stats-container">
             {live_render(@socket, EventHorizonWeb.SiteStatsLive, id: "site-stats", sticky: true)}
@@ -170,6 +217,15 @@ defmodule EventHorizonWeb.PageComponents do
             aria-pressed="false"
           >
             <.icon name="hero-play-circle" class="size-3.5" /> DVD
+          </button>
+          <button
+            id="footer-animation-nyan"
+            type="button"
+            class="footerAnimationButton"
+            data-footer-animation="nyan"
+            aria-pressed="false"
+          >
+            <.icon name="hero-sparkles" class="size-3.5" /> Nyan Cat
           </button>
         </div>
         <div class="footerOthers">

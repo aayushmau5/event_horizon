@@ -89,7 +89,7 @@ test("footer switches animations, reuses snippets, pauses when inactive, and cle
     const el = new Element();
     const logo = new Element();
     const controls = new EventTarget();
-    const buttons = ["code", "dvd"].map((mode) => {
+    const buttons = ["code", "dvd", "nyan"].map((mode) => {
       const button = new Element();
       button.dataset.footerAnimation = mode;
       button.closest = () => button;
@@ -161,6 +161,21 @@ test("footer switches animations, reuses snippets, pauses when inactive, and cle
   click("code");
   assert.equal(el.dataset.animation, "code");
   assert.deepEqual(el.children, snippets);
+  click("nyan");
+  assert.equal(el.dataset.animation, "nyan");
+  assert.equal(saved.get("footer-animation"), "nyan");
+  assert.equal(buttons[2].attributes.get("aria-pressed"), "true");
+  assert.equal(buttons[1].attributes.get("aria-pressed"), "false");
+  assert.deepEqual(el.children, snippets, "Nyan Cat reuses the existing footer nodes");
+  observers[0].intersect(false);
+  assert.ok(!el.hasAttribute("data-animated"), "Nyan Cat pauses offscreen");
+  observers[0].intersect(true);
+  document.hidden = true;
+  document.dispatchEvent(new Event("visibilitychange"));
+  assert.ok(!el.hasAttribute("data-animated"), "Nyan Cat pauses in a hidden tab");
+  document.hidden = false;
+  document.dispatchEvent(new Event("visibilitychange"));
+  assert.ok(el.hasAttribute("data-animated"));
   click("dvd");
 
   hook.destroyed();
@@ -191,6 +206,23 @@ test("footer switches animations, reuses snippets, pauses when inactive, and cle
   assert.equal(next.el.childElementCount, 10, "navigation cannot exceed the pool limit");
   assert.equal(el.childElementCount, 0, "navigation cannot mutate the old footer");
   next.destroyed();
+
+  saved.set("footer-animation", "nyan");
+  const nyan = createFooter().hook;
+  nyan.mounted();
+  assert.equal(nyan.el.dataset.animation, "nyan", "navigation restores Nyan Cat");
+  observers.at(-1).intersect(true);
+  assert.equal(nyan.el.childElementCount, 0, "Nyan Cat creates no code snippets");
+  motionQuery.matches = true;
+  motionQuery.dispatchEvent(new Event("change"));
+  assert.ok(!nyan.el.hasAttribute("data-animated"), "Nyan Cat respects reduced motion");
+  nyan.destroyed();
+
+  saved.set("footer-animation", "winamp");
+  const removed = createFooter().hook;
+  removed.mounted();
+  assert.equal(removed.el.dataset.animation, "code", "removed modes fall back to Code");
+  removed.destroyed();
 
   t.mock.method(localStorage, "getItem", () => {
     throw new Error("storage blocked");
