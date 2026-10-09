@@ -165,115 +165,58 @@ const CODE_SNIPPETS = [
 
 const COLORS = ["--theme-one", "--theme-two", "--theme-three", "--theme-four"];
 const MAX_SNIPPETS = 10;
-const SPAWN_INTERVAL = 600;
 
-function getGlobalState() {
-  if (!window.__footerWaves) {
-    window.__footerWaves = {
-      snippets: [],
-      interval: null,
-      paused: false,
-      visibilityHandler: null,
-      container: null,
-    };
+function createSnippets(container) {
+  const fragment = document.createDocumentFragment();
+
+  for (let i = 0; i < MAX_SNIPPETS; i++) {
+    const el = document.createElement("div");
+    const duration = 8 + Math.random() * 12;
+    const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+
+    el.className = "codeSnippet";
+    el.textContent = CODE_SNIPPETS[Math.floor(Math.random() * CODE_SNIPPETS.length)];
+    el.style.cssText = `
+      left: ${5 + Math.random() * 90}%;
+      font-size: ${0.7 + Math.random() * 0.5}rem;
+      --snippet-start: ${100 + Math.random() * 20}cqh;
+      --snippet-opacity: ${0.15 + Math.random() * 0.35};
+      --snippet-color: var(${color});
+      --snippet-duration: ${duration}s;
+      --snippet-delay: ${-(i / MAX_SNIPPETS) * duration}s;
+    `;
+    fragment.appendChild(el);
   }
-  return window.__footerWaves;
-}
 
-function createSnippet(state) {
-  if (!state.container) return;
-
-  const text = CODE_SNIPPETS[Math.floor(Math.random() * CODE_SNIPPETS.length)];
-  const el = document.createElement("div");
-  el.className = "codeSnippet";
-  el.textContent = text;
-
-  const x = 5 + Math.random() * 90;
-  const startY = 100 + Math.random() * 20;
-  const duration = 8 + Math.random() * 12;
-  const delay = Math.random() * 2;
-  const size = 0.7 + Math.random() * 0.5;
-  const opacity = 0.15 + Math.random() * 0.35;
-  const color = COLORS[Math.floor(Math.random() * COLORS.length)];
-
-  el.style.cssText = `
-    left: ${x}%;
-    top: ${startY}%;
-    font-size: ${size}rem;
-    --snippet-opacity: ${opacity};
-    --snippet-color: var(${color});
-    animation: floatUp ${duration}s linear ${delay}s forwards;
-  `;
-
-  state.container.appendChild(el);
-
-  const snippet = { el, timeout: null };
-  state.snippets.push(snippet);
-
-  snippet.timeout = setTimeout(
-    () => {
-      el.remove();
-      state.snippets = state.snippets.filter((s) => s !== snippet);
-    },
-    (duration + delay) * 1000 + 100,
-  );
-}
-
-function startSpawning(state) {
-  if (state.interval) return;
-  state.interval = setInterval(() => {
-    if (!state.paused && state.snippets.length < MAX_SNIPPETS) {
-      createSnippet(state);
-    }
-  }, SPAWN_INTERVAL);
-}
-
-function stopSpawning(state) {
-  if (state.interval) {
-    clearInterval(state.interval);
-    state.interval = null;
-  }
+  container.appendChild(fragment);
 }
 
 export const FooterWaves = {
   mounted() {
-    const state = getGlobalState();
-    const wasActive = state.container !== null;
+    this.visible = false;
+    this.motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-    state.snippets.forEach((s) => {
-      clearTimeout(s.timeout);
-      s.el.remove();
+    this.updateAnimation = () => {
+      const running = this.visible && !document.hidden && !this.motionQuery.matches;
+
+      if (running && this.el.childElementCount === 0) createSnippets(this.el);
+      this.el.toggleAttribute("data-animated", running);
+    };
+
+    this.observer = new IntersectionObserver(([entry]) => {
+      this.visible = entry.isIntersecting;
+      this.updateAnimation();
     });
-    state.snippets = [];
-
-    state.container = this.el;
-
-    if (!state.visibilityHandler) {
-      state.visibilityHandler = () => {
-        if (document.hidden) {
-          state.paused = true;
-          stopSpawning(state);
-        } else {
-          state.paused = false;
-          startSpawning(state);
-        }
-      };
-      document.addEventListener("visibilitychange", state.visibilityHandler);
-    }
-
-    const batchSize = wasActive ? 12 : 8;
-    const stagger = wasActive ? 50 : 200;
-    for (let i = 0; i < batchSize; i++) {
-      setTimeout(() => {
-        if (!state.paused) createSnippet(state);
-      }, i * stagger);
-    }
-
-    startSpawning(state);
+    this.observer.observe(this.el);
+    document.addEventListener("visibilitychange", this.updateAnimation);
+    this.motionQuery.addEventListener("change", this.updateAnimation);
   },
 
   destroyed() {
-    const state = getGlobalState();
-    stopSpawning(state);
+    this.observer.disconnect();
+    document.removeEventListener("visibilitychange", this.updateAnimation);
+    this.motionQuery.removeEventListener("change", this.updateAnimation);
+    this.el.removeAttribute("data-animated");
+    this.el.replaceChildren();
   },
 };

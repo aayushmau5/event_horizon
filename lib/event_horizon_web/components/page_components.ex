@@ -113,7 +113,13 @@ defmodule EventHorizonWeb.PageComponents do
   def footer(assigns) do
     ~H"""
     <div class="footerContainer overflow-hidden pt-[7rem] pb-[2rem]">
-      <div class="footerDotPattern" id="footer-waves" phx-hook="FooterWaves" phx-update="ignore">
+      <div
+        class="footerDotPattern"
+        id="footer-waves"
+        phx-hook="FooterWaves"
+        phx-update="ignore"
+        aria-hidden="true"
+      >
       </div>
       <div>
         <%= if @socket do %>
