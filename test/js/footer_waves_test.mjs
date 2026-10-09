@@ -2,9 +2,10 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { FooterWaves } from "../../assets/js/hooks/footer_waves.js";
 
-class Element {
+class Element extends EventTarget {
   children = [];
-  attributes = new Set();
+  attributes = new Map();
+  dataset = {};
   style = {};
 
   get childElementCount() {
@@ -16,7 +17,7 @@ class Element {
   }
 
   toggleAttribute(name, enabled) {
-    if (enabled) this.attributes.add(name);
+    if (enabled) this.attributes.set(name, "");
     else this.attributes.delete(name);
   }
 
@@ -24,12 +25,20 @@ class Element {
     this.attributes.delete(name);
   }
 
+  hasAttribute(name) {
+    return this.attributes.has(name);
+  }
+
+  setAttribute(name, value) {
+    this.attributes.set(name, String(value));
+  }
+
   replaceChildren() {
     this.children = [];
   }
 }
 
-test("footer reuses a bounded pool, pauses when inactive, and cleans up on navigation", (t) => {
+test("footer switches animations, reuses snippets, pauses when inactive, and cleans up", (t) => {
   const document = new EventTarget();
   document.hidden = false;
   document.createElement = () => new Element();
@@ -52,7 +61,16 @@ test("footer reuses a bounded pool, pauses when inactive, and cleans up on navig
     }
   }
 
-  const globals = { document, window: { matchMedia: () => motionQuery }, IntersectionObserver };
+  const saved = new Map();
+  const localStorage = {
+    getItem: (key) => saved.get(key),
+    setItem: (key, value) => saved.set(key, value),
+  };
+  const globals = {
+    document,
+    window: { matchMedia: () => motionQuery, localStorage },
+    IntersectionObserver,
+  };
   for (const [key, value] of Object.entries(globals)) {
     const original = Object.getOwnPropertyDescriptor(globalThis, key);
     Object.defineProperty(globalThis, key, { configurable: true, value });
@@ -67,8 +85,29 @@ test("footer reuses a bounded pool, pauses when inactive, and cleans up on navig
     }
   }
 
-  const el = new Element();
-  const hook = { ...FooterWaves, el };
+  const createFooter = () => {
+    const el = new Element();
+    const logo = new Element();
+    const controls = new EventTarget();
+    const buttons = ["code", "dvd"].map((mode) => {
+      const button = new Element();
+      button.dataset.footerAnimation = mode;
+      button.closest = () => button;
+      return button;
+    });
+    controls.querySelectorAll = () => buttons;
+    el.parentElement = { querySelector: () => controls };
+    el.querySelector = () => logo;
+    const click = (mode) => {
+      const event = new Event("click");
+      Object.defineProperty(event, "target", {
+        value: buttons.find((button) => button.dataset.footerAnimation === mode),
+      });
+      controls.dispatchEvent(event);
+    };
+    return { hook: { ...FooterWaves, el }, el, logo, buttons, click };
+  };
+  const { hook, el, logo, buttons, click } = createFooter();
   hook.mounted();
   assert.equal(el.childElementCount, 0, "offscreen mount creates no snippets");
   observers[0].intersect(true);
@@ -95,6 +134,35 @@ test("footer reuses a bounded pool, pauses when inactive, and cleans up on navig
   motionQuery.dispatchEvent(new Event("change"));
   assert.ok(!el.attributes.has("data-animated"));
 
+  motionQuery.matches = false;
+  motionQuery.dispatchEvent(new Event("change"));
+  click("dvd");
+  assert.equal(el.dataset.animation, "dvd");
+  assert.equal(saved.get("footer-animation"), "dvd");
+  assert.equal(buttons[0].attributes.get("aria-pressed"), "false");
+  assert.equal(buttons[1].attributes.get("aria-pressed"), "true");
+  assert.deepEqual(el.children, snippets, "switching preserves the snippet pool");
+
+  const bounce = (name) => {
+    const event = new Event("animationiteration");
+    Object.defineProperty(event, "animationName", { value: name });
+    el.dispatchEvent(event);
+  };
+  bounce("floatUp");
+  assert.equal(logo.style.color, undefined);
+  bounce("dvdX");
+  assert.equal(logo.style.color, "var(--theme-two)");
+  bounce("dvdY");
+  assert.equal(logo.style.color, "var(--theme-three)");
+  observers[0].intersect(false);
+  bounce("dvdX");
+  assert.equal(logo.style.color, "var(--theme-three)", "paused DVD must not update color");
+  observers[0].intersect(true);
+  click("code");
+  assert.equal(el.dataset.animation, "code");
+  assert.deepEqual(el.children, snippets);
+  click("dvd");
+
   hook.destroyed();
   assert.ok(observers[0].disconnected);
   assert.equal(el.childElementCount, 0);
@@ -103,12 +171,32 @@ test("footer reuses a bounded pool, pauses when inactive, and cleans up on navig
   document.dispatchEvent(new Event("visibilitychange"));
   assert.equal(el.childElementCount, 0, "destroyed hooks cannot recreate snippets");
   assert.ok(!el.attributes.has("data-animated"));
+  click("code");
+  bounce("dvdX");
+  assert.equal(el.dataset.animation, "dvd", "destroy removes the selection listener");
+  assert.equal(logo.style.color, "var(--theme-three)");
 
-  const next = { ...FooterWaves, el: new Element() };
+  const nextFooter = createFooter();
+  const next = nextFooter.hook;
   next.mounted();
+  assert.equal(next.el.dataset.animation, "dvd", "navigation restores the chosen animation");
   assert.equal(next.el.childElementCount, 0);
   observers[1].intersect(true);
+  assert.equal(next.el.childElementCount, 0, "DVD must not create code snippets");
+  assert.ok(next.el.hasAttribute("data-animated"));
+  t.mock.method(localStorage, "setItem", () => {
+    throw new Error("storage blocked");
+  });
+  nextFooter.click("code");
   assert.equal(next.el.childElementCount, 10, "navigation cannot exceed the pool limit");
   assert.equal(el.childElementCount, 0, "navigation cannot mutate the old footer");
   next.destroyed();
+
+  t.mock.method(localStorage, "getItem", () => {
+    throw new Error("storage blocked");
+  });
+  const fallback = createFooter().hook;
+  fallback.mounted();
+  assert.equal(fallback.el.dataset.animation, "code");
+  fallback.destroyed();
 });

@@ -32,7 +32,7 @@
     animation-play-state: paused;
 }
 
-.footerDotPattern[data-animated] .codeSnippet {
+.footerDotPattern[data-animation="code"][data-animated] .codeSnippet {
     animation-play-state: running;
     will-change: transform, opacity;
 }
@@ -54,8 +54,97 @@
     }
 }
 
+.footerDotPattern[data-animation="dvd"] .codeSnippet,
+.footerDotPattern[data-animation="code"] .footerDvdX {
+    display: none;
+}
+
+.footerDvdX {
+    --dvd-width: clamp(80px, 10cqw, 120px);
+    --dvd-height: calc(var(--dvd-width) * 0.6);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--dvd-width);
+    height: var(--dvd-height);
+    animation: dvdX 17s linear -5s infinite alternate;
+    animation-play-state: paused;
+}
+
+.footerDvdY {
+    width: 100%;
+    height: 100%;
+    animation: dvdY 9s linear -3s infinite alternate;
+    animation-play-state: paused;
+}
+
+.footerDvdLogo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: var(--theme-one);
+    opacity: 0.35;
+}
+
+.footerDotPattern[data-animation="dvd"][data-animated] :is(.footerDvdX, .footerDvdY) {
+    animation-play-state: running;
+    will-change: transform;
+}
+
+@keyframes dvdX {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+    to {
+        transform: translate3d(calc(100cqw - var(--dvd-width)), 0, 0);
+    }
+}
+
+@keyframes dvdY {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+    to {
+        transform: translate3d(0, calc(100cqh - var(--dvd-height)), 0);
+    }
+}
+
+.footerAnimationControls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0 0.5rem;
+    font-family: "Departure Mono", monospace;
+    font-size: 0.7rem;
+}
+
+.footerAnimationButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.65rem;
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.footerAnimationButton:hover,
+.footerAnimationButton[aria-pressed="true"] {
+    color: var(--footer-color-hover);
+    border-color: var(--theme-two);
+}
+
+.footerAnimationButton:focus-visible {
+    outline: 2px solid var(--theme-one);
+    outline-offset: 3px;
+}
+
 @media (max-width: 700px) {
-    .codeSnippet:nth-child(n + 7) {
+    .codeSnippet:nth-child(n + 7 of .codeSnippet) {
         display: none;
     }
 }

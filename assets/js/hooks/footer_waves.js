@@ -165,6 +165,7 @@ const CODE_SNIPPETS = [
 
 const COLORS = ["--theme-one", "--theme-two", "--theme-three", "--theme-four"];
 const MAX_SNIPPETS = 10;
+const ANIMATION_STORAGE_KEY = "footer-animation";
 
 function createSnippets(container) {
   const fragment = document.createDocumentFragment();
@@ -194,14 +195,50 @@ function createSnippets(container) {
 export const FooterWaves = {
   mounted() {
     this.visible = false;
+    this.snippetsCreated = false;
+    this.colorIndex = 0;
+    this.controls = this.el.parentElement.querySelector("#footer-animation-controls");
+    this.dvdLogo = this.el.querySelector(".footerDvdLogo");
     this.motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     this.updateAnimation = () => {
       const running = this.visible && !document.hidden && !this.motionQuery.matches;
 
-      if (running && this.el.childElementCount === 0) createSnippets(this.el);
+      if (running && this.animation === "code" && !this.snippetsCreated) {
+        createSnippets(this.el);
+        this.snippetsCreated = true;
+      }
       this.el.toggleAttribute("data-animated", running);
     };
+
+    let savedAnimation;
+    try {
+      savedAnimation = window.localStorage.getItem(ANIMATION_STORAGE_KEY);
+    } catch {}
+    this.selectAnimation(savedAnimation === "dvd" ? "dvd" : "code");
+
+    this.selectHandler = (event) => {
+      const button = event.target.closest("[data-footer-animation]");
+      if (!button) return;
+
+      this.selectAnimation(button.dataset.footerAnimation);
+      try {
+        window.localStorage.setItem(ANIMATION_STORAGE_KEY, this.animation);
+      } catch {}
+    };
+    this.controls.addEventListener("click", this.selectHandler);
+
+    this.bounceHandler = (event) => {
+      if (
+        this.animation === "dvd" &&
+        this.el.hasAttribute("data-animated") &&
+        (event.animationName === "dvdX" || event.animationName === "dvdY")
+      ) {
+        this.colorIndex = (this.colorIndex + 1) % COLORS.length;
+        this.dvdLogo.style.color = `var(${COLORS[this.colorIndex]})`;
+      }
+    };
+    this.el.addEventListener("animationiteration", this.bounceHandler);
 
     this.observer = new IntersectionObserver(([entry]) => {
       this.visible = entry.isIntersecting;
@@ -212,10 +249,21 @@ export const FooterWaves = {
     this.motionQuery.addEventListener("change", this.updateAnimation);
   },
 
+  selectAnimation(animation) {
+    this.animation = animation === "dvd" ? "dvd" : "code";
+    this.el.dataset.animation = this.animation;
+    this.controls.querySelectorAll("[data-footer-animation]").forEach((button) => {
+      button.setAttribute("aria-pressed", button.dataset.footerAnimation === this.animation);
+    });
+    this.updateAnimation();
+  },
+
   destroyed() {
     this.observer.disconnect();
     document.removeEventListener("visibilitychange", this.updateAnimation);
     this.motionQuery.removeEventListener("change", this.updateAnimation);
+    this.controls.removeEventListener("click", this.selectHandler);
+    this.el.removeEventListener("animationiteration", this.bounceHandler);
     this.el.removeAttribute("data-animated");
     this.el.replaceChildren();
   },
