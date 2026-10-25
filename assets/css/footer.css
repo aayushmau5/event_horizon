@@ -117,11 +117,6 @@
     opacity: 0.24;
 }
 
-.footerDotPattern[data-animation="nyan"] + .footerContent {
-    --footer-color: var(--footer-color-hover);
-    color: var(--footer-color);
-}
-
 .footerNyanCat,
 .footerNyanRainbow {
     --cat-width: clamp(180px, 38cqw, 360px);
