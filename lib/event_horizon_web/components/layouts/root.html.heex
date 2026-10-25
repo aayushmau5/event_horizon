@@ -53,7 +53,7 @@
         // Apply saved color theme immediately to prevent FOUC
         window.__themes = <%= raw(Jason.encode!(EventHorizonWeb.Themes.themes_with_variables())) %>;
         const savedThemeId = localStorage.getItem('website-theme') || 'default-dark';
-        const theme = window.__themes.find(t => t.id === savedThemeId);
+        const theme = window.__themes.find(t => t.id === savedThemeId) || window.__themes[0];
         if (theme && theme.variables) {
           for (const [key, value] of Object.entries(theme.variables)) {
             document.documentElement.style.setProperty(key, value);

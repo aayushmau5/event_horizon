@@ -13,11 +13,7 @@ defmodule EventHorizonWeb.PageComponents do
       <div class="navbarContainer">
         <%= if @current_path == "/" do %>
           <div class="navImageContainer">
-            <img
-              src="/images/index.webp"
-              alt="Sunset by the mountains"
-              class="navImage"
-            />
+            <div role="img" aria-label="Header photo" class="navImage"></div>
           </div>
         <% end %>
         <div class="navbarLinksContainer" id="navbar-links" phx-hook=".NavHover">

@@ -64,8 +64,8 @@ defmodule EventHorizonWeb.ThemeSwitcher do
         },
 
         applyTheme(themeId) {
-          const theme = this.themes.find(t => t.id === themeId);
-          if (!theme) return;
+          const theme = this.themes.find(t => t.id === themeId) || this.themes[0];
+          themeId = theme.id;
 
           // Apply CSS variables
           for (const [key, value] of Object.entries(theme.variables)) {
