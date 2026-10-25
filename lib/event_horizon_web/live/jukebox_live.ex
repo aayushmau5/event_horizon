@@ -13,7 +13,7 @@ defmodule EventHorizonWeb.JukeboxLive do
 
   @pubsub EventHorizon.PubSub
   @presence_topic "presence:jukebox"
-  @base_url "https://phoenix.aayushsahu.com/uploads/9b059c42-eefc-4620-81f1-12e7e8e06c3a"
+  @base_url "https://phoenix.aayushsahu.com/uploads/e769fab2-87f3-4a7e-92a3-c0380aae00b0"
 
   @tracks [
     %{
