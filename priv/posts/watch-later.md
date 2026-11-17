@@ -3,6 +3,10 @@ title: "My watch later has 1088 videos"
 description: "A short essay on things to do"
 date: 2026-11-17T12:27:39.210Z
 tags: ["life"]
+cover:
+  image: "/images/blog/tattoo.jpg"
+  alt: "This tattoo I got"
+  caption: "This tattoo I got"
 draft: false
 showToc: false
 ---
