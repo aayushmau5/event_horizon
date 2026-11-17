@@ -7,7 +7,7 @@ cover:
   image: "/images/blog/tattoo.jpg"
   alt: "This tattoo I got"
   caption: "This tattoo I got"
-draft: false
+draft: true
 showToc: false
 ---
 
