@@ -46,12 +46,15 @@
               class="group block w-full cursor-pointer overflow-hidden rounded-lg bg-white/5"
             >
               <img
+                id={"photo-img-#{photo.id}"}
                 src={photo.thumb_url}
                 width={photo.width}
                 height={photo.height}
                 alt={photo.caption || ""}
                 loading="lazy"
-                class="block h-auto w-full transition duration-300 group-hover:scale-[1.03] group-hover:opacity-90"
+                decoding="async"
+                phx-hook=".FadeIn"
+                class="block h-auto w-full opacity-0 transition duration-300 group-hover:scale-[1.03] data-loaded:opacity-100 group-hover:data-loaded:opacity-90"
               />
             </button>
             <figcaption
@@ -64,6 +67,21 @@
         </div>
       </section>
     </.async_result>
+
+    <script :type={Phoenix.LiveView.ColocatedHook} name=".FadeIn">
+      export default {
+        mounted() {
+          const show = () => this.js().setAttribute(this.el, "data-loaded", "")
+
+          if (this.el.complete) {
+            show()
+          } else {
+            this.el.addEventListener("load", show, {once: true})
+            this.el.addEventListener("error", show, {once: true})
+          }
+        }
+      }
+    </script>
   </div>
 
   <.photo_lightbox
