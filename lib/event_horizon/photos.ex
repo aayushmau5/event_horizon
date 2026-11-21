@@ -6,7 +6,11 @@ defmodule EventHorizon.Photos do
   require Logger
 
   def list_photos do
-    case Req.get(api_url(), receive_timeout: 3_000, retry: false) do
+    case Req.get(api_url(),
+           receive_timeout: 3_000,
+           retry: false,
+           connect_options: [transport_opts: [inet6: true]]
+         ) do
       {:ok, %Req.Response{status: 200, body: %{"photos" => photos}}} when is_list(photos) ->
         {:ok, Enum.map(photos, &to_photo/1)}
 
