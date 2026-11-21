@@ -26,6 +26,14 @@ config :event_horizon, EventHorizonWeb.Endpoint,
 config :event_horizon, :remote_node_prefix, System.get_env("REMOTE_NODE_PREFIX")
 config :event_horizon, :chat_admin_password, System.get_env("CHAT_ADMIN_PASSWORD")
 
+config :event_horizon,
+       :photos_api_url,
+       System.get_env("PHOTOS_API_URL") ||
+         if(config_env() == :prod,
+           do: "http://phoenix-aayushsahu-com.internal:8080/api/photos",
+           else: "http://localhost:4100/api/photos"
+         )
+
 # Set ECTO_ENABLED=false to disable database connection in dev/test.
 # In production, the database is always enabled.
 if config_env() in [:dev, :test] do

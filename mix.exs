@@ -73,6 +73,7 @@ defmodule EventHorizon.MixProject do
       {:phoenix_seo, "~> 0.1"},
       {:image, "~> 0.62"},
       {:igniter, "~> 0.7"},
+      {:req, "~> 0.5"},
       # Personal deps
       {:pub_sub_contract, github: "aayushmau5/PubSubContract", override: true},
       {:eha_pubsub_messages, github: "aayushmau5/eha_pubsub_messages"}
