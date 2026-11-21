@@ -2,10 +2,10 @@ defmodule EventHorizon.Blog.Article do
   use Phoenix.Component
   use EventHorizonWeb.BlogComponents
 
-  # Matches: <h1><a id="slug"></a>Text</h1>
+  # Matches: <h1 id="slug">Text<a href="#slug" class="anchor"></a></h1>
   # Won't match code examples like <h1>text</h1> or <h1><a id="x">text</a></h1>
-  # because it requires an empty anchor (></a>) followed by text outside the anchor.
-  @heading_regex ~r/<h([1-6])[^>]*><a[^>]*id="([^"]*)"[^>]*><\/a>([^<]+)<\/h[1-6]>/
+  # because it requires text followed by an empty anchor (class="anchor").
+  @heading_regex ~r/<h([1-6])[^>]*\sid="([^"]*)"[^>]*>([^<]+)<a[^>]*class="anchor"[^>]*><\/a><\/h[1-6]>/
   @words_per_minute 200
 
   @type cover :: %{
@@ -141,13 +141,12 @@ defmodule EventHorizon.Blog.Article do
     case :persistent_term.get(cache_key, nil) do
       nil ->
         ast =
-          EEx.compile_string(html_body,
-            engine: Phoenix.LiveView.TagEngine,
+          Phoenix.LiveView.TagEngine.compile(html_body,
             file: __ENV__.file,
             line: __ENV__.line + 1,
             caller: __ENV__,
             indentation: 0,
-            source: html_body,
+            trim: true,
             tag_handler: Phoenix.LiveView.HTMLEngine
           )
 

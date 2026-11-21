@@ -40,11 +40,11 @@ defmodule EventHorizon.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:usage_rules, "~> 0.1", only: [:dev]},
+      {:usage_rules, "~> 1.3", only: [:dev]},
       {:phoenix, "~> 1.8.3"},
       {:phoenix_html, "~> 4.1"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_view, "~> 1.1.0"},
+      {:phoenix_live_view, "~> 1.2.0"},
       {:phoenix_live_dashboard, "~> 0.8.3"},
       {:lazy_html, ">= 0.1.0", only: :test},
       {:esbuild, "~> 0.10", runtime: Mix.env() == :dev},
@@ -64,8 +64,9 @@ defmodule EventHorizon.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.2.0"},
       {:bandit, "~> 1.5"},
-      {:mdex, "~> 0.11.1"},
-      {:nimble_publisher, "~> 1.1"},
+      {:mdex, "~> 0.14.7"},
+      {:autumn, "~> 0.6.0"},
+      {:nimble_publisher, "~> 2.2"},
       {:tidewave, "~> 0.5.4"},
       {:live_debugger, "~> 0.5.0", only: :dev},
       {:yaml_elixir, "~> 2.12"},

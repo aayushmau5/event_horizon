@@ -39,13 +39,12 @@ defmodule EventHorizon.Blog.Parser do
     html_body = markdown_to_html!(body)
 
     ast =
-      EEx.compile_string(html_body,
-        engine: Phoenix.LiveView.TagEngine,
+      Phoenix.LiveView.TagEngine.compile(html_body,
         file: __ENV__.file,
         line: __ENV__.line + 1,
         caller: __ENV__,
         indentation: 0,
-        source: html_body,
+        trim: true,
         tag_handler: Phoenix.LiveView.HTMLEngine
       )
 
@@ -74,7 +73,7 @@ defmodule EventHorizon.Blog.Parser do
         underline: true,
         spoiler: true,
         phoenix_heex: true,
-        header_ids: ""
+        header_id_prefix: ""
       ],
       parse: [
         relaxed_tasklist_matching: true,
