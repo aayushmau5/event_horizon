@@ -345,7 +345,7 @@ defmodule EventHorizonWeb.PageComponents do
       phx-hook=".Lightbox"
       role="dialog"
       aria-modal="true"
-      class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 animate-fadeIn"
+      class="fixed inset-0 z-[1001] flex items-center justify-center bg-black/90 p-4 animate-fadeIn"
     >
       <button
         type="button"
@@ -359,12 +359,12 @@ defmodule EventHorizonWeb.PageComponents do
 
       <div phx-click-away="close" class="relative max-w-full">
         <figure class="m-0 flex min-w-0 flex-col items-center">
-          <div class="grid overflow-hidden rounded-lg">
+          <div class="relative overflow-hidden rounded-lg" style={lightbox_frame_style(@photo)}>
             <img
               src={@photo.thumb_url}
               alt=""
               aria-hidden="true"
-              class="[grid-area:1/1] h-full w-full object-cover blur-md"
+              class="absolute inset-0 size-full object-cover blur-md"
             />
             <img
               id={"lightbox-photo-#{@photo.id}"}
@@ -372,7 +372,7 @@ defmodule EventHorizonWeb.PageComponents do
               width={@photo.width}
               height={@photo.height}
               alt={@photo.caption || ""}
-              class="relative [grid-area:1/1] max-h-[72dvh] w-auto max-w-full object-contain"
+              class="relative block size-full object-contain"
             />
           </div>
           <figcaption class="mt-3 grid w-full grid-cols-[2.25rem_1fr_2.25rem] items-center gap-2 leading-7">
@@ -483,6 +483,14 @@ defmodule EventHorizonWeb.PageComponents do
     </button>
     """
   end
+
+  defp lightbox_frame_style(%{width: w, height: h})
+       when is_integer(w) and is_integer(h) and h > 0 do
+    ratio = Float.round(w / h, 3)
+    "aspect-ratio: #{w} / #{h}; width: min(100vw - 2rem, 72dvh * #{ratio})"
+  end
+
+  defp lightbox_frame_style(_photo), do: "width: min(100vw - 2rem, 72dvh)"
 
   defp long_caption?(caption), do: String.length(caption) > 140
 
