@@ -6,6 +6,7 @@ defmodule EventHorizonWeb.LinksLive.Index do
     links = [
       %{path: "/contact", name: "Contact"},
       %{path: "/books", name: "Bookshelf"},
+      %{path: "/photos", name: "Photos"},
       %{path: "/uses", name: "Uses"},
       %{path: "/about", name: "About me"},
       %{path: "/resume", name: "Resume"},

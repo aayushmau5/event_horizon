@@ -14,6 +14,7 @@ defmodule EventHorizon.Sitemap do
     %{loc: "/about", priority: "0.7", changefreq: "monthly"},
     %{loc: "/books", priority: "0.6", changefreq: "monthly"},
     %{loc: "/uses", priority: "0.6", changefreq: "monthly"},
+    %{loc: "/photos", priority: "0.6", changefreq: "weekly"},
     %{loc: "/links", priority: "0.5", changefreq: "monthly"},
     %{loc: "/contact", priority: "0.5", changefreq: "yearly"}
   ]

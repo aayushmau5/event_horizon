@@ -10,6 +10,10 @@ defmodule EventHorizon.Photos do
       {:ok, %Req.Response{status: 200, body: %{"photos" => photos}}} when is_list(photos) ->
         {:ok, Enum.map(photos, &to_photo/1)}
 
+      {:ok, %Req.Response{status: 200}} ->
+        Logger.warning("Photos API returned an unexpected body")
+        {:error, :unexpected_body}
+
       {:ok, %Req.Response{status: status}} ->
         Logger.warning("Photos API returned status #{status}")
         {:error, {:http_status, status}}

@@ -333,4 +333,142 @@ defmodule EventHorizonWeb.PageComponents do
     </.link>
     """
   end
+
+  attr :photo, :map, required: true
+  attr :has_prev, :boolean, required: true
+  attr :has_next, :boolean, required: true
+
+  def photo_lightbox(assigns) do
+    ~H"""
+    <div
+      id="photo-lightbox"
+      phx-hook=".Lightbox"
+      role="dialog"
+      aria-modal="true"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 animate-fadeIn"
+    >
+      <button
+        type="button"
+        phx-click="close"
+        aria-label="Close"
+        data-autofocus
+        class="absolute right-3 top-3 z-10 flex size-10 items-center justify-center rounded-full text-gray-300 outline-none transition hover:bg-white/10 hover:text-white focus-visible:ring-2 focus-visible:ring-white/60"
+      >
+        <.icon name="hero-x-mark" class="size-6" />
+      </button>
+
+      <div phx-click-away="close" class="relative max-w-full">
+        <figure class="m-0 flex min-w-0 flex-col items-center">
+          <div class="grid overflow-hidden rounded-lg">
+            <img
+              src={@photo.thumb_url}
+              alt=""
+              aria-hidden="true"
+              class="[grid-area:1/1] h-full w-full object-cover blur-md"
+            />
+            <img
+              id={"lightbox-photo-#{@photo.id}"}
+              src={@photo.full_url}
+              width={@photo.width}
+              height={@photo.height}
+              alt={@photo.caption || ""}
+              class="relative [grid-area:1/1] max-h-[72dvh] w-auto max-w-full object-contain"
+            />
+          </div>
+          <figcaption class="mt-3 grid w-full grid-cols-[2.25rem_1fr_2.25rem] items-center gap-2 leading-7">
+            <.photo_step_button :if={@has_prev} dir="prev" icon="hero-chevron-left" />
+            <span :if={!@has_prev}></span>
+            <div
+              data-scroll-area
+              class="max-h-[18dvh] min-w-0 overflow-y-auto overscroll-contain text-center"
+            >
+              <p
+                :if={@photo.caption}
+                class={[
+                  "font-[Handwriting] text-white [overflow-wrap:anywhere]",
+                  if(long_caption?(@photo.caption), do: "text-lg leading-6", else: "text-2xl")
+                ]}
+              >
+                {@photo.caption}
+              </p>
+              <p class="text-sm text-gray-400">{place_and_date(@photo)}</p>
+            </div>
+            <.photo_step_button :if={@has_next} dir="next" icon="hero-chevron-right" />
+          </figcaption>
+        </figure>
+      </div>
+
+      <script :type={Phoenix.LiveView.ColocatedHook} name=".Lightbox">
+        export default {
+          mounted() {
+            document.body.classList.add("overflow-hidden")
+            this.el.querySelector("[data-autofocus]")?.focus()
+
+            this.onKeyDown = (e) => {
+              if (e.key === "Escape") this.pushEvent("close", {})
+              if (e.key === "ArrowRight") this.pushEvent("step", {dir: "next"})
+              if (e.key === "ArrowLeft") this.pushEvent("step", {dir: "prev"})
+            }
+
+            this.onTouchStart = (e) => {
+              if (e.target.closest("[data-scroll-area]")) return
+              const touch = e.touches[0]
+              this.touchStart = {x: touch.clientX, y: touch.clientY}
+            }
+
+            this.onTouchEnd = (e) => {
+              if (!this.touchStart) return
+              const touch = e.changedTouches[0]
+              const dx = touch.clientX - this.touchStart.x
+              const dy = touch.clientY - this.touchStart.y
+              this.touchStart = null
+
+              if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+                this.pushEvent("step", {dir: dx < 0 ? "next" : "prev"})
+              } else if (dy > 80 && Math.abs(dy) > Math.abs(dx)) {
+                this.pushEvent("close", {})
+              }
+            }
+
+            window.addEventListener("keydown", this.onKeyDown)
+            this.el.addEventListener("touchstart", this.onTouchStart, {passive: true})
+            this.el.addEventListener("touchend", this.onTouchEnd)
+          },
+
+          destroyed() {
+            document.body.classList.remove("overflow-hidden")
+            window.removeEventListener("keydown", this.onKeyDown)
+          }
+        }
+      </script>
+    </div>
+    """
+  end
+
+  attr :dir, :string, required: true
+  attr :icon, :string, required: true
+
+  defp photo_step_button(assigns) do
+    ~H"""
+    <button
+      type="button"
+      phx-click="step"
+      phx-value-dir={@dir}
+      aria-label={if @dir == "next", do: "Next photo", else: "Previous photo"}
+      class="flex size-9 items-center justify-center rounded-full text-gray-500 outline-none transition hover:bg-white/10 hover:text-white focus-visible:ring-2 focus-visible:ring-white/60"
+    >
+      <.icon name={@icon} class="size-5" />
+    </button>
+    """
+  end
+
+  defp long_caption?(caption), do: String.length(caption) > 140
+
+  defp place_and_date(photo) do
+    date = photo.taken_at && Calendar.strftime(photo.taken_at, "%b %-d, %Y")
+
+    [photo.place, date]
+    |> Enum.reject(&is_nil/1)
+    |> Enum.join(" · ")
+  end
 end

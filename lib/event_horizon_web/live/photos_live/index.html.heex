@@ -1,0 +1,75 @@
+<Layouts.app current_path={@current_path} socket={@socket}>
+  <div class="animate-fadeIn">
+    <h1 class="font-[Handwriting] text-4xl font-bold mb-6">Photos</h1>
+
+    <.async_result :let={months} assign={@months}>
+      <:loading>
+        <div id="photos-loading" class="animate-pulse" aria-label="Loading photos">
+          <div class="mb-3 h-7 w-40 rounded bg-white/10"></div>
+          <div class="photo-row">
+            <div
+              :for={ratio <- [1.5, 0.75, 1.33, 1, 1.5, 0.67]}
+              class="photo-tile aspect-(--ratio) rounded-lg bg-white/10"
+              style={"--ratio: #{ratio}"}
+            >
+            </div>
+          </div>
+        </div>
+      </:loading>
+
+      <:failed>
+        <p id="photos-error" class="text-(--blog-caption)">
+          The photos are taking a nap right now. Try again in a bit.
+        </p>
+      </:failed>
+
+      <p :if={months == []} id="photos-empty" class="text-(--blog-caption)">
+        No photos yet. Check back soon.
+      </p>
+
+      <section :for={month <- months} id={"month-#{month.id}"} class="mb-10">
+        <h2 class="mb-3 font-[Handwriting] text-2xl font-bold">
+          {month.label}
+        </h2>
+        <div class="photo-row">
+          <figure
+            :for={photo <- month.photos}
+            id={"photo-#{photo.id}"}
+            class="photo-tile @container relative"
+            style={"--ratio: #{ratio(photo)}"}
+          >
+            <button
+              type="button"
+              phx-click="open"
+              phx-value-id={photo.id}
+              aria-label={photo.caption || "Open photo"}
+              class="group block w-full cursor-zoom-in overflow-hidden rounded-lg bg-white/5"
+            >
+              <img
+                src={photo.thumb_url}
+                width={photo.width}
+                height={photo.height}
+                alt={photo.caption || ""}
+                loading="lazy"
+                class="block h-auto w-full transition duration-300 group-hover:scale-[1.03] group-hover:opacity-90"
+              />
+            </button>
+            <figcaption
+              :if={photo.caption}
+              class="pointer-events-none absolute inset-x-0 bottom-0 truncate rounded-b-lg @max-[7rem]:hidden bg-linear-to-t from-black/75 to-transparent px-3 pb-1.5 pt-8 font-[Handwriting] text-lg leading-6 text-white"
+            >
+              {photo.caption}
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+    </.async_result>
+  </div>
+
+  <.photo_lightbox
+    :if={@selected}
+    photo={@selected}
+    has_prev={@selected_index > 0}
+    has_next={@selected_index < length(@photos.result) - 1}
+  />
+</Layouts.app>

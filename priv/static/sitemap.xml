@@ -31,6 +31,11 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://aayushsahu.com/photos</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://aayushsahu.com/links</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -41,6 +46,30 @@
     <priority>0.5</priority>
   </url>
 
+  <url>
+    <loc>https://aayushsahu.com/blog/unemployment-log-002</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aayushsahu.com/blog/unemployment-log-1</loc>
+    <lastmod>2026-07-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aayushsahu.com/blog/layoffs</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aayushsahu.com/blog/megatron</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
   <url>
     <loc>https://aayushsahu.com/blog/nextjs-to-phoenix</loc>
     <lastmod>2026-01-27</lastmod>
