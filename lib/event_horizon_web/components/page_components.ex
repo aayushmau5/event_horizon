@@ -352,7 +352,7 @@ defmodule EventHorizonWeb.PageComponents do
         phx-click="close"
         aria-label="Close"
         data-autofocus
-        class="absolute right-3 top-3 z-10 flex size-10 items-center justify-center rounded-full text-gray-300 outline-none transition hover:bg-white/10 hover:text-white focus-visible:ring-2 focus-visible:ring-white/60"
+        class="absolute right-3 top-3 z-10 flex size-10 cursor-pointer items-center justify-center rounded-full text-gray-300 outline-none transition hover:bg-white/10 hover:text-white focus-visible:ring-2 focus-visible:ring-white/60"
       >
         <.icon name="hero-x-mark" class="size-6" />
       </button>
@@ -401,7 +401,7 @@ defmodule EventHorizonWeb.PageComponents do
       <script :type={Phoenix.LiveView.ColocatedHook} name=".Lightbox">
         export default {
           mounted() {
-            document.body.classList.add("overflow-hidden")
+            this.lockScroll()
             this.el.querySelector("[data-autofocus]")?.focus()
 
             this.onKeyDown = (e) => {
@@ -436,8 +436,30 @@ defmodule EventHorizonWeb.PageComponents do
           },
 
           destroyed() {
-            document.body.classList.remove("overflow-hidden")
+            this.unlockScroll()
             window.removeEventListener("keydown", this.onKeyDown)
+          },
+
+          // Hiding the scrollbar widens the page, so pad the body by the
+          // scrollbar's width to keep the content from shifting sideways.
+          lockScroll() {
+            const root = document.documentElement
+            const body = document.body
+            const scrollbarWidth = window.innerWidth - root.clientWidth
+
+            this.previousOverflow = root.style.overflow
+            this.previousPadding = body.style.paddingRight
+
+            root.style.overflow = "hidden"
+            if (scrollbarWidth > 0) {
+              const padding = parseFloat(getComputedStyle(body).paddingRight) || 0
+              body.style.paddingRight = `${padding + scrollbarWidth}px`
+            }
+          },
+
+          unlockScroll() {
+            document.documentElement.style.overflow = this.previousOverflow
+            document.body.style.paddingRight = this.previousPadding
           }
         }
       </script>
@@ -455,7 +477,7 @@ defmodule EventHorizonWeb.PageComponents do
       phx-click="step"
       phx-value-dir={@dir}
       aria-label={if @dir == "next", do: "Next photo", else: "Previous photo"}
-      class="flex size-9 items-center justify-center rounded-full text-gray-500 outline-none transition hover:bg-white/10 hover:text-white focus-visible:ring-2 focus-visible:ring-white/60"
+      class="flex size-9 cursor-pointer items-center justify-center rounded-full text-gray-500 outline-none transition hover:bg-white/10 hover:text-white focus-visible:ring-2 focus-visible:ring-white/60"
     >
       <.icon name={@icon} class="size-5" />
     </button>
