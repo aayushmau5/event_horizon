@@ -196,7 +196,7 @@ function createSnippets(container) {
 export const FooterWaves = {
   mounted() {
     this.visible = false;
-    this.snippetsCreated = false;
+    this.snippetsCreated = this.el.querySelector(".codeSnippet") !== null;
     this.colorIndex = 0;
     this.controls = this.el.parentElement.querySelector("#footer-animation-controls");
     this.dvdLogo = this.el.querySelector(".footerDvdLogo");
@@ -265,7 +265,5 @@ export const FooterWaves = {
     this.motionQuery.removeEventListener("change", this.updateAnimation);
     this.controls.removeEventListener("click", this.selectHandler);
     this.el.removeEventListener("animationiteration", this.bounceHandler);
-    this.el.removeAttribute("data-animated");
-    this.el.replaceChildren();
   },
 };
